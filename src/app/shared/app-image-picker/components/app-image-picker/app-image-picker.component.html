@@ -1,0 +1,20 @@
+<div class="relative w-[123px] h-[123px]">
+  <img
+    [src]="imageToShow"
+    alt="Selected"
+    class="rounded-full w-full h-full object-cover border border-gray-300"
+  />
+
+  <label
+    class="absolute bottom-0 right-0 rounded-full p-1 cursor-pointer "
+    title="Change image"
+  >
+    <input
+      type="file"
+      accept="image/*"
+      class="hidden"
+      (change)="onFileChange($event)"
+    />
+    <img src="/assets/svg/camera-icon.svg" class="w-[30px] h-[30px]"  alt="Default Image"/>
+  </label>
+</div>

@@ -1,0 +1,28 @@
+<div class="flex flex-wrap gap-4">
+  <div *ngFor="let image of images; let i = index" class="relative w-[120px] h-[120px]">
+    <img [src]="image" class="object-cover w-full h-full rounded" />
+    <button
+      class="absolute top-1 right-1 bg-white border border-gray-300 rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-100"
+      (click)="removeImage(i)">
+      ✕
+    </button>
+  </div>
+
+  <div
+    (click)="triggerFileInput()"
+    class="flex flex-col items-center justify-center w-[120px] h-[120px] border border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50"
+    *ngIf="images.length < 6"
+  >
+    <img src="/assets/svg/ep_upload-filled.svg" alt="Upload" class="w-6 h-6 mb-1" />
+    <p class="text-xs text-gray-500">Add Image</p>
+  </div>
+
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    #fileInput
+    class="hidden"
+    (change)="onFileChange($event)"
+  />
+</div>

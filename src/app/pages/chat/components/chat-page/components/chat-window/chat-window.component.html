@@ -1,0 +1,27 @@
+<div class="flex flex-col justify-between bg-slate-900 bg-opacity-50 w-[100%] h-[90%]">
+    <div class="flex flex-col justify-between bg-blue-100 shadow-md shadow-slate-700 mx-2 mt-1 mb-2 p-2 rounded-lg h-[98%]">
+        <div 
+            *ngIf="!(selectedConversation$ | async)"
+            class="flex flex-col justify-around items-center h-full">
+            <h3>
+                Please Select a Contact to Initiate a Chat
+            </h3>
+        </div>
+        <div 
+            *ngIf="(selectedConversation$ | async)" 
+            class="flex flex-col w-[100%] h-[100%]">
+            <app-conversation-details 
+                class="flex-none"
+                [conversation]="currentConversation"    
+            ></app-conversation-details>
+            
+            <app-chat-messsages class="flex-1 min-h-0"></app-chat-messsages>
+            
+            <app-message-input 
+                class="flex-none"
+                [conversationId]="currentConversation?.conversationId"
+                [receiverChatId]="currentConversation?.otherUser?.chatId"
+            ></app-message-input>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="relative w-full h-[340px] bg-black overflow-hidden mb-15">
+  <!-- Background image with gradient overlay -->
+  <div class="absolute inset-0 w-full h-full">
+    <!-- Background image -->
+    <img
+      [ngSrc]="image"
+      alt="FAQ Background"
+      class="w-full h-full object-cover"
+      fill>
+    <!-- Gradient overlay -->
+<!--    @if ( centerText == "FAQS" || centerText == "PRODUCT CATEGORY") {-->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+<!--    }-->
+  </div>
+
+  <!-- Content container -->
+  <div class="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
+    <!-- FAQs Heading -->
+    <div class="max-w-[610px] mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+        {{centerText}}
+      </h1>
+    </div>
+  </div>
+</div>

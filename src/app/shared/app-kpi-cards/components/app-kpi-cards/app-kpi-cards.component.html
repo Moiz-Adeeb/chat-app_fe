@@ -1,0 +1,29 @@
+
+<div class="bg-white dark:bg-gray-800 shadow-gray-300 shadow-sm p-[20px] border-[1px] border-gray-300 dark:border-gray-300 rounded-[20px] h-[136px] transition-colors">
+        <div class="flex justify-between items-center">
+            <div class="flex flex-row gap-[10px] w-[216px]">
+                <div class="flex justify-center items-center px-[4px] w-[36px] h-[36px] radius-md py[8px]">
+                  <div class="flex justify-center items-center px-[4px] w-[36px] h-[36px] radius-md py[8px]">
+                    <ng-container *ngIf="data.icon; else iconFallback">
+                      <svg-icon [src]="data.icon"></svg-icon>
+                    </ng-container>
+                    <ng-template #iconFallback>
+                      <i [class]="data.iconClass" class="text-xl text-gray-600"></i>
+                    </ng-template>
+                  </div>
+
+                </div>
+                <div class="flex justify-center items-center font-inter font-medium text-[#475467] text-sm">
+                    <p>{{data.name | translate}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-wrap items-baseline gap-x-[4px] mt-6 justify">
+            <div class="">
+                <p class="font-inter font-semibold text-2xl">{{data.count}}</p>
+            </div>
+            <div class="pb-4">
+                <p class="font-inter font-medium text-[#98A2B3] text-xs">{{data.text | translate}}</p>
+            </div>
+        </div>
+    </div>

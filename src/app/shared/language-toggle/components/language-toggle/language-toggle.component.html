@@ -1,0 +1,10 @@
+<div class="flex bg-gray-100 dark:bg-gray-700 p-0.5 sm:p-1 rounded-md sm:rounded-lg transition-colors gap-0.5 sm:gap-1">
+  <button
+    *ngFor="let language of languages"
+    type="button"
+    (click)="setLanguage(language.code)"
+    [class]="getButtonClasses(language.code)"
+  >
+    {{ language.label }}
+  </button>
+</div>

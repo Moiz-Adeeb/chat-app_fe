@@ -1,0 +1,56 @@
+<!-- Template -->
+<div class="relative w-full">
+  <label *ngIf="fieldName != ''" class="block text-sm font-medium text-gray-700 mb-2" [ngClass]="[labelFontSize, labelFontFamily]">
+    {{ fieldName }}
+  </label>
+
+  <button
+    type="button"
+    (click)="toggleDropdown()"
+    class="flex items-center px-6 justify-between w-full mb-[10px] pr-3 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:border-blue-500 min-w-[280px]">
+
+   <span class="flex-1 text-left">
+  {{
+       fromControl.value && toControl.value
+         ? (selectedRangeLabel + ' ' + (fromControl.value | date: 'MMM d') + ' - ' + (toControl.value | date: 'MMM d, yyyy'))
+         : 'Select Date'
+     }}
+</span>
+
+
+    <!-- Calendar Icon -->
+    <i class="fa-solid fa-calendar-days ml-3 text-gray-400"></i>
+
+    <!-- Dropdown Arrow -->
+    <svg class="w-4 h-4 ml-2 text-gray-400 transform transition-transform duration-200"
+         [class.rotate-180]="dropdownOpen"
+         fill="none"
+         stroke="currentColor"
+         viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  <!-- Dropdown Menu -->
+  <div *ngIf="dropdownOpen"
+       class="absolute z-50 mt-1  border border-gray-200 rounded-md  right-0 min-w-[400px]"
+       (clickOutside)="closeDropdown()">
+
+    <div class="pt-2">
+      <ngx-daterangepicker-material
+        [ranges]="ranges"
+        [autoApply]="false"
+        [showCustomRangeLabel]="true"
+        [alwaysShowCalendars]="true"
+        (datesUpdated)="choosedDate($event); closeDropdown();"
+        (change)="choosedDate($event); closeDropdown();"
+        (rangeClicked)="onRangeChanged($event); closeDropdown();">
+      </ngx-daterangepicker-material>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop for mobile -->
+<div *ngIf="dropdownOpen"
+     class="fixed inset-0 z-40 bg-black bg-opacity-25 sm:hidden"
+     (click)="closeDropdown()">
+</div>

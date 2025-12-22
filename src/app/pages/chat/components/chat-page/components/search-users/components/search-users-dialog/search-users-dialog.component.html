@@ -1,0 +1,85 @@
+<div class="z-[9999] fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-2 sm:p-4">
+    <div class="flex flex-col bg-[color:var(--color-white)] bg-blue-300 shadow-2xl shadow-slate-900 rounded-lg sm:rounded-xl md:rounded-2xl w-full min-w-[50vw] max-w-2xl min-h-[90vh] max-h-[98vh] sm:max-h-[95vh] md:max-h-[90vh]">
+        <!-- Fixed Header -->
+        <div class="flex justify-between items-center p-3 sm:p-4 md:p-6 border-[color:var(--color-blue-900)] border-b">
+            <h3 class="pr-2 sm:pr-4 font-montserrat font-semibold text-black text-base sm:text-lg md:text-xl lg:text-2xl truncate">
+                    {{ 'Start a Chat With Your Friends' | translate }}
+            </h3>
+            <button
+                (click)="close()"
+                class="flex flex-shrink-0 justify-center items-center hover:bg-[color:var(--color-blue-500)] p-2 rounded-lg min-w-[44px] sm:min-w-0 min-h-[44px] sm:min-h-0 text-red-800 hover:text-red-500 transition-colors duration-200">
+                <i class="text-base sm:text-lg md:text-xl fas fa-times"></i>
+            </button>
+        </div>
+        <div
+            (scroll)="onScroll()"
+            #scrollContainer 
+            class="flex-1 bg-blue-100 h-full overflow-y-auto custom-scrollbar">
+            <div 
+                *ngFor="let user of users" class="hover:bg-blue-300 px-1 sm:px-2 md:px-4 lg:px-6" 
+                (click)=initiateChat(user.chatId!)>
+                <div 
+                    class="flex-col p-2 rounded-lg transition-all duration-200 inactive-nav-link">
+                    <div class="flex justify-between">
+                        <div>
+                            <span class="font-inter font-semilight text-2xl truncate">
+                                {{user.name}}
+                            </span>
+                            <div class="flex justify-between rounded-lg transition-all duration-200">
+                                <span class="font-montserrat font-semibold text-blue-900 truncate">
+                                    {{user.userName}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-right truncate">
+                            <p class="font-work font-medium text-gray-600 text-sm">
+                                Last Seen: {{user.lastSeen | appDate}}
+                            </p>
+                            <!-- <span class="bg-white shadow-md shadow-slate-500 mr-2 px-1 rounded-full font-work font-medium text-gray-600 text-md text-right">
+                                {{conversation.unreadCount}}
+                            </span> -->
+                        </div>
+                    </div>
+                    <!-- <div class="text-bottom flex justify-evenly gap-1 py-1 font-inter text-sm break-words whitespace-normal">
+                        <p class="flex-1 font-work text-gray-800 text-xs line-clamp-2">
+                            {{conversation.lastMessageSnippet}}Hi hello how are you good to see you are you ok this is good that is good all is good this is verry good all is very good
+                        </p>
+                        <p class="font-work font-medium text-gray-600 text-xs text-right whitespace-nowrap">
+                            {{conversation.lastMessageTime | appDate}}
+                        </p>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <div *ngIf="isLoadingMore$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
+                Loading older conversations...
+            </div> 
+            <div *ngIf="isFullListLoaded$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
+                No More Conversations to Load ...
+            </div>  -->
+        </div>
+        <div class="flex justify-around gap-4 mb-4 px-3 pt-3 border-[color:var(--color-blue-900)] border-t w-100 h-100">
+            <div class="w-[90%]">
+                <app-search-field
+                    [fieldControl]="searchControl"
+                    [placeholder]="'Search Users'"
+                    [icon]="false">
+                </app-search-field>
+            </div>
+            <div class="w-[10%]">
+                <app-button
+                    [type]="'custom'"
+                    [bgColor]="'#033A52'"
+                    [width]="''"
+                    [height]="''"
+                    [isIconImage]="true"
+                    [iconOnly]="true"
+                    [iconAfter]="'/assets/img/gg_search.png'"
+                    [class]="''"
+                    (clicked)="getData()">
+                {{ 'Search' }}
+                </app-button>
+            </div>
+        </div>
+    </div>
+</div>
+    

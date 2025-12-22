@@ -1,0 +1,43 @@
+/* Table Layout */
+table {
+  table-layout: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for better UX */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #F9FAFB;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  table {
+    font-size: 0.75rem;
+  }
+
+  th, td {
+    padding: 0.5rem !important;
+  }
+}

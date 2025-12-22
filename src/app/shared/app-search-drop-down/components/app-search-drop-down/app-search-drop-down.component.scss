@@ -1,0 +1,61 @@
+/* In your global styles.scss or styles.css */
+/* Custom styling for ng-select to match text input */
+.custom-select .ng-select-container {
+  width: 100%;
+  font-family: inherit;
+  padding: 0.5rem 0.75rem;
+  border-width: 1px;
+  border-style: solid;
+  outline: none !important;
+  box-shadow: none;
+  min-height: 38px;
+}
+
+/* Valid state */
+.ng-valid.custom-select .ng-select-container {
+  border-color: #d1d5db; /* gray-300 */
+}
+
+.ng-valid.ng-select-focused.custom-select .ng-select-container {
+  border-color: #6A0DAD !important;
+  box-shadow: 0 0 0 1px #6A0DAD !important;
+}
+
+/* Invalid state */
+.ng-invalid.custom-select .ng-select-container {
+  border-color: #ef4444 !important; /* red-500 */
+}
+
+.ng-invalid.ng-select-focused.custom-select .ng-select-container {
+  box-shadow: 0 0 0 1px #fca5a5 !important; /* red-300 */
+}
+
+/* Remove default blue outline */
+.ng-select-focused.custom-select .ng-select-container {
+  box-shadow: 0 0 0 1px;
+}
+
+/* Make placeholder visible */
+.custom-select .ng-placeholder {
+  color: #6b7280; /* text-gray-500 */
+  padding: 0;
+  display: block !important;
+  opacity: 1 !important;
+}
+
+/* Hide placeholder when there's a value */
+.custom-select.ng-select .ng-has-value .ng-placeholder {
+  display: none !important;
+}
+
+/* Fix label positioning relative to the ng-select */
+.custom-select .ng-value-container {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Ensure enough space for the floating label */
+.custom-select .ng-input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}

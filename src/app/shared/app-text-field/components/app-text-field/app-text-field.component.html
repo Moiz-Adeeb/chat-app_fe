@@ -1,0 +1,46 @@
+<div class="relative w-full">
+  <label class="block mb-2 font-medium text-dark text-sm transition-colors" [ngClass]="[labelFontSize, labelFontFamily]">
+    {{ fieldName }}
+  </label>
+
+  <div class="relative">
+
+    <img *ngIf="icon && iconType == 'img'" [src]="icon"
+         class="left-6 absolute inset-y-5 flex items-center text-black">
+    <i *ngIf="icon && iconType == 'fav'" class="left-4 absolute inset-y-3.5 flex items-center text-[20px] text-secondary transition-colors" [class]="icon" ></i>
+
+    <input
+      [type]="isPasswordVisible ? 'text' : fieldType"
+      [formControl]="fieldControl"
+      [readonly]="readonly"
+      class="block bg-theme-white py-3 pr-3 border border-gray-300 focus:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-full text-[14px] text-dark transition-all placeholder-secondary"
+      [class.pl-11]="icon"
+      [class.pl-6]="!icon"
+      [class.border-red-500]="showErrorState()"
+      [class.border-[#E2E2E2]]="!showErrorState()"
+      [placeholder]="placeholder"
+      blur="onBlur()"
+      [attr.autocomplete]="enableAutoFill
+        ? (fieldType === 'password' ? 'current-password' : 'username')
+        : (fieldType === 'password' ? 'new-password' : 'off')"
+      [attr.autocorrect]="enableAutoFill ? null : 'off'"
+      [attr.autocapitalize]="enableAutoFill ? null : 'off'"
+      [attr.spellcheck]="enableAutoFill ? null : 'false'"
+    
+    >
+
+    <button *ngIf="fieldType === 'password'"
+            type="button"
+            class="top-4 right-3 absolute flex items-center text-secondary hover:text-dark transition-colors"
+            (click)="isPasswordVisible = !isPasswordVisible">
+      <i class="text-[14px]" [ngClass]="isPasswordVisible ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+    </button>
+  </div>
+
+  <app-form-error
+    *ngIf="showError"
+    [control]="fieldControl"
+    [fieldName]="fieldName"
+    [isDisplayError]="true">
+  </app-form-error>
+</div>

@@ -1,0 +1,182 @@
+<div class="relative flex justify-center items-center w-screen h-screen overflow-hidden overscroll-none">
+  <!-- Background Decorative Ellipse (Top-Left) -->
+  <div
+    class="-top-[150px] sm:-top-[180px] md:-top-[200px] lg:-top-[243px] -left-[250px] sm:-left-[300px] md:-left-[350px] lg:-left-[422px] z-0 absolute bg-[rgba(5,173,166,0.69)] opacity-13 rounded-full w-[400px] sm:w-[500px] md:w-[600px] lg:w-[724px] h-[400px] sm:h-[500px] md:h-[600px] lg:h-[724px] pointer-events-none"
+    style="filter: blur(68.5443px);"></div>
+
+  <!-- Main Sign Up Container -->
+  <div
+    class="z-10 flex flex-col bg-white shadow-2xl px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8 rounded-[20px] sm:rounded-[32px] md:rounded-[40px] w-[96vw] sm:w-[90vw] md:w-[75vw] lg:w-[60vw] 2xl:w-[42vw] xl:w-[50vw] h-auto max-h-[96vh] sm:max-h-[94vh]">
+
+    <!-- Logo Section -->
+    <div class="flex-shrink-0 mb-3 sm:mb-4 md:mb-5 text-center">
+      <svg-icon src="assets/svg/sala-login-logo.svg" class="mx-auto w-auto h-12 sm:h-14 md:h-16 lg:h-18"></svg-icon>
+    </div>
+
+    <!-- Language Toggle Section -->
+    <div class="flex flex-shrink-0 justify-center items-center mb-4 sm:mb-5 md:mb-6">
+      <app-language-toggle
+        [currentLanguage]="currentLanguage"
+        (languageChange)="setLanguage($event)"
+      ></app-language-toggle>
+    </div>
+
+    <!-- Form Section -->
+    <form action="signup-user" class="flex flex-col flex-1 w-full min-h-0">
+
+      <!-- Section 1: Personal & Company Information -->
+      <div *ngIf="section == 1" class="flex flex-col flex-1 min-h-0">
+
+        <!-- Scrollable Input Fields Area -->
+        <div
+          class="flex-1 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent -mx-1 px-1 pr-2 pb-2 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar]:w-1 overflow-x-visible overflow-y-auto">
+          <div class="gap-4 sm:gap-5 grid grid-cols-1 md:grid-cols-2">
+            <div>
+              <!-- Name -->
+              <app-text-field
+                [fieldControl]="nameControl"
+                [placeholder]="'John' | translate"
+                [fieldName]="'Name' | translate"
+                fieldType="text"
+              ></app-text-field>
+            </div>
+            <div>
+              <!-- UserName -->
+              <app-text-field
+                [fieldControl]="userNameControl"
+                [placeholder]="'Doe' | translate"
+                [fieldName]="'UserName' | translate"
+                fieldType="text"
+              ></app-text-field>
+            </div>
+            <div>
+              <!-- Status -->
+              <app-text-field
+                [fieldControl]="statusControl"
+                [placeholder]="'Available' | translate"
+                [fieldName]="'Status' | translate"
+                fieldType="text"
+              ></app-text-field>
+            </div>
+            <div>
+              <!-- Password -->
+              <app-text-field
+                [fieldControl]="passwordControl"
+                [placeholder]="'' | translate"
+                [fieldName]="'Password' | translate"
+                fieldType="text"
+              ></app-text-field>
+            </div>
+            <div>
+              <!-- Confirm Password -->
+              <app-text-field
+                [fieldControl]="confirmPasswordControl"
+                [placeholder]="'' | translate"
+                [fieldName]="'ConfirmPassword' | translate"
+                fieldType="text"
+                (keyup.enter)="onSignUp()"
+              ></app-text-field>
+            </div>
+          </div>
+          <!-- <div class="space-y-4 sm:space-y-5 pt-4 sm:pt-5">
+            <div>
+              Company Name
+              <app-text-field
+                [fieldControl]="companyNameControl"
+                [placeholder]="'HRM Solutions pvt limited ' | translate"
+                [fieldName]="'CompanyName' | translate"
+                fieldType="text"
+              ></app-text-field>
+            </div>
+          </div> -->
+        </div>
+
+        <!-- Fixed Buttons and Links Area -->
+        <div class="flex flex-col space-y-3 sm:space-y-4 mt-5 sm:mt-6">
+          <!-- Next Button -->
+          <button type="button" (click)="onSignUp()"
+                  class="bg-blue-600 hover:bg-blue-700 py-3 sm:py-3.5 rounded-2xl w-full font-montserrat font-medium text-white text-base sm:text-lg active:scale-95 transition-all duration-200 cursor-pointer">
+            {{ 'SignUp' | translate }}
+          </button>
+
+          <!-- Sign In Link -->
+          <p class="font-monsterrat font-medium text-gray-600 text-sm sm:text-base text-center">
+            {{ 'AlreadyHaveAnAccount' | translate }}
+            <span (click)="onSignIn()"
+                  class="text-[#2A58E6] hover:text-blue-700 hover:underline transition-all cursor-pointer">
+              {{ 'SignIn' | translate }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Document Upload -->
+      <div *ngIf="section == 2" class="flex flex-col flex-1 min-h-0">
+
+        <!-- Scrollable Upload Fields Area -->
+        <div
+          class="flex-1 space-y-5 sm:space-y-6 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent -mx-1 px-1 pr-2 pb-2 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar]:w-1 overflow-x-visible overflow-y-auto">
+
+          <!-- Business Registration Certificate -->
+          <div>
+            <p class="mb-3 font-inter font-semibold text-gray-700 text-sm sm:text-base">
+              {{ 'UploadBusinessRegistrationCertificate' | translate }}
+            </p>
+            <app-upload
+              [fileControl]='businessRegistrationCertificateControl'
+              (fileUploaded)="onFileUploaded($event, 'businessCertificate')"
+            ></app-upload>
+          </div>
+
+          <!-- VAT Certificate -->
+          <div>
+            <p class="mb-3 font-inter font-semibold text-gray-700 text-sm sm:text-base">
+              {{ 'UploadTaxIdentificationNumber/VATCertificate' | translate }}
+            </p>
+            <app-upload
+              [fileControl]='vatCertificateControl'
+              (fileUploaded)="onFileUploaded($event, 'vatCertificate')"
+            ></app-upload>
+          </div>
+
+          <!-- Authorization ID Proof -->
+          <div>
+            <p class="mb-3 font-inter font-semibold text-gray-700 text-sm sm:text-base">
+              {{ 'UploadAuthorizedSignatoryIDProof' | translate }}
+            </p>
+            <app-upload
+              [fileControl]='authorizationIdProofControl'
+              (fileUploaded)="onFileUploaded($event, 'authorizationIdProof')"
+            ></app-upload>
+          </div>
+        </div>
+
+        <!-- Fixed Buttons and Links Area -->
+        <div class="flex flex-col space-y-3 sm:space-y-4 mt-5 sm:mt-6">
+          <!-- Sign Up Button -->
+          <app-button
+            (click)="onSignUp()"
+            type="primary"
+            width="100%"
+            fontSize="16px"
+            padding="14px 16px"
+            radius="20px"
+          >
+            {{ 'SignUp' | translate }}
+          </app-button>
+
+          <!-- Sign In Link -->
+          <p class="font-monsterrat font-medium text-gray-600 text-sm sm:text-base text-center">
+            {{ 'AlreadyHaveAnAccount' | translate }}
+            <span (click)="onSignIn()"
+                  class="text-[#2A58E6] hover:text-blue-700 hover:underline transition-all cursor-pointer">
+              {{ 'SignIn' | translate }}
+            </span>
+          </p>
+        </div>
+      </div>
+      <!-- <button type="submit" (click)="next()" class="bg-[#2A58E6] my-2 mt-4 py-2 rounded-[15px] w-[100%] font-montserrat font-medium text-white text-lg cursor-pointer"> {{'Next' | translate}} </button> -->
+      <!-- <p class="font-monsterrat font-medium text-center"> {{'AlreadyHaveAnAccount' | translate}} <span (click)="onSignIn()" class="text-[#2A58E6] cursor-pointer"> {{'SignIn' | translate}} </span></p> -->
+    </form>
+  </div>
+</div>

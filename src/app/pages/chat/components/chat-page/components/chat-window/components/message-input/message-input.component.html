@@ -1,0 +1,28 @@
+<div class="p-2 h-[100%]">
+    <div class="flex justify-around items-center gap-4 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg h-[6rem]">
+        <div class="w-full h-full">
+            <app-text-area-field
+                [rows]="1"
+                [isCompact]="true"
+                [placeholder]="'Message'"
+                [fieldControl]="messageBox"
+                (input)="OnUserTyping()"
+                (keydown.enter)="$event.preventDefault(); SendMessage()">
+            </app-text-area-field>
+        </div>
+        <div class="mt-2 w-[6rem] h-full">
+            <app-button
+                [type]="'custom'"
+                [bgColor]="'#033A52'"
+                [radius]="'100px'"
+                [width]="''"
+                [height]="'100%'"
+                [isIconImage]="true"
+                [iconOnly]="true"
+                [iconAfter]="'/assets/img/gg_search.png'"
+                [class]="''"
+                (clicked)="SendMessage()">
+            </app-button>
+        </div>    
+    </div>
+</div>

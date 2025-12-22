@@ -1,0 +1,90 @@
+<div class="flex justify-center items-center w-screen h-screen overscroll-none overflow-hidden relative">
+  <!-- Background Decorative Ellipse (Top-Left) -->
+  <div class="absolute w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[724px] lg:h-[724px] -left-[250px] sm:-left-[300px] md:-left-[350px] lg:-left-[422px] -top-[150px] sm:-top-[180px] md:-top-[200px] lg:-top-[243px] bg-[rgba(5,173,166,0.69)] opacity-13 rounded-full pointer-events-none z-0" style="filter: blur(68.5443px);"></div>
+
+  <!-- Main Login Container -->
+  <div class="z-10 flex flex-col bg-white shadow-2xl rounded-[20px] sm:rounded-[32px] md:rounded-[40px] w-[96vw] sm:w-[90vw] md:w-[70vw] lg:w-[55vw] xl:w-[42vw] 2xl:w-[35vw] h-auto max-h-[96vh] sm:max-h-[94vh] px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8">
+
+    <!-- Logo Section -->
+    <div class="flex-shrink-0 mb-4 sm:mb-5 md:mb-6 text-center">
+      <svg-icon src="assets/svg/sala-login-logo.svg" class="w-auto h-14 sm:h-16 md:h-20 lg:h-22 mx-auto"></svg-icon>
+    </div>
+
+    <!-- Heading Section -->
+    <div class="flex-shrink-0 mb-5 sm:mb-6 md:mb-7">
+      <h1 class="font-medium text-[#373940] text-lg sm:text-xl md:text-2xl lg:text-3xl text-center leading-relaxed px-2">
+        {{'SignInToManageYourTeams' | translate}} <br/>
+        {{'FinancesWithEase' | translate}}
+      </h1>
+    </div>
+
+    <!-- Language Toggle Section -->
+    <div class="flex-shrink-0 flex justify-center items-center mb-6 sm:mb-7 md:mb-8">
+      <app-language-toggle
+        [currentLanguage]="currentLanguage"
+        (languageChange)="setLanguage($event)"
+      ></app-language-toggle>
+    </div>
+
+    <!-- Form Section -->
+    <form action="login-user" class="flex flex-col flex-1 min-h-0 w-full">
+
+      <!-- Scrollable Input Fields Area -->
+      <div class="flex-1 overflow-y-auto overflow-x-visible px-1 pr-2 pb-2 -mx-1 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar]:w-1">
+        <div class="space-y-4 sm:space-y-5">
+          <!-- Email Field -->
+          <div>
+            <app-text-field
+              [fieldControl]="emailControl"
+              [placeholder]="'EnterYourEmailHere' | translate"
+              [fieldName]="'Email' | translate"
+              fieldType="email"
+            ></app-text-field>
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <app-text-field
+              [fieldControl]="passwordControl"
+              [placeholder]="'EnterYourPasswordHere' | translate"
+              [fieldName]="'Password' | translate"
+              fieldType="password"
+            ></app-text-field>
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div class="pt-1">
+            <p (click)='onForgotPassword()' class="font-monsterrat font-medium text-[#2A58E6] text-sm sm:text-base text-right underline cursor-pointer hover:text-blue-700 transition-colors">
+              {{'ForgotPassword' | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed Buttons and Links Area -->
+      <div class="flex flex-col flex-shrink-0 mt-5 sm:mt-6 space-y-3 sm:space-y-4">
+        <!-- Sign In Button -->
+        <app-button
+          type="primary"
+          width="100%"
+          fontSize="16px"
+          fontFamily="font-inter"
+          [bgColor]="'blue-600'"
+          radius="20px"
+          padding="14px 16px"
+          (click)="onSubmit()">
+          {{'SignIn' | translate}}
+        </app-button>
+
+        <!-- Sign Up Link -->
+        <p class="font-monsterrat font-medium text-center text-sm sm:text-base text-gray-600">
+          {{'DontHaveAnAccount' | translate}}
+          <span (click)="onSignUp()" class="text-[#2A58E6] cursor-pointer hover:text-blue-700 hover:underline transition-all">
+            {{'SignUp'| translate}}
+          </span>
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>

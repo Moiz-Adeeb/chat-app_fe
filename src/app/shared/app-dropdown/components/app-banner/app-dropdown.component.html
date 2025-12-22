@@ -1,0 +1,97 @@
+<div class="relative w-full">
+  <!-- Label with refresh and button -->
+  <div *ngIf="label || showRefresh || buttonText" class="flex justify-between items-center">
+
+    <label *ngIf="label" class="block mb-2 font-medium text-dark text-sm" [ngClass]="[labelFontSize, labelFontFamily]">
+      {{ label }}
+      <i *ngIf="showRefresh"
+         class="ml-2 font-inter font-medium text-[#344054] hover:text-[#344054] cursor-pointer fa fa-refresh"
+         (click)="refresh()"></i>
+    </label>
+
+    <button type="button "
+
+      *ngIf="buttonText"
+            (click)="buttonClick()"
+            class="float-right font-weight-bold underline cursor">
+      {{ buttonText }}
+    </button>
+  </div>
+
+  <!-- Dropdown Button -->
+  <div class="relative">
+    <button
+      #dropdownBtn
+      type="button"
+      (click)="toggleDropdown(dropdownBtn)"
+      [disabled]="readonly"
+      class="flex justify-between items-center bg-white px-3 pt-[1px] pr-3 border border-gray-300 rounded-lg w-full font-inter font-normal text-dark"
+      [class.text-[#A5A5A5]]="!_dropDownControl.value"
+      [class.text-black]="_dropDownControl.value"
+      [class.cursor-not-allowed]="readonly"
+      [class.border-red-500]="showErrorState()"
+      [class.border-[#E2E2E2]]="!showErrorState()"
+      [class.focus:outline-none]="true"
+      aria-haspopup="listbox"
+      [attr.aria-expanded]="dropdownOpen"
+      (blur)="markAsTouched()"
+    >
+      <span class="p-[10px] text-[#667085] truncate">{{ getSelectedDisplay() | translate }}</span>
+      <i class="ml-2 text-black fa-caret-down dropdown-icon fas"></i> 
+    </button>
+
+    <!-- Dropdown List -->
+    <!-- Dropdown List -->
+    <div
+      *ngIf="dropdownOpen"
+      class="z-[99999] fixed bg-white shadow-lg border border-[#E2E2E2] rounded-md text-[12px]"
+      [style.top.px]="dropdownPosition.top"
+      [style.left.px]="dropdownPosition.left"
+      [style.width.px]="dropdownPosition.width"
+      role="listbox"
+    >
+      <!-- Search input -->
+      <div class="px-4 py-2 border-gray-200 border-b">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          class="px-2 py-1 border border-gray-300 rounded w-full text-sm"
+          [placeholder]="'Search'|translate"
+        />
+      </div>
+
+      <!-- Scrollable options -->
+      <div class="py-1 max-h-60 overflow-auto">
+        <button
+          type="button"
+          *ngFor="let option of filteredOptions; trackBy: trackByFn"
+          (click)="selectOption(option)"
+          class="hover:bg-gray-100 px-6 py-2 w-full text-black text-base text-left"
+          [ngClass]="{ 'bg-blue-50': isSelected(option) }"
+          role="option"
+          [attr.aria-selected]="isSelected(option)"
+        >
+          {{ getItemDisplay(option) }}
+        </button>
+      </div>
+
+      <!-- Sticky Apply button -->
+      <div *ngIf="isMultiple" class="flex justify-end px-4 py-2 border-gray-200 border-t">
+        <button
+          type="button"
+          class="bg-primary px-4 py-1 rounded text-white text-sm"
+          (click)="apply()"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="showError && showErrorState()"
+       class="mt-4 text-red-500 text-sm">
+    Please select a valid option
+  </div>
+</div>

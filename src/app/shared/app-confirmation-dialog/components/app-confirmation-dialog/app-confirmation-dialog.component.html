@@ -1,0 +1,58 @@
+<!-- app-confirmation-dialog.component.html -->
+<div class="fixed inset-0 bg-black bg-gray-900/50 flex items-center justify-center p-4 z-50">
+  <div class="w-full max-w-[700px] mx-auto text-center bg-white py-[80px] rounded-xl">
+
+    <!-- Icon (Only for non-input mode) -->
+    <div class="flex items-center justify-center" *ngIf="!isInput">
+      <div class="w-[118px] h-[118px] bg-primary rounded-full flex items-center justify-center">
+        <img src="/assets/svg/iconamoon_sign-factorial.svg" />
+      </div>
+    </div>
+
+    <!-- Title + Message (for confirmation) -->
+    <div *ngIf="!isInput" class="mt-[40px]">
+      <div class="font-gilroy-bold text-[20px] mb-[20px]">{{ title | translate }}</div>
+      <div class="font-gilroy-medium text-[14px] text-[#40393A]">{{ message | translate }}</div>
+    </div>
+
+    <!-- Input View (for rejection reason) -->
+    <div *ngIf="isInput">
+      <div class="font-gilroy-bold text-[20px] mb-[20px]">{{ title | translate }}</div>
+      <div class="font-gilroy-medium text-[14px] text-[#40393A] mb-[20px]">{{ message | translate }}</div>
+
+      <div class="px-[20px] justify-content-start  text-start">
+        <app-text-area-field
+          [fieldControl]="reasonController"
+          [fieldName]="'Reason' | translate"
+        ></app-text-area-field>
+      </div>
+    </div>
+
+    <div class="mt-[40px] flex justify-center gap-4">
+      <div class="w-[116px] h-[36px]">
+        <app-button
+          (click)="onConfirm()"
+          [iconAfter]="'/assets/svg/forward_arrow_icon_white.svg'"
+          [isIconImage]="true"
+          [iconGap]="'1rem'"
+          iconSize="w-[11px] h-[11px]'"
+        >
+          {{ confirmText | translate }}
+        </app-button>
+      </div>
+      <div class="w-[126px] h-[36px]">
+        <app-button
+          (click)="onCancel()"
+          [iconAfter]="'/assets/svg/forward_arrow_icon.svg'"
+          [isIconImage]="true"
+          [iconGap]="'1rem'"
+          type="secondary"
+          iconSize="w-[11px] h-[11px]"
+          borderClass="border border-black"
+        >
+          {{ cancelText | translate }}
+        </app-button>
+      </div>
+      </div>
+  </div>
+</div>

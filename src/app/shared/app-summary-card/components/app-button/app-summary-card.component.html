@@ -1,0 +1,42 @@
+<!-- summary-card.component.html -->
+<div
+  class="bg-white rounded-xl p-[16px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-gray-100  ">
+  <div>
+    <div class="flex items-center gap-2">
+      <!-- Icon in circle -->
+      <div class="flex items-center justify-center rounded-full"
+           style="background-color: #F7F7F7; width: 34px; height: 34px;">
+        <i class="{{icon}}" style="width: 17px; height: 16px; color: black"></i>
+      </div>
+
+      <!-- Text -->
+      <div class="text-[16px] lg:text-[12px] xl:text-[16px] font-gilroy-medium whitespace-nowrap">{{ title }}</div>
+    </div>
+    <div class="flex items-center justify-between w-full">
+      <!-- Value (left) -->
+      <div class="text-2xl sm:text-3xl lg:text-[16px] xl:text-[40px] font-semibold">
+        {{ value }}
+      </div>
+
+      <!-- Change + Arrow + Label (right) -->
+<!--      <div class="text-xs flex flex-col items-end mt-1"-->
+<!--           [ngClass]="trend === 'up' ? 'text-green-500' : 'text-red-500'">-->
+<!--        &lt;!&ndash; Arrow + Percentage &ndash;&gt;-->
+<!--        <div class="flex items-center gap-1 justify-end">-->
+<!--          <img-->
+<!--            [src]="trend === 'up' ? '/assets/img/arrow-up.png' : '/assets/img/arrow-down.png'"-->
+<!--            alt="trend arrow"-->
+<!--            class="w-5 h-3"-->
+<!--          />-->
+<!--          <span class="text-[18px] lg:text-[12px] xl:text-[18px] font-gilroy-semibold">-->
+<!--        {{ change }}-->
+<!--      </span>-->
+<!--        </div>-->
+<!--        <span class="text-[12px] lg:text-[8px] xl:text-[12px] text-[#C3C3C3] font-gilroy-semibold whitespace-nowrap">-->
+<!--      vs last 7 days-->
+<!--    </span>-->
+<!--      </div>-->
+    </div>
+
+  </div>
+</div>

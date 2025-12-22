@@ -1,0 +1,34 @@
+<div class="flex justify-start gap-4 bg-slate-900 bg-opacity-50 px-3 py-3 w-100 h-[10%]">
+    <div class="w-full">
+        <app-search-field
+            [fieldControl]="searchControl"
+            [placeholder]="'Search Users'"
+            [icon]="false">
+        </app-search-field>
+    </div>
+    <div class="w-[4rem]">
+        <app-button
+            type="custom"
+            [bgColor]="'#033A52'"
+            [width]="''"
+            [height]="'100%'"
+            [isIconImage]="true"
+            [iconOnly]="true"
+            [iconAfter]="'/assets/img/gg_search.png'"
+            [class]="''"
+            (clicked)="getUsers()">
+            {{ 'Search' }}
+        </app-button>
+    </div>
+    <div class="bg-sky-100 border border-primary rounded-lg w-20">
+        <p class="flex justify-center items-center w-full h-full font-montserrat font-black text-2xl text-center">
+            {{unreadMessages$ | async }}
+        </p>
+    </div>
+</div>
+<!-- <app-button
+[class]="'h-[45px] min-w-[100px]'"
+[type]="'secondary'"
+(clicked)="clearFilters()">
+{{ 'ClearFilters' | translate }}
+</app-button> -->

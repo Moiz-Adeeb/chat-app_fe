@@ -1,0 +1,89 @@
+<div class="relative">
+  <!-- Notification Bell -->
+  <button (click)="toggleNotifications()" class="focus:outline-none relative group">
+    <img src="/assets/img/hugeicons_notification-01-icon.png" class="w-[22px] h-[22px] dark:invert transition-all" alt="notification"/>
+    <span *ngIf="unreadCount > 0"
+          class="absolute -top-2 -right-2 bg-red-500 dark:bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+      {{ unreadCount > 9 ? '9+' : unreadCount }}
+    </span>
+  </button>
+
+  <!-- Dropdown Card -->
+  <div *ngIf="showNotifications"
+       class="absolute right-0 mt-2 w-[380px] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden transition-colors">
+
+    <!-- Header -->
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold text-dark dark:text-white">{{ 'Notification' | translate }}</h3>
+        <button
+          *ngIf="unreadCount > 0"
+          (click)="markAllAsRead()"
+          class="text-xs text-primary dark:text-blue-400 hover:underline font-medium">
+          {{ 'MarkAllRead' | translate }}
+        </button>
+      </div>
+      <p class="text-xs text-secondary dark:text-gray-400 mt-1">
+        {{ 'YouHave' | translate }} {{ unreadCount }} {{ 'UnreadNotifications' | translate }}
+      </p>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="overflow-y-auto max-h-[420px] scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+
+      <!-- Empty State -->
+      <div *ngIf="notifications.length === 0"
+           class="flex flex-col items-center justify-center h-[200px] text-center px-4">
+        <i class="fas fa-bell-slash text-4xl text-gray-300 dark:text-gray-600 mb-3"></i>
+        <p class="text-sm text-secondary dark:text-gray-400 font-medium">
+          {{ 'NotificationsNotFound' | translate }}
+        </p>
+      </div>
+
+      <!-- Notification Cards -->
+      <div
+        *ngFor="let notification of notifications"
+        (click)="readNotification(notification.id)"
+        class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-700/50"
+        [ngClass]="notification.isRead ? 'bg-gray-50 dark:bg-gray-900/30' : 'bg-white dark:bg-gray-800'"
+      >
+        <!-- Icon -->
+        <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-primary/10 dark:bg-blue-500/10">
+          <i [class]="'fas fa-bell'"
+             class="text-primary dark:text-blue-400 text-base sm:text-lg"></i>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 min-w-0">
+          <div class="text-xs sm:text-sm font-semibold text-dark dark:text-white truncate">
+            {{ helperFunction.getNotificationTypeLabel(notification.type ?? 0) }}
+          </div>
+          <div class="text-xs text-secondary dark:text-gray-400 leading-5 line-clamp-2 mt-1">
+            {{ notification.message }}
+          </div>
+          <div class="text-[11px] text-gray-400 dark:text-gray-500 mt-1.5 flex items-center gap-1">
+            <i class="far fa-clock"></i>
+            {{ notification.createdDate | appDate }}
+          </div>
+        </div>
+
+        <!-- Read Status -->
+        <div class="flex-shrink-0">
+          <div *ngIf="notification.isRead" class="text-green-500 dark:text-green-400 text-xs flex items-center gap-1">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div *ngIf="!notification.isRead" class="w-2 h-2 bg-primary dark:bg-blue-400 rounded-full animate-pulse"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="py-3 px-4 bg-gray-50 dark:bg-gray-900/50 text-center border-t border-gray-200 dark:border-gray-700">
+      <app-button size="small" (clicked)="onViewAllNotifications()">
+        {{ 'ViewAllNotifications' | translate }}
+      </app-button>
+    </div>
+
+  </div>
+</div>

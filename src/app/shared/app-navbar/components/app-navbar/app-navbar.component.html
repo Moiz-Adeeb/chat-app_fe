@@ -1,0 +1,155 @@
+<header class="bg-white border-b border-gray-200">
+  <!-- Top announcement bar -->
+  <div
+    class="flex py-4 sm:px-6 md:px-8 lg:px-12 xl:px-16  bg-[#F7F7F7] flex-col sm:flex-row justify-between items-center pb-4 space-y-2  sm:space-y-0">
+    <p
+      class="text-small-text sm:text-small-text-sm md:text-small-text-md lg:text-small-text-lg text-center sm:text-left">
+      Get a $100 gift card for $80 through May 16.
+    </p>
+    <div class="flex justify-center sm:justify-end items-center space-x-3 sm:space-x-4">
+      <a href="#"
+         class="text-small-text sm:text-small-text-sm md:text-small-text-md lg:text-small-text-lg  hover:underline">Help</a>
+      <span class="h-4 w-px bg-black bg-opacity-50"></span>
+      <a href="#"
+         class="text-small-text sm:text-small-text-sm md:text-small-text-md lg:text-small-text-lg  hover:underline">Join
+        Us</a>
+      <span class="h-4 w-px bg-black bg-opacity-50"></span>
+      <a href="#"
+         class="text-small-text sm:text-small-text-sm md:text-small-text-md lg:text-small-text-lg  hover:underline">Sign
+        In</a>
+    </div>
+  </div>
+
+  <!-- Main header content -->
+  <div
+    class="flex py-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+    <!-- Logo -->
+    <div class="flex-shrink-0  sm:pr-6 ">  <!-- Reduced from w-32 md:w-40 -->
+      <img src="/assets/svg/logo.svg" alt="Company Logo" class="cursor-pointer w-full h-auto max-h-20 object-contain" routerLink="/">
+    </div>
+
+    <!-- Navigation - Hidden on mobile, shown on lg screens -->
+    <nav class="hidden lg:flex items-center space-x-4 xl:space-x-8">
+      <ng-container *ngFor="let item of navItems">
+        <div class="group relative">
+          <a
+            [routerLink]="item.link"
+            class="font-gilroy-medium text-base xl:text-lg hover:text-gray-600"
+          >
+            {{ item.label }}
+          </a>
+        </div>
+      </ng-container>
+    </nav>
+
+    <!-- Mobile menu button - Shown on lg breakpoint and below -->
+    <div class="lg:hidden w-full flex justify-between items-center">
+      <button
+        type="button"
+        class="flex items-center focus:outline-none"
+        aria-label="Toggle mobile menu"
+        (click)="toggleMobileMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <span class="ml-2">Menu</span>
+      </button>
+
+      <!-- Right section with search and icons -->
+      <div class="flex items-center space-x-4 sm:space-x-6">
+        <button class="flex items-center focus:outline-none" aria-label="Search" (click)="toggleSearch()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </button>
+
+        <a routerLink="/cart" class="flex items-center focus:outline-none" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <span *ngIf="cartItemsCount > 0"
+                class="absolute -mt-3 -mr-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {{ cartItemsCount }}
+          </span>
+        </a>
+
+        <a routerLink="/wishlist" class="flex items-center focus:outline-none" aria-label="Wishlist">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right section with search and icons - Hidden on mobile, shown on md screens -->
+    <div class="hidden lg:flex  items-center space-x-6">
+      <div class="relative ">
+        <button
+          class="flex  bg-gray-100 items-center focus:outline-none rounded-xl px-4 py-2 w-42"
+
+          aria-label="Search" (click)="toggleSearch()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <span class="ml-2 hidden md:inline">Search</span>
+        </button>
+
+      </div>
+
+      <div class="relative">
+        <a routerLink="/cart" class="flex items-center focus:outline-none" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <!--          <span *ngIf="cartItemsCount > 0" class="absolute -mt-3 -mr-3 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">-->
+          <!--            {{ cartItemsCount }}-->
+          <!--          </span>-->
+        </a>
+      </div>
+
+      <div class="relative">
+        <a routerLink="/wishlist" class="flex items-center focus:outline-none" aria-label="Wishlist">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu - Hidden by default -->
+  <div class="lg:hidden mt-0 py-3 px-4 bg-white shadow-md" [class.hidden]="!isMobileMenuOpen">
+    <div class="flex flex-col space-y-3">
+          <a
+            *ngFor="let item of navItems"
+            [routerLink]="item.link"
+            class="font-gilroy-medium py-3 px-3 rounded-md transition-colors duration-200"
+            routerLinkActive="text-primary bg-primary/10"
+            [routerLinkActiveOptions]="{exact: true}"
+            (click)="isMobileMenuOpen = false">
+            {{ item.label }}
+          </a>
+    </div>
+  </div>
+  <!-- Search overlay -->
+  <div *ngIf="isSearchOpen" class="fixed inset-0 bg-white z-50 p-4">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-gilroy-bold">Search</h2>
+        <button (click)="toggleSearch()" class="text-2xl">&times;</button>
+      </div>
+      <input
+        type="text"
+        placeholder="Search products..."
+        class="w-full p-4 border-b-2 border-black focus:outline-none font-gilroy-medium"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="performSearch()">
+    </div>
+  </div>
+</header>

@@ -1,0 +1,25 @@
+<label class="relative inline-flex items-center cursor-pointer">
+  <input
+    type="checkbox"
+    [ngModel]="isActive"
+    (ngModelChange)="toggle()"
+    class="sr-only peer"
+  />
+  <!-- Track -->
+  <div
+    class="w-[50px] h-[25px] rounded-full transition-colors duration-300"
+    [ngStyle]="{
+      'border': isActive ? '1px solid #E2E2E2' : 'none',
+      'background-color': isActive ? 'white' : 'rgba(37, 37, 37, 0.1)'
+    }">
+  </div>
+
+  <!-- Circle -->
+  <div
+    class="absolute left-[3px] top-[3.7px] w-[18px] h-[18px] rounded-full transition-transform duration-300"
+    [ngStyle]="{
+      'background-color': isActive ? '#2AA952' : 'rgba(37, 37, 37, 0.1)',
+      'transform': isActive ? 'translateX(24px)' : 'translateX(0)'
+    }">
+  </div>
+</label>

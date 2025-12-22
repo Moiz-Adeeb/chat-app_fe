@@ -1,0 +1,26 @@
+<div class="p-2 h-[100%]">
+    <div class="flex justify-between bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg">
+        <div class="">
+            <p class="font-inter font-medium text-4xl truncate">
+                {{(selectedConversation$ | async)?.otherUser?.userName}}
+            </p>
+            <p class="font-montserrat font-semibold text-blue-900 text-2xl truncate">
+                {{(selectedConversation$ | async)?.otherUser?.userName}}
+            </p>
+            <p class="font-montserrat font-semibold text-gray-800 text-sm truncate">
+                {{(selectedConversation$ | async)?.otherUser?.status}}
+            </p>
+        </div>
+        <div class="flex flex-col justify-end items-end text-right">
+            <div *ngIf="(messageService.typingUsers$ | async)?.length" class="bg-green-300 px-3 py-2 rounded-3xl text-slate-900 typing-indicator">
+                <div class="dot-flashing"></div>
+                <span class="font-montserrat font-bold">
+                     Typing...
+                </span>
+            </div>
+            <p class="font-montserrat font-medium text-gray-800 text-lg truncate">
+                {{(selectedConversation$ | async)?.otherUser?.lastSeen | appDate}}
+            </p>
+        </div>
+    </div>
+</div>

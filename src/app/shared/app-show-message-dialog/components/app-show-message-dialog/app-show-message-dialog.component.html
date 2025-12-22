@@ -1,0 +1,23 @@
+<div class="fixed inset-0 bg-black bg-gray-900/50 flex items-center justify-center p-4 z-50">
+  <!-- Modal Container -->
+  <div class="w-full max-w-[600px] mx-auto text-center bg-white py-12 px-6 rounded-2xl shadow-xl relative">
+
+    <!-- Message -->
+    <div class="text-[18px] text-[#40393A] font-gilroy-medium leading-relaxed">
+      {{ message | translate }}
+    </div>
+
+    <!-- Optional Close Button -->
+    <div class="mt-10 flex justify-center">
+      <div class="w-[116px] h-[40px]">
+        <app-button
+          (click)="onCancel()"
+          iconSize="w-[11px] h-[11px]"
+          borderClass="border border-black"
+        >
+          {{ 'OK' | translate }}
+        </app-button>
+      </div>
+    </div>
+  </div>
+</div>

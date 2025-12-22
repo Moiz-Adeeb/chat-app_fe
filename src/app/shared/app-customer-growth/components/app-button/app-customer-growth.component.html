@@ -1,0 +1,36 @@
+<!-- app-customer-growth.component.html -->
+<div class="bg-white p-4 sm:p-6 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.08)]  w-full">
+  <h3 class="text-[16px] font-gilroy-semibold mb-4">Customer Growth</h3>
+
+  <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4">
+    <!-- Chart -->
+    <div class="w-full lg:w-[45%] xl:w-[40%] h-[200px] sm:h-[250px] lg:h-[280px] flex-shrink-0">
+      <canvas #chartCanvas class="w-full h-full"></canvas>
+    </div>
+
+    <!-- Label list -->
+    <div class="w-full lg:w-[50%] xl:w-[55%] space-y-4 lg:space-y-6 lg:pl-4">
+      <div *ngFor="let item of customerData; let i = index" class="w-full">
+        <div class="flex items-end justify-end text-sm">
+          <!-- Label and Bar -->
+          <div class="min-w-0 flex items-center gap-2">
+            <div>
+              <div class="text-[12px] font-gilroy-medium mb-1 truncate">{{ item.label }}</div>
+              <div class="relative w-[113px] h-[4px] bg-[#E9E9E9] rounded-full">
+                <div
+                  class="absolute top-0 left-0 h-full rounded-full transition-all duration-300"
+                  [style.width.%]="item.value"
+                  style="background-color: #252525;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Percentage Text -->
+          <div class="text-[10px] font-gilroy-medium ml-2  w-[30px] text-right flex-shrink-0">
+            {{ item.value }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

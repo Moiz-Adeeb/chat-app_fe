@@ -1,0 +1,24 @@
+<div
+  class="flex flex-col justify-center items-center p-6 border-2 border-gray-400 border-dashed rounded-lg w-full transition-all duration-300 cursor-pointer"
+  [ngClass]="{
+    'border-[#0d4dad] bg-blue-50': isDragging,
+    'hover:border-[#0d4dad] hover:bg-blue-50': !isDragging
+  }"
+  (click)="fileInput.click()"
+>
+  <input
+    #fileInput
+    type="file"
+    class="hidden"
+    (change)="onFileSelected($event)"
+    accept=".pdf,.jpg,.png"
+  />
+
+  <span class="text-gray-700 text-center">
+    <span class="text-gray-700"></span> {{label}}
+  </span>
+
+  <p *ngIf="fileName" class="mt-2 text-gray-500 text-sm">Selected: {{ fileName }}</p>
+
+  <p *ngIf="fileBase64" class="mt-1 text-green-600 text-xs">File ready to be uploaded ✅</p>
+</div>

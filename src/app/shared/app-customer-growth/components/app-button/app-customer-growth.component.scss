@@ -1,0 +1,61 @@
+/* app-revenue-chart.component.scss */
+.chart-container {
+  position: relative;
+  width: 100%;
+
+  canvas {
+    display: block;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .chart-container {
+    height: 200px !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .chart-container {
+    height: 250px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .chart-container {
+    height: 290px !important;
+  }
+}
+
+/* app-customer-growth.component.scss */
+.chart-container {
+  position: relative;
+  width: 100%;
+
+  canvas {
+    display: block;
+  }
+}
+
+/* Ensure progress bars are visible on all screen sizes */
+.progress-bar {
+  transition: width 0.3s ease-in-out;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 1023px) {
+  .flex-col {
+    align-items: center;
+  }
+
+  .chart-container {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chart-container {
+    max-width: none;
+  }
+}

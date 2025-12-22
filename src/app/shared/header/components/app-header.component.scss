@@ -1,0 +1,78 @@
+// Header component styles
+:host {
+  display: block;
+}
+
+// Header container responsive styles
+header {
+  // Ensure proper z-index layering
+  z-index: 30;
+
+  // Mobile optimizations
+  @media (max-width: 640px) {
+    height: auto;
+    min-height: 60px;
+  }
+
+  @media (min-width: 641px) and (max-width: 1023px) {
+    height: auto;
+    min-height: 80px;
+  }
+
+  @media (min-width: 1024px) {
+    height: auto;
+    min-height: 100px;
+  }
+}
+
+// User dropdown menu responsive behavior
+.user-menu-dropdown {
+  @media (max-width: 640px) {
+    right: -8px;
+    width: 180px;
+  }
+}
+
+// Ensure icons scale properly
+svg-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+// Notification badge
+.notification-badge {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+// Mobile menu button hover effect
+button {
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Responsive text truncation
+.truncate-responsive {
+  @media (max-width: 640px) {
+    max-width: 100px;
+  }
+
+  @media (min-width: 641px) and (max-width: 1023px) {
+    max-width: 150px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 200px;
+  }
+}

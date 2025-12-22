@@ -1,0 +1,27 @@
+<div class="relative my-2 w-full">
+  <!-- Floating Label -->
+  <!-- <label class="block mb-[10px] font-gilroy-semibold text-[14px] text-black">
+    {{ fieldName }}
+  </label> -->
+
+  <!-- Textarea with rows binding -->
+  <textarea
+    [rows]="rows"
+    [formControl]="fieldControl"
+    class="bg-blue-50 mb-[10px] py-4 pr-4 rounded-xl focus:outline-none focus:ring-2 w-full text-[12px] text-base resize-none custom-scrollbar placeholder-[#A5A5A5]"
+    [ngClass]="[
+      'pl-6',
+      fieldControl.invalid && fieldControl.dirty ? 'border border-red-500 focus:ring-red-300' : 'border border-[#E2E2E2] focus:border-[#E2E2E2] focus:ring-[#E2E2E2]'
+    ]"
+    [attr.resize]="rows != 0 ? 'none' : ''"
+    [placeholder]="fieldControl.value ? '' : placeholder"
+  ></textarea>
+
+  <!-- Error Message -->
+  <app-form-error
+    *ngIf="fieldControl.invalid"
+    [fieldName]="fieldName"
+    [control]="fieldControl"
+    [isDisplayError]="showError"
+  ></app-form-error>
+</div>

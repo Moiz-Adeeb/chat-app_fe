@@ -1,0 +1,34 @@
+<div class="relative mt-2 mb-2 w-full" *ngIf="dropDownControl">
+  <!-- Label (similar to text field) -->
+ <!-- <label-->
+<!--    *ngIf="dropDownControl.value || isFocused"-->
+<!--    class="top-1 left-3 z-10 absolute bg-white px-1 font-label text-gray-500 text-xs"-->
+<!--  >-->
+<!--    {{ fieldName }}-->
+<!--  </label> -->
+
+  <!-- Ng-Select -->
+  <!-- <ng-select
+    [bindValue]="bindValue"
+    [bindLabel]="displayValue"
+    [items]="items"
+    [formControl]="dropDownControl"
+    class="custom-select"
+    [placeholder]="placeholder"
+    [ngClass]="{
+      'ng-invalid': dropDownControl.invalid,
+      'ng-valid': !dropDownControl.invalid
+    }"
+    (focus)="isFocused = true"
+    (blur)="isFocused = false"
+  >
+  </ng-select>
+
+  Error Handling
+  <app-form-error
+    *ngIf="dropDownControl.invalid"
+    [isDisplayError]="showError"
+    [control]="dropDownControl"
+    [fieldName]="fieldName"
+  ></app-form-error> -->
+</div>

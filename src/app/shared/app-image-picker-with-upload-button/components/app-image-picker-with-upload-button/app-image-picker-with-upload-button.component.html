@@ -1,0 +1,75 @@
+<!-- Main Wrapper -->
+<ng-container *ngIf="!useAlternateView; else alternateTemplate">
+  <!-- Existing Image Upload UI -->
+  <div
+    class="relative bg-[#F7F7F7] mb-[30px] rounded-md p-4 w-[717px] h-[355px] text-center flex items-center justify-center"
+  >
+    <div *ngIf="previewUrl; else uploadTemplate" class="relative w-full h-full rounded-md overflow-hidden">
+      <img [src]="previewUrl" class="w-full h-full object-cover rounded-md" alt="Image Preview" />
+      <button
+        (click)="removeImage()"
+        class="absolute top-2 right-2 bg-white border border-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-100"
+        title="Remove Image"
+      >
+        ✕
+      </button>
+    </div>
+
+    <ng-template #uploadTemplate>
+      <div (click)="triggerFileInput(fileInput)" class="cursor-pointer flex flex-col items-center w-full h-full justify-center">
+        <img src="/assets/svg/gallery-icon.svg" class="w-[116px] h-[102px] opacity-70" alt="Upload Icon" />
+        <p class="mt-4 text-gray-500">Click "Upload Image" to select a file</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <input
+    type="file"
+    accept="image/*"
+    class="hidden"
+    #fileInput
+    (change)="onFileChange($event)"
+  />
+
+  <div class="w-[137px] h-[40px] mt-2">
+    <app-button (clicked)="triggerFileInput(fileInput)">Upload Image</app-button>
+  </div>
+</ng-container>
+
+<!-- Alternate View -->
+<ng-template #alternateTemplate>
+  <label class="font-semibold block mb-2">{{ label }}</label>
+  <div *ngIf="!previewUrl; else previewTemplate"
+       (click)="triggerFileInput(fileInput)"
+       class="border border-dashed border-gray-300 rounded-md flex items-center justify-center h-[145px] bg-gray-50 cursor-pointer"
+  >
+    <div class="text-center">
+      <img src="/assets/svg/ep_upload-filled.svg" alt="Upload Icon" class="mx-auto mb-2 w-6 h-6" />
+      <p class="text-sm text-gray-500">Drop Image here or click to upload</p>
+    </div>
+  </div>
+
+  <ng-template #previewTemplate>
+    <div class="relative mb-4 border border-dashed border-gray-300 rounded-md h-[145px] bg-gray-50 overflow-hidden">
+      <img [src]="previewUrl"
+           class="w-full h-full object-contain"
+           alt="Image Preview" />
+      <button
+        (click)="removeImage()"
+        class="absolute top-2 right-2 bg-white border border-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-100"
+        title="Remove Image"
+      >
+        ✕
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- File input -->
+  <input
+    type="file"
+    accept="image/*"
+    class="hidden"
+    #fileInput
+    (change)="onFileChange($event)"
+  />
+</ng-template>

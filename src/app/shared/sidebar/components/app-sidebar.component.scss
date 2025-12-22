@@ -1,0 +1,154 @@
+// Sidebar component styles
+:host {
+  display: block;
+  height: 100%;
+}
+
+// Sidebar container
+.sidebar-container {
+  background-color: #ffffff !important;
+  border: 1px solid #D8D8D9;
+
+  // Desktop styles
+  @media (min-width: 1024px) {
+    // border-radius: 20px !important;
+  }
+
+  // Mobile/Tablet styles
+  @media (max-width: 1023px) {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+  }
+}
+
+// Custom scrollbar for sidebar navigation
+.sidebar-scroll {
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.3);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.5);
+  }
+
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+// Inactive navigation link styles
+.inactive-nav-link {
+  color: #2E2E2E;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-primary-light) !important;
+    color: var(--color-primary) !important;
+
+    svg-icon {
+      color: var(--color-primary) !important;
+    }
+  }
+
+  // Mobile optimization
+  @media (max-width: 1023px) {
+    padding: 12px 16px;
+  }
+}
+
+// Active navigation link styles
+.active-nav-link {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-body) !important;
+
+  i {
+    color: var(--color-primary) !important;
+  }
+
+  svg-icon {
+    color: var(--color-primary) !important;
+  }
+
+  span {
+    color: var(--color-primary) !important;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-light) !important;
+  }
+}
+
+// Dark mode support
+:host-context(.dark) {
+  .sidebar-container {
+    background-color: #ffffff !important;
+    border-color: #D8D8D9;
+  }
+
+  .active-nav-link {
+    background-color: var(--color-primary-light) !important;
+
+    &:hover {
+      background-color: var(--color-primary-light) !important;
+    }
+  }
+
+  .inactive-nav-link {
+    color: #2E2E2E;
+
+    &:hover {
+      background-color: var(--color-primary-light) !important;
+      color: var(--color-primary) !important;
+    }
+  }
+}
+
+// Logo responsive adjustments
+.sidebar-head {
+  img {
+    // Ensure logo maintains aspect ratio and fills space
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Mobile specific sizing
+@media (max-width: 640px) {
+  .sidebar-head img {
+    max-width: 140px;
+  }
+}
+
+// Tablet specific sizing
+@media (min-width: 641px) and (max-width: 1023px) {
+  .sidebar-head img {
+    max-width: 160px;
+  }
+}
+
+// Animation for mobile drawer
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}

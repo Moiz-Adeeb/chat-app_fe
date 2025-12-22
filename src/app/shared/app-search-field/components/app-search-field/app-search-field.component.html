@@ -1,0 +1,42 @@
+<div class="relative w-full h-full">
+  <label *ngIf="fieldName != null &&fieldName!=''" class="block mb-2 font-medium text-gray-700 text-sm" [ngClass]="[labelFontSize, labelFontFamily]">
+    {{ fieldName }}
+  </label>
+
+  <img
+    alt="Email"
+    *ngIf="iconImage"
+    [src]="iconImage"
+    class="left-6 absolute inset-y-5 flex items-center text-black"
+  />
+
+  <input
+    [max]="fieldType === 'date' ? today : fieldType === 'datetime-local' ? dateTime : null"
+    [type]="isPasswordVisible ? 'text' : fieldType"
+    [formControl]="fieldControl"
+    class="bg-white py-4 pr-4 rounded-lg focus:outline-none w-full h-[47px] text-base"
+    [ngClass]="{
+    'pl-16': iconImage,
+    'pl-6': !iconImage,
+    'border border-red-500 focus:ring-red-300': fieldControl.invalid && fieldControl.dirty,
+    'focus: border border-gray-300  focus:ring-[#6A0DAD]': !fieldControl.invalid
+  }"
+    [class] = "fieldName != null &&fieldName!='' ?'mb-[10px]' : ''"
+    [placeholder]="fieldControl.value ? '' : placeholder"
+  />
+
+
+  <img
+    *ngIf="icon == true"
+    [class] = "fieldName != null &&fieldName!='' ?'inset-y-11' : 'inset-y-4'"
+    class="top-1/2 right-5 absolute flex w-5 h-5 text-[#A5A5A5] text-gray-400 -translate-y-1/2"
+       src="/assets/img/gg_search.png" alt="search icon">
+
+
+  <app-form-error
+    *ngIf="fieldControl.invalid"
+    [fieldName]="fieldName"
+    [control]="fieldControl"
+    [isDisplayError]="showError"
+  ></app-form-error>
+</div>

@@ -1,0 +1,145 @@
+<header class="top-0 right-0 left-0 z-30 fixed bg-[#f7f7f7] w-full transition-colors">
+  <div
+    class="top-2 sm:top-4 md:top-5 right-2 sm:right-3 md:right-4 left-2 sm:left-3 md:left-4 z-50 fixed bg-white dark:bg-white shadow-md px-3 sm:px-4 md:px-6 lg:px-7 py-3 sm:py-4 md:py-5 lg:py-6 border border-gray-200 dark:border-gray-200 rounded-lg sm:rounded-xl transition-all"
+    [ngClass]="{
+       'lg:ml-[266px]': !sidebarCollapsed,
+        'lg:ml-[92px]': sidebarCollapsed
+        }">
+    <div class="flex justify-between items-center gap-2 sm:gap-3 md:gap-4">
+      <!-- Left Section -->
+      <div class="flex items-center gap-1 sm:gap-2 md:gap-3 min-w-0 flex-1">
+        <!-- Mobile Menu Toggle -->
+        <button
+          (click)=toggleMobileSidebar()
+          class="lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-300 transition-all flex-shrink-0">
+          <i class="text-base sm:text-xl md:text-2xl fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Desktop Sidebar Toggle (visible on desktop only) -->
+        <button
+          (click)=toggleSidebar()
+          class="hidden lg:block hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg text-gray-600 dark:text-gray-300 transition-all flex-shrink-0">
+          <i class="text-lg fa-solid fa-bars"></i>
+        </button>
+        <!-- Logo and Branding -->
+        <div *ngIf="router.url !== '/admin-dashboard/companies/company-details'"
+             class="flex flex-col items-start gap-0 sm:gap-0.5 min-w-0 flex-shrink">
+          <span
+            class="font-montserrat font-normal text-[9px] xs:text-[10px] sm:text-xs md:text-sm text-gray-600 truncate w-full">{{ 'WelcomeBack' | translate }}</span>
+          <span
+            class="font-montserrat font-black text-[#2A58E6] text-xs xs:text-sm sm:text-base md:text-xl lg:text-2xl truncate w-full">{{ userFullName }}</span>
+        </div>
+
+        <div *ngIf="router.url === '/admin-dashboard/companies/company-details'"
+             class="flex items-center gap-1 sm:gap-2 md:gap-3 min-w-0 flex-shrink">
+          <!-- Back Button -->
+          <app-button
+            class="hidden sm:block flex-shrink-0"
+            (click)="onBack()"
+            type="custom"
+            [iconBefore]="'/assets/svg/header/back-arrow.svg'"
+            bgColor="#F4F5F9"
+            textColor="black"
+            fontFamily="montserrat"
+            fontSize="12px"
+            padding="8px 16px"
+            radius="100px">
+            {{ 'Back' | translate }}
+          </app-button>
+
+          <!-- Mobile Back Button -->
+          <app-button
+            class="sm:hidden flex-shrink-0"
+            (click)="onBack()"
+            type="custom"
+            [iconOnly]="true"
+            [iconBefore]="'/assets/svg/header/back-arrow.svg'"
+            bgColor="#F4F5F9"
+            textColor="black"
+            fontFamily="montserrat"
+            radius="50%"
+            width="32px"
+            height="32px"
+            iconSize="h-3 w-3">
+          </app-button>
+
+          <!-- Company Info -->
+          <div class="flex flex-col gap-0 min-w-0 flex-shrink">
+            <p
+              class="font-montserrat font-black text-[#2A58E6] text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-xl xl:text-2xl truncate">
+              TechCorp Solutions</p>
+            <span
+              class="font-montserrat font-normal text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-gray-600 truncate">{{ 'CompanyID' | translate }}
+              : 1</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right Section -->
+      <div class="flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-5 flex-shrink-0">
+        <!-- Language Toggle -->
+        <div class="flex items-center space-x-0.5 bg-gray-100 dark:bg-gray-700 p-0.5 rounded-md transition-colors">
+          <button
+            type="button"
+            (click)="setLanguage('en')"
+            class="px-1.5 xs:px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-medium rounded transition-all"
+            [ngClass]="currentLanguage === 'en' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'">
+            EN
+          </button>
+          <button
+            type="button"
+            (click)="setLanguage('fr')"
+            class="px-1.5 xs:px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-medium rounded transition-all"
+            [ngClass]="currentLanguage === 'fr' ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'">
+            FR
+          </button>
+        </div>
+
+        <div
+          *appHasPermission="Permissions.ViewNotifications"
+        >
+          <app-notification-pop></app-notification-pop>
+        </div>
+
+
+        <!-- User Menu -->
+<!--        <div class="relative">-->
+<!--          <button-->
+<!--            (click)="toggleUserMenu()"-->
+<!--            class="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 hover:opacity-80 transition-opacity">-->
+<!--            <img-->
+<!--              [src]="userAvatar"-->
+<!--              [alt]="userFullName"-->
+<!--              class="rounded-full w-6 h-6 xs:w-7 xs:h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 lg:w-14 lg:h-14 object-cover flex-shrink-0">-->
+<!--            <div class="hidden md:flex flex-col items-start gap-0.5">-->
+<!--              <p-->
+<!--                class="font-montserrat font-black text-[#2A58E6] text-xs lg:text-sm xl:text-base whitespace-nowrap">{{ userFullName }}</p>-->
+<!--              <p-->
+<!--                class="font-montserrat font-normal text-[#2E2E2EE2] text-[10px] lg:text-xs xl:text-sm whitespace-nowrap">{{ authService.currentUser.email }}</p>-->
+<!--            </div>-->
+<!--          </button>-->
+
+<!--          &lt;!&ndash; User Dropdown &ndash;&gt;-->
+<!--          <div-->
+<!--            *ngIf="showUserMenu"-->
+<!--            class="right-0 z-50 absolute bg-white dark:bg-gray-800 shadow-xl mt-2 border border-gray-200 dark:border-gray-700 rounded-lg w-48 sm:w-52 md:w-56 overflow-hidden">-->
+<!--            <div class="py-1">-->
+<!--              <button-->
+<!--                (click)="onSettings()"-->
+<!--                class="flex items-center gap-2 sm:gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 sm:px-4 py-2 w-full text-gray-700 dark:text-gray-300 text-xs sm:text-sm text-left transition-all">-->
+<!--                <i class="w-4 sm:w-5 fas fa-cog"></i>-->
+<!--                <span>{{ 'Settings' | translate }}</span>-->
+<!--              </button>-->
+<!--              <hr class="border-gray-200 dark:border-gray-700">-->
+<!--              <button-->
+<!--                (click)="onLogout()"-->
+<!--                class="flex items-center gap-2 sm:gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 sm:px-4 py-2 w-full text-red-600 dark:text-red-400 text-xs sm:text-sm text-left transition-all">-->
+<!--                <i class="w-4 sm:w-5 fas fa-sign-out-alt"></i>-->
+<!--                <span>{{ 'Logout' | translate }}</span>-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+</header>

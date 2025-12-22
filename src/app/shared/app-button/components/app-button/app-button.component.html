@@ -1,0 +1,57 @@
+<button
+  (click)="onClick()"
+  type="button"
+  [style.width]="width"
+  [style.height]="height"
+  [style.padding]="padding"
+  [style.radius]="radius"
+  class="inline-flex justify-center items-center disabled:opacity-60 px-4 py-2 rounded-lg w-full h-full font-inter font-medium text-sm text-center active:scale-90 transition-all duration-200 cursor-pointer disabled:cursor-not-allowed transform"
+  [ngClass]="{
+    'bg-blue-600 text-white hover:bg-[#580A8A]': type === 'primary' && !disabled,
+    'bg-[#eaefff] border border-[#2A58E6] text-[#2A58E6] ': type === 'secondary' && !disabled,
+    'bg-[#FF3B30] text-[#FFFF] hover:bg-[#580A8A] focus:ring-[#FF3B30]/50': type === 'danger' && !disabled, 
+  }"
+  [style.fontSize]="fontSize"
+  [ngStyle]="customStyles"
+  [disabled]="disabled"
+>
+  <!-- Icon before text -->
+  <!-- Icon before text -->
+  <ng-container *ngIf="iconBefore">
+  <span
+    class="flex items-center"
+    [ngStyle]="{ 'margin-right': !iconOnly ? iconGap : '0' }"
+  >
+    <img
+      *ngIf="isIconImage"
+      [src]="iconBefore"
+      [ngClass]="iconSize"
+      alt="icon"
+    />
+    <svg-icon *ngIf="!isIconImage" [src]="iconBefore"></svg-icon>
+  </span>
+  </ng-container>
+
+  <!-- Button content -->
+  <ng-container *ngIf="!iconOnly">
+    <ng-content></ng-content>
+  </ng-container>
+
+  <!-- Icon after text -->
+  <ng-container *ngIf="iconAfter">
+  <span
+    class="flex items-center"
+    [ngStyle]="{ 'margin-left': !iconOnly ? iconGap : '0' }"
+  >
+    <img
+      *ngIf="isIconImage"
+      [src]="iconAfter"
+      [ngClass]="iconSize"
+      class="invert"
+      alt="icon"
+    />
+    <i *ngIf="!isIconImage" [class]="iconAfter"></i>
+  </span>
+  </ng-container>
+
+</button>

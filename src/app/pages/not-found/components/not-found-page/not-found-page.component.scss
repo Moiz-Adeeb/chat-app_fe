@@ -1,0 +1,57 @@
+.main-bg {
+  background: linear-gradient(to bottom, rgba(106, 13, 173, 0.81), rgba(51, 51, 51, 0.81)), url('/assets/img/bg-img.png') no-repeat center center;
+  background-size: cover;
+}
+
+.enter-your-email {
+  font-family: Source Sans Pro, serif;
+  font-size: clamp(16px, 2vw, 16px);
+  font-weight: 400;
+  color: #333333;
+  line-height: 100%;
+}
+.forgot-password {
+  font-family: Source Sans Pro, serif;
+  font-size: clamp(16px, 2vw, 16px);
+  font-weight: 600;
+  color: #6A0DAD;
+  line-height: 100%;
+}
+
+
+.welcome-to {
+  font-family: Source Sans Pro, serif;
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 400;
+  line-height: 100%;
+  color: white;
+}
+
+
+.islamic-council {
+  font-family: 'Sansita', serif;
+  font-size: clamp(32px, 4vw, 32px);
+  font-weight: 700;
+  line-height: 100%;
+}
+.getting-started {
+  padding: 8px;
+  color: #6A0DAD;
+
+}
+.welcome-to-islamic {
+  font-family: Source Sans Pro, serif;
+  font-weight: 400;
+  font-size: clamp(12px, 2vw, 16px);
+  line-height: 100%;
+  letter-spacing: 0%;
+  padding: 8px;
+}
+.copyright {
+  text-align: center;
+  font-family: Source Sans Pro, serif;
+  font-weight: 400;
+  font-size: clamp(12px, 2vw, 16px);
+  line-height: 100%;
+  color: #868686;
+}
