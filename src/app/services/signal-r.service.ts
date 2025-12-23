@@ -4,6 +4,7 @@ import { ILogger, LogLevel } from '@microsoft/signalr';
 import { BehaviorSubject, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 import { AuthService } from './auth.service';
 import { EndpointFactoryService } from './endpoint-factory.service';
+import { UnreadMessageService } from './unread-message.service';
 
 class CustomSignalRLogger implements ILogger {
   log(logLevel: LogLevel, message: string): void {}
@@ -15,6 +16,7 @@ class CustomSignalRLogger implements ILogger {
 export class SignalRService extends EndpointFactoryService {
 
   private connectionStarted$ = new BehaviorSubject<boolean>(false);
+  private unreadMessageService = inject(UnreadMessageService)
 
   // Subjects for Components to subscribe to
   private messageReceived = new Subject<any>();
@@ -217,7 +219,7 @@ export class SignalRService extends EndpointFactoryService {
 
     // Global unread count update
     this.hubConnection.on('UnreadMessagesCount', (count: number) => {
-      this.unreadCountUpdate.next(count);
+      this.unreadMessageService.updateCount(count);
     });
 
     // Typing indicator

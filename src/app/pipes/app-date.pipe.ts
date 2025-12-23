@@ -30,6 +30,10 @@ export class AppDatePipe implements PipeTransform {
         input.getMonth() === check.getMonth() &&
         input.getFullYear() === check.getFullYear();
 
+      if (inputDate.getFullYear() <= 1970) {
+        return 'Never';
+      }  
+
       if (day(inputDate, today)) {
         return `Today ${timeString}`;
       }

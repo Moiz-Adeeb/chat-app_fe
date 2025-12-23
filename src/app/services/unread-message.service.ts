@@ -19,6 +19,10 @@ export class UnreadMessageService {
       });
   }
 
+  updateCount(count: number) {
+    this.unreadMessagesSource.next(count);
+  }
+
   // Clear messages when closing a chat
   clearMessages() {
     this.unreadMessagesSource.next(0);

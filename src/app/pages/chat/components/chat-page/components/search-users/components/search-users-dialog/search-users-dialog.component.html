@@ -33,7 +33,9 @@
                         </div>
                         <div class="text-right truncate">
                             <p class="font-work font-medium text-gray-600 text-sm">
-                                Last Seen: {{user.lastSeen | appDate}}
+                                <span *ngIf="(user.lastSeen | appDate) != 'Never'">
+                                    Last Seen: {{user.lastSeen | appDate}}
+                                </span>
                             </p>
                         </div>
                     </div>

@@ -28,8 +28,6 @@ export class ConversationListComponent extends BasePaginationComponent implement
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   
-  private destroy$ = new Subject<void>();
-
   selectedConversation$ = this.conversationService.selectedConversation$
   conversations$ = this.conversationService.conversations$;
   isLoadingMore$ = this.conversationService.isLoadingMore$
