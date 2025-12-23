@@ -1,4 +1,4 @@
-import { CommonModule, NgSwitch } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { filter } from 'rxjs';
 import { PipesModule } from "../../../../../../../../pipes/pipes.module";
