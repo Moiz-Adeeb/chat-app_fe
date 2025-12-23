@@ -1,17 +1,19 @@
-<div class="flex flex-col space-y-2 bg-slate-900 bg-opacity-50 p-2 h-screen overflow-hidden">
-    <div class="flex items-center bg-white px-4 border-b rounded-lg h-20 font-work text-3xl">
+<div class="flex flex-col space-y-2 p-2 pt-4 pb-4 h-screen overflow-hidden">
+    <!-- <div class="flex items-center bg-white px-4 border-b rounded-lg h-20 font-work text-3xl">
         Chat List
-    </div>
+    </div> -->
     <div
         (scroll)="onScroll()"
         #scrollContainer
-        class="bg-blue-100 shadow-md shadow-slate-700 pt-4 pb-8 rounded-lg divide-y divide-gray-900 h-full overflow-y-auto custom-scrollbar">
-        <div 
+        class="bg-blue-100 shadow-md shadow-slate-700 p-2 pt-4 pb-8 rounded-3xl h-full overflow-y-auto custom-scrollbar">
+        <ng-container  
             *ngFor="let conversation of (conversations$ | async); trackBy: trackById" 
-            (click)="conversationClick(conversation)">
-            <div 
-                [class.bg-blue-300]="(selectedConversation$ | async)== conversation "
-                class="flex-col hover:bg-blue-300 p-2 transition-all duration-200 inactive-nav-link">
+            class="min-h-28">
+            <div
+            (click)="conversationClick(conversation)"
+                *ngIf="conversation.lastMessageSnippet" 
+                [class.bg-blue-300]="(selectedConversation$ | async) == conversation "
+                class="flex-col hover:bg-blue-300 p-2 rounded-2xl min-h-28 transition-all duration-200 inactive-nav-link">
                 <div class="flex justify-between">
                     <div class="w-[70%]">
                         <span class="font-inter font-semilight text-2xl truncate">
@@ -21,31 +23,41 @@
                             <span class="font-montserrat font-semibold text-blue-900 truncate">
                                 {{conversation.otherUser?.userName}}
                             </span>
-                            <span 
-                                *ngIf="conversation.otherUser?.chatId| isOnline | async"
-                                class="bg-lime-400 m-1 border border-sky-900 rounded-full w-3 h-3"> 
-                            </span>
                         </div>
                     </div>
-                    <div class="w-[30%] text-right truncate">
-                        <p class="font-work font-medium text-gray-600 text-sm">
+                    <div
+                        *ngIf="{ online: isOnline$(conversation.otherUser?.chatId) | async } as status" 
+                        class="w-[30%] text-right truncate">
+                        <p 
+                            *ngIf="status.online"
+                            class="flex bg-lime-400 m-1 ml-auto border border-sky-900 rounded-full w-3 h-3"> 
+                        </p>
+                        <p
+                            *ngIf="!status.online"
+                            class="font-work font-medium text-gray-600 text-sm">
                             {{conversation.otherUser?.lastSeen | appDate}}
                         </p>
-                        <span *ngIf="conversation.unreadCount !- 0" class="bg-white shadow-md shadow-slate-500 mr-2 px-1 rounded-full font-work font-medium text-gray-600 text-md text-right">
+                        <span 
+                            *ngIf="conversation.unreadCount != 0" 
+                            class="bg-white shadow-md shadow-slate-500 mr-2 px-1 rounded-full font-work font-medium text-gray-600 text-md text-right">
                             {{conversation.unreadCount}}
                         </span>
                     </div>
                 </div>
                 <div class="text-bottom flex justify-evenly items-end gap-1 py-1 font-inter text-sm break-words whitespace-normal">
                     <p class="flex-1 font-work text-gray-800 text-xs line-clamp-2">
-                        {{conversation.lastMessageSnippet}}Hi hello how are you good to see you are you ok this is good that is good all is good this is verry good all is very good
+                        {{conversation.lastMessageSnippet}}
                     </p>
-                    <span class="font-work font-medium text-gray-600 text-xs text-right whitespace-nowrap">
+                    <span class="flex flex-row-reverse font-work font-medium text-gray-600 text-xs whitespace-nowrap">
                         {{conversation.lastMessageTime | appDate}}
                     </span>
                 </div>
             </div>
-        </div>   
+            <div class="px-4">
+                <div class="border border-black border-opacity-25">
+                </div>
+            </div>
+        </ng-container>   
         <div *ngIf="isLoadingMore$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
             Loading older conversations...
         </div> 

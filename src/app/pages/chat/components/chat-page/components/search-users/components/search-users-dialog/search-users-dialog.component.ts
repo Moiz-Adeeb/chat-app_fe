@@ -4,18 +4,16 @@ import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PipesModule } from "../../../../../../../../pipes/pipes.module";
-import { AlertService } from '../../../../../../../../services/alert.service';
 import { AuthService } from '../../../../../../../../services/auth.service';
 import { AppButtonComponent } from '../../../../../../../../shared/app-button/components/app-button/app-button.component';
 import { AppSearchFieldComponent } from "../../../../../../../../shared/app-search-field/components/app-search-field/app-search-field.component";
-import { AppTextFieldComponent } from '../../../../../../../../shared/app-text-field/components/app-text-field/app-text-field.component';
 import { BasePaginationComponent } from '../../../../../../../../shared/base-pagination-component';
-import { ConversationClient, UserClient, UsersDto } from './../../../../../../../../api/api';
+import { ConversationClient, ConversationDto, UserClient, UsersDto } from './../../../../../../../../api/api';
 import { ConversationService } from './../../../../../../../../services/conversation.service';
 
 @Component({
   selector: 'app-search-users-dialog',
-  imports: [CommonModule, TranslatePipe, AppTextFieldComponent, AppButtonComponent, PipesModule, AppSearchFieldComponent],
+  imports: [CommonModule, TranslatePipe, AppButtonComponent, PipesModule, AppSearchFieldComponent],
   templateUrl: './search-users-dialog.component.html',
   styleUrl: './search-users-dialog.component.scss'
 })
@@ -79,9 +77,9 @@ export class SearchUsersDialogComponent extends BasePaginationComponent implemen
     this.conversationClient.initiateConversation(targetUserId)
       .subscribe({
           next: (response) => {
-            if(response.data){
+            if(response.data) {
               this.conversationService.NewConversationToList(response.data);
-              // this.selectChat(response.data.conversationId);
+              this.conversationClick(response.data);
             } else {
               this.alertService.showErrorMessage("Could not initiate chat please try again")
             }
@@ -94,6 +92,10 @@ export class SearchUsersDialogComponent extends BasePaginationComponent implemen
   onPageChange(event: any) {
     this.page = event.page;
     this.getData();
+  }
+
+  conversationClick(chat: ConversationDto) {
+    this.conversationService.selectChat(chat);
   }
 
   onScroll() {

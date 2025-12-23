@@ -21,7 +21,6 @@ import { SignalRService } from '../../../../services/signal-r.service';
 import { Theme, ThemeService } from '../../../../services/theme.service';
 import { AppButtonComponent } from '../../../../shared/app-button/components/app-button/app-button.component';
 import { AppTextFieldComponent } from '../../../../shared/app-text-field/components/app-text-field/app-text-field.component';
-import { LanguageToggleComponent } from '../../../../shared/language-toggle/components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../../../shared/theme-toggle/components/theme-toggle/theme-toggle.component';
 
 
@@ -36,7 +35,6 @@ import { ThemeToggleComponent } from '../../../../shared/theme-toggle/components
     TranslatePipe,
     AppButtonComponent,
     AppTextFieldComponent,
-    LanguageToggleComponent,
     AngularSvgIconModule
 ],
 })
@@ -51,7 +49,6 @@ export class LoginPageComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private alertService: AlertService,
-    // private userClient: UserClient,
     private loginService: LoginService,
     private translate: TranslateService,
     public themeService: ThemeService,
@@ -69,10 +66,10 @@ export class LoginPageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // this.authService.reevaluateLoginStatus();
-    // if (this.authService.isLoggedIn) {
-    //   this.authService.redirectLoggedInUser();
-    // }
+    this.authService.reevaluateLoginStatus();
+    if (this.authService.isLoggedIn) {
+      this.authService.redirectLoggedInUser();
+    }
   }
 
   onForgotPassword() {
@@ -96,7 +93,8 @@ export class LoginPageComponent implements OnInit {
       this.loginService.login(userLogin).subscribe((result) => {
         this.alertService.stopLoadingMessage();
         const user = this.authService.processLogin(result);
-
+        this.signalR.init();
+        // this.signalR.connect();
         setTimeout(() => {
           this.alertService.showMessage(
             'Success',
@@ -104,8 +102,6 @@ export class LoginPageComponent implements OnInit {
             MessageSeverity.success,
           );
         }, 500);
-        this.signalR.init();
-        this.signalR.connect();
         this.authService.redirectLoggedInUser();
       });
     }

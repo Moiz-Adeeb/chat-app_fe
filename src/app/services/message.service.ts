@@ -9,14 +9,23 @@ export class MessageService {
   private signalR = inject(SignalRService);
   protected readonly MessageStatus = MessageStatus
 
-  private currentConversationId: string | null = null;
+  private currentConversationIdSource = new BehaviorSubject<string | null>(null);
+  public currentConversationId$ = this.currentConversationIdSource.asObservable();
+
+  public currentConversationId: string | null = null;
   
   // This holds the messages for the currently active chat window
   private messagesSource = new BehaviorSubject<MessagesDto[]>([]);
   public messages$ = this.messagesSource.asObservable();
+  private isLoadingSource = new BehaviorSubject<boolean>(false);
+  public isLoadingMore$ = this.isLoadingSource.asObservable();
+  private fullListLoadedSource = new BehaviorSubject<boolean>(false);
+  public isFullListLoaded$ = this.fullListLoadedSource.asObservable();
   private typingUsers = new BehaviorSubject<string[]>([]); 
   public typingUsers$ = this.typingUsers.asObservable();
   private typingTimers = new Map<string, any>();
+  //HashSet
+  private messageIdSet = new Set<string>();
 
   constructor() {
     this.listenToSignals();
@@ -25,6 +34,10 @@ export class MessageService {
   // Phase 2: GET /chat/history/{chatId}
   loadChatHistory(chatId: string, page: number, pageSize: number) {
     this.currentConversationId = chatId;
+    this.currentConversationIdSource.next(chatId);
+    this.messageIdSet.clear(); 
+    this.fullListLoadedSource.next(false);
+    this.messagesSource.next([]);
     this.messageClient.getMessages(
       chatId,
       false,
@@ -35,8 +48,11 @@ export class MessageService {
       'sentTime'
     ).subscribe({
         next: (response) => {
-          console.log(response)
-          this.messagesSource.next(response.data ?? []);
+          const data = response.data ?? [];
+        
+          data.forEach(m => { if(m.id) this.messageIdSet.add(m.id); });
+          
+          this.messagesSource.next(data);
         }
       });
   }
@@ -137,6 +153,57 @@ export class MessageService {
 
     this.messagesSource.next([newMessage, ...currentMessages]);
   }
+
+  loadMoreMessages( page: number, pageSize: number = 50) {
+    //const currentList = this.conversationsSource.value;
+    if (!this.messagesSource) return;
+
+    // Guard: Don't load if already loading or if we've reached the end
+    if (this.isLoadingSource.value || this.fullListLoadedSource.value) return;
+
+    this.isLoadingSource.next(true);
+
+    this.messageClient.getMessages(
+        this.currentConversationId,
+        false, 
+        undefined, 
+        true, 
+        page,
+        pageSize,  
+        'sentTime',
+      ).subscribe({
+        next: (result) => {
+          const newData = result.data ?? [];
+          const currentList = this.messagesSource.value
+
+            
+          if (newData.length < pageSize) {
+            this.fullListLoadedSource.next(true);
+          }
+
+          const uniqueNewData = newData.filter(msg => {
+            if (msg.id && !this.messageIdSet.has(msg.id)) {
+              this.messageIdSet.add(msg.id);
+              return true;
+            }
+            return false;
+          });
+
+          // Append new data to existing list
+          // newData.forEach(element => {
+          //   const exist = currentList.some(c => c.conversationId === element.conversationId);
+          //   if (exist) {
+          //     var index = newData.findIndex(c => c.conversationId === element.conversationId)
+          //     if (index !== -1) newData.splice(index,1);
+          //   }
+          // });
+          this.messagesSource.next([...currentList, ...uniqueNewData]);
+          this.isLoadingSource.next(false);
+          },
+          error: () => this.isLoadingSource.next(false)
+      });
+  } 
+
 
   // Clear messages when closing a chat
   clearMessages() {

@@ -5,18 +5,15 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { RegisterUserRequestModel, SignUpClient } from '../../../../api/api';
-import { CompanyClient, RegisterCompanyRequestModel } from '../../../../api/api-old';
 import { CustomValidator } from '../../../../customValidator/custom-validator';
 import { AppButtonComponent } from "../../../../shared/app-button/components/app-button/app-button.component";
-import { AppDropdownComponent } from "../../../../shared/app-dropdown/components/app-banner/app-dropdown.component";
 import { AppTextFieldComponent } from '../../../../shared/app-text-field/components/app-text-field/app-text-field.component';
 import { AppUploadModule } from "../../../../shared/app-upload/app-upload.module";
-import { LanguageToggleComponent } from '../../../../shared/language-toggle/components/language-toggle/language-toggle.component';
 import { AlertService } from './../../../../services/alert.service';
 
 @Component({
   selector: 'app-sign-up-page',
-  imports: [FormsModule, CommonModule, AngularSvgIconModule, TranslatePipe, AppTextFieldComponent, FormsModule,  AppUploadModule, AppButtonComponent, LanguageToggleComponent],
+  imports: [FormsModule, CommonModule, AngularSvgIconModule, TranslatePipe, AppTextFieldComponent, FormsModule,  AppUploadModule, AppButtonComponent],
   templateUrl: './sign-up-page.component.html',
   styleUrl: './sign-up-page.component.scss'
 })
@@ -158,7 +155,7 @@ export class SignUpPageComponent {
         this.router.navigate(['/login']);
         setTimeout(()=>{
           this.alertService.showSuccessMessage(
-            this.translate.instant('SentToEmail'),
+            'Sign Up Succesful, user can now Login',
           );
         });
       });

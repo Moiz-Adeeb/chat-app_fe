@@ -1,9 +1,9 @@
 <aside
-  class="top-0 left-0 z-40 fixed bg-white dark:bg-white shadow-lg h-full overflow-y-auto transition-all duration-300 ease-in-out sidebar-container"
+  class="top-0 right-0 z-40 fixed bg-white dark:bg-white shadow-lg rounded-none h-full overflow-y-auto transition-all duration-300 ease-in-out sidebar-container"
   [ngClass]="{
     'w-20': !sidebarCollapsed,
     'w-16': sidebarCollapsed,
-    'lg:m-0 lg:rounded-lg rounded-none lg:h-[100%]': true,
+    'lg:m-0 rounded-none lg:h-[100%]': true,
     'm-0 rounded-none h-full': true
   }">
   <nav class="flex flex-col p-4 h-full">
@@ -14,7 +14,7 @@
            'mb-4': sidebarCollapsed
          }">
       <!-- Logo (centered) -->
-      <img
+      <!-- <img
         [src]="logoSrc"
         alt="Sala Logo"
         class="block h-auto max-h-[45px] object-contain transition-all duration-300"
@@ -22,7 +22,7 @@
           'w-full max-w-[180px]': !sidebarCollapsed,
           'w-[60px]': sidebarCollapsed
         }"
-        style="min-height: 32px;">
+        style="min-height: 32px;"> -->
     </div>
 
     <!-- Navigation Items - Scrollable Area -->
@@ -71,6 +71,7 @@
         *ngFor="let item of section.items"
         [routerLink]="item.route"
         routerLinkActive="active-nav-link"
+        (click)="onLogout()"
         [routerLinkActiveOptions]="{ exact: true }"
         class="flex items-center gap-3 px-3 py-3 rounded-lg w-full transition-all duration-200 inactive-nav-link"
         [ngClass]="{

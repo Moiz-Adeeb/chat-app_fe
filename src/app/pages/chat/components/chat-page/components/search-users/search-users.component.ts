@@ -1,20 +1,22 @@
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { PipesModule } from "../../../../../../pipes/pipes.module";
+import { AuthService } from '../../../../../../services/auth.service';
 import { UnreadMessageService } from '../../../../../../services/unread-message.service';
 import { AppButtonComponent } from "../../../../../../shared/app-button/components/app-button/app-button.component";
-import { AppSearchBoxComponent } from '../../../../../../shared/app-search-box/components/app-search-box/app-search-box.component';
 import { AppSearchFieldComponent } from "../../../../../../shared/app-search-field/components/app-search-field/app-search-field.component";
 import { BasePaginationComponent } from '../../../../../../shared/base-pagination-component';
-import { ConversationClient, ConversationDto, UserClient, UsersDto } from './../../../../../../api/api';
+import { ConversationClient, ConversationDto, UsersDto } from './../../../../../../api/api';
+import { SignalRService } from './../../../../../../services/signal-r.service';
 import { SearchUsersDialogComponent } from './components/search-users-dialog/search-users-dialog.component';
 
 @Component({
   selector: 'app-search-users',
-  imports: [PipesModule, AsyncPipe, JsonPipe, AppSearchFieldComponent, AppButtonComponent],
+  imports: [CommonModule, PipesModule, AsyncPipe, AppSearchFieldComponent, AppButtonComponent],
   templateUrl: './search-users.component.html',
   styleUrl: './search-users.component.css'
 })
@@ -24,8 +26,10 @@ export class SearchUsersComponent extends BasePaginationComponent implements OnI
   private unreadMessageService = inject(UnreadMessageService);
   
   constructor(
+    private router : Router,
+    private authService: AuthService,
     private conversationClient: ConversationClient,
-    // private userClient: UserClient,
+    private signalRService: SignalRService,
     private modal: NgbModal,
   ) {
     super();
@@ -94,5 +98,11 @@ export class SearchUsersComponent extends BasePaginationComponent implements OnI
 
     modalRef.componentInstance.input = this.searchControl.value;
   }
+
+  onLogout() {
+    this.signalRService.disconnect();
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }  
 
 }

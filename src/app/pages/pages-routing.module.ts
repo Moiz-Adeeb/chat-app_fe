@@ -71,7 +71,7 @@ const routes: Routes = [
             (p) => p.ChatRoutingModule,
           ),
         pathMatch: 'prefix',
-        canActivateChild: [],
+        canActivateChild: [AuthGuard],
         data: {
         }
       },

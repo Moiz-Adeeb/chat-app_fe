@@ -1,11 +1,13 @@
 <div class="flex flex-col p-2 h-full overflow-x-hidden overflow-y-hidden">
-    <div 
-        class="gap-8 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg chat-container custom-scrollbar"> 
+    <div
+        (scroll)="onScroll()"
+        #scrollContainer   
+        class="gap-8 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg h-[100%] chat-container custom-scrollbar"> 
         <div class="flex" *ngFor="let message of (messages$ | async)">
             <!-- SENT MESSAGE (Right Side) -->
             <div 
                 *ngIf="message.senderId == ChatId" 
-                class="bg-sky-200 shadow-md shadow-slate-700 ml-auto p-1 rounded-xl max-w-[75%] break-words">
+                class="bg-sky-200 shadow-md shadow-slate-700 ml-auto p-1 rounded-xl min-w-[8rem] max-w-[75%] break-words">
                 <p class="px-2">
                     {{message.messageContent}}
                 </p>
@@ -32,7 +34,7 @@
             <!-- RECEIVED MESSAGE (Left Side) -->
             <div 
                 *ngIf="message.senderId != ChatId" 
-                class="bg-slate-200 shadow-md shadow-slate-700 mr-auto p-1 rounded-xl max-w-[75%] break-words">
+                class="bg-slate-200 shadow-md shadow-slate-700 mr-auto p-1 rounded-xl min-w-[8rem] max-w-[75%] break-words">
                 <p class="px-2">
                     {{message.messageContent}}
                 </p>
@@ -40,20 +42,6 @@
                     <span>
                         {{message.sentTime | appDate}} 
                     </span>
-                    <!-- <ng-container [ngSwitch]="message.status">
-                        <img 
-                            *ngSwitchCase="MessageStatus.Sent" 
-                            class="w-4 h-4" 
-                            src="assets/img/single-tick.png"/>
-                        <img 
-                            *ngSwitchCase="MessageStatus.Delivered" 
-                            class="w-4 h-4" 
-                            src="assets/img/double-tick.png"/>
-                        <img 
-                            *ngSwitchCase="MessageStatus.Read" 
-                            class="w-4 h-4" 
-                            src="assets/img/blue-tick.png"/>
-                    </ng-container> -->
                 </div>
             </div>
         </div>

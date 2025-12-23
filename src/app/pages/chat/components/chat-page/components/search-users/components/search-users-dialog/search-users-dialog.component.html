@@ -1,5 +1,5 @@
 <div class="z-[9999] fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-2 sm:p-4">
-    <div class="flex flex-col bg-[color:var(--color-white)] bg-blue-300 shadow-2xl shadow-slate-900 rounded-lg sm:rounded-xl md:rounded-2xl w-full min-w-[50vw] max-w-2xl min-h-[90vh] max-h-[98vh] sm:max-h-[95vh] md:max-h-[90vh]">
+    <div class="flex flex-col bg-[color:var(--color-white)] bg-blue-300 shadow-2xl shadow-slate-900 rounded-2xl sm:rounded-xl md:rounded-2xl w-full min-w-[50vw] max-w-2xl min-h-[90vh] max-h-[98vh] sm:max-h-[95vh] md:max-h-[90vh]">
         <!-- Fixed Header -->
         <div class="flex justify-between items-center p-3 sm:p-4 md:p-6 border-[color:var(--color-blue-900)] border-b">
             <h3 class="pr-2 sm:pr-4 font-montserrat font-semibold text-black text-base sm:text-lg md:text-xl lg:text-2xl truncate">
@@ -35,19 +35,8 @@
                             <p class="font-work font-medium text-gray-600 text-sm">
                                 Last Seen: {{user.lastSeen | appDate}}
                             </p>
-                            <!-- <span class="bg-white shadow-md shadow-slate-500 mr-2 px-1 rounded-full font-work font-medium text-gray-600 text-md text-right">
-                                {{conversation.unreadCount}}
-                            </span> -->
                         </div>
                     </div>
-                    <!-- <div class="text-bottom flex justify-evenly gap-1 py-1 font-inter text-sm break-words whitespace-normal">
-                        <p class="flex-1 font-work text-gray-800 text-xs line-clamp-2">
-                            {{conversation.lastMessageSnippet}}Hi hello how are you good to see you are you ok this is good that is good all is good this is verry good all is very good
-                        </p>
-                        <p class="font-work font-medium text-gray-600 text-xs text-right whitespace-nowrap">
-                            {{conversation.lastMessageTime | appDate}}
-                        </p>
-                    </div> -->
                 </div>
             </div>
             <!-- <div *ngIf="isLoadingMore$ | async" class="p-2 font-work text-gray-800 text-xs text-center">

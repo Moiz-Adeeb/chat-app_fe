@@ -3,11 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   hmr: false,
-  emailUrl: 'http://localhost:4200',
+  emailUrl: '',
   // baseUrl: 'https://dog-just-nicely.ngrok-free.app',
-  baseUrl: 'https://localhost:5001',
+  // baseUrl: 'https://localhost:5001',
+  baseUrl: 'https://dotnet-chat-app.runasp.net',
   // baseUrl: 'https://api.salalimited.work.gd',
 };
 

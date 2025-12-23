@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ConversationDto } from '../../../../../../../../api/api';
 import { PipesModule } from '../../../../../../../../pipes/pipes.module';
 import { ConversationService } from '../../../../../../../../services/conversation.service';

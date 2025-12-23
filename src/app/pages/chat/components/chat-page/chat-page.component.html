@@ -1,18 +1,18 @@
-<div class="bg-gray-50 dark:bg-gray-900 h-screen overflow-hidden transition-colors">
+<div class="bg-indigo-900 bg-opacity-50 h-screen overflow-hidden transition-colors">
     <div class="relative flex-col w-full h-full">
         <div class="lg:block">
-            <app-sidebar
+            <!-- <app-sidebar
                 [sidebarCollapsed]="sidebarCollapsed"
                 class="bottom-0 left-0 z-40 fixed">
-            </app-sidebar>
+            </app-sidebar> -->
         </div>
-        <main class="pl-12 w-[100%] h-full overflow-x-hidden overflow-y-hidden transition-all duration-300">
-            <div class="pl-3 sm:pl-4 md:pl-5 lg:pl-6 xl:pl-8">
-                <div class="flex justify-between divide-x-2 divide-gray-900 w-[100%] h-full">
-                    <div class="w-[20%] h-screen">
+        <main class="px-4 w-[100%] h-full overflow-x-hidden overflow-y-hidden transition-all duration-300">
+            <div class="">
+                <div class="flex justify-between divide-x-0 w-[100%] h-full">
+                    <div class="w-[25%] h-screen">
                         <app-conversation-list></app-conversation-list>
                     </div>
-                    <div class="w-[80%] h-screen">
+                    <div class="w-[75%] h-screen">
                         <app-search-users class="h-[20%]"></app-search-users>
                         <app-chat-window class="h-[80%]"></app-chat-window>
                     </div>

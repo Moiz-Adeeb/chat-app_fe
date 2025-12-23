@@ -1,20 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, Subject } from 'rxjs';
-import { OnlineStatusPipe } from "../../../../../../pipes/online-status.pipe";
 import { PipesModule } from "../../../../../../pipes/pipes.module";
 import { AuthService } from '../../../../../../services/auth.service';
-import { LocalStoreManager } from '../../../../../../services/local-store-manager.service';
-import { MessageService } from '../../../../../../services/message.service';
 import { OnlineService } from '../../../../../../services/online.service';
 import { SignalRService } from '../../../../../../services/signal-r.service';
 import { BasePaginationComponent } from '../../../../../../shared/base-pagination-component';
-import { ConversationClient, ConversationDto } from './../../../../../../api/api';
+import { ConversationDto } from './../../../../../../api/api';
 import { ConversationService } from './../../../../../../services/conversation.service';
 
 @Component({
   selector: 'app-conversation-list',
-  imports: [CommonModule, PipesModule, OnlineStatusPipe],
+  imports: [CommonModule, PipesModule],
   templateUrl: './conversation-list.component.html',
   styleUrl: './conversation-list.component.scss'
 })
@@ -24,10 +21,8 @@ export class ConversationListComponent extends BasePaginationComponent implement
     return item.conversationId;
   }
 
-  private localStoreService = inject(LocalStoreManager);
   private conversationService = inject(ConversationService);
   protected onlineService = inject(OnlineService);
-  private messageService = inject(MessageService);
   private authService = inject(AuthService);
   private signalRService = inject(SignalRService);
 
@@ -39,12 +34,6 @@ export class ConversationListComponent extends BasePaginationComponent implement
   conversations$ = this.conversationService.conversations$;
   isLoadingMore$ = this.conversationService.isLoadingMore$
   isFullListLoaded$ = this.conversationService.isFullListLoaded$
-  
-  constructor(
-    private conversationClient: ConversationClient,
-  ) {
-    super();
-  }
   
   chatId = this.authService.currentUser.chatId
   ngOnInit(): void {
@@ -58,7 +47,6 @@ export class ConversationListComponent extends BasePaginationComponent implement
     return this.onlineService.onlineUsers$.pipe(
       map(set => {
         if (!chatId) return false;
-        // Normalization is key: GUIDs often change case
         return set.has(chatId.toLowerCase().trim());
       })
     );
@@ -74,9 +62,9 @@ export class ConversationListComponent extends BasePaginationComponent implement
       this.search,
       true,
       this.page,
-      this.pageSize,
+      50,
     ).subscribe({
-        next: (result) => {
+        next: async (result) => {
           this.alertService.stopLoadingMessage();
           this.totalPage = result.count ?? 0;
 
@@ -84,7 +72,8 @@ export class ConversationListComponent extends BasePaginationComponent implement
             .filter((id: string) => !!id) ?? [];
 
           if (chatIds.length > 0) {
-            this.signalRService.hubConnection.invoke('CheckOnline', chatIds);
+            await this.signalRService.waitForConnection();
+            await this.signalRService.checkOnlineStatus(chatIds);
           }
 
           this.setPagination();
@@ -103,10 +92,10 @@ export class ConversationListComponent extends BasePaginationComponent implement
 
   onScroll() {
     const now = Date.now();
-    if (now - this.lastScrollTime < 300) return;
+    if (now - this.lastScrollTime < 100) return;
     this.lastScrollTime = now;
     const element = this.scrollContainer.nativeElement;
-    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 300;
+    const atBottom = element.scrollTop < 50;
 
     let isLoadingMore = false;
     this.isLoadingMore$.subscribe(state => isLoadingMore = state).unsubscribe();

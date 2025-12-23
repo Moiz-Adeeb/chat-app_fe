@@ -1,25 +1,32 @@
-<div class="relative flex justify-center items-center w-screen h-screen overflow-hidden overscroll-none">
+<div class="relative flex justify-center items-center bg-indigo-900 bg-opacity-50 w-screen h-screen overflow-hidden overscroll-none">
   <!-- Background Decorative Ellipse (Top-Left) -->
-  <div
+  <!-- <div
     class="-top-[150px] sm:-top-[180px] md:-top-[200px] lg:-top-[243px] -left-[250px] sm:-left-[300px] md:-left-[350px] lg:-left-[422px] z-0 absolute bg-[rgba(5,173,166,0.69)] opacity-13 rounded-full w-[400px] sm:w-[500px] md:w-[600px] lg:w-[724px] h-[400px] sm:h-[500px] md:h-[600px] lg:h-[724px] pointer-events-none"
-    style="filter: blur(68.5443px);"></div>
+    style="filter: blur(68.5443px);"></div> -->
 
   <!-- Main Sign Up Container -->
   <div
-    class="z-10 flex flex-col bg-white shadow-2xl px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8 rounded-[20px] sm:rounded-[32px] md:rounded-[40px] w-[96vw] sm:w-[90vw] md:w-[75vw] lg:w-[60vw] 2xl:w-[42vw] xl:w-[50vw] h-auto max-h-[96vh] sm:max-h-[94vh]">
+    class="z-10 flex flex-col bg-blue-100 shadow-2xl shadow-slate-700 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8 rounded-[20px] sm:rounded-[32px] md:rounded-[40px] w-[96vw] sm:w-[90vw] md:w-[65vw] lg:w-[50vw] 2xl:w-[42vw] xl:w-[40vw] h-auto max-h-[96vh] sm:max-h-[94vh]">
 
     <!-- Logo Section -->
     <div class="flex-shrink-0 mb-3 sm:mb-4 md:mb-5 text-center">
-      <svg-icon src="assets/svg/sala-login-logo.svg" class="mx-auto w-auto h-12 sm:h-14 md:h-16 lg:h-18"></svg-icon>
+      <!-- <svg-icon src="assets/svg/sala-login-logo.svg" class="mx-auto w-auto h-12 sm:h-14 md:h-16 lg:h-18"></svg-icon> -->
+    </div>
+
+    <!-- Heading Section -->
+    <div class="flex-shrink-0 mb-5 sm:mb-6 md:mb-7">
+      <h1 class="px-2 font-medium text-[#373940] text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center leading-relaxed">
+          Sign Up To Chat
+      </h1>
     </div>
 
     <!-- Language Toggle Section -->
-    <div class="flex flex-shrink-0 justify-center items-center mb-4 sm:mb-5 md:mb-6">
+    <!-- <div class="flex flex-shrink-0 justify-center items-center mb-4 sm:mb-5 md:mb-6">
       <app-language-toggle
         [currentLanguage]="currentLanguage"
         (languageChange)="setLanguage($event)"
       ></app-language-toggle>
-    </div>
+    </div> -->
 
     <!-- Form Section -->
     <form action="signup-user" class="flex flex-col flex-1 w-full min-h-0">
@@ -30,7 +37,7 @@
         <!-- Scrollable Input Fields Area -->
         <div
           class="flex-1 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent -mx-1 px-1 pr-2 pb-2 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar]:w-1 overflow-x-visible overflow-y-auto">
-          <div class="gap-4 sm:gap-5 grid grid-cols-1 md:grid-cols-2">
+          <div class="gap-2 sm:gap-3 grid grid-cols-1 md:grid-cols-2">
             <div>
               <!-- Name -->
               <app-text-field
@@ -45,7 +52,7 @@
               <app-text-field
                 [fieldControl]="userNameControl"
                 [placeholder]="'Doe' | translate"
-                [fieldName]="'UserName' | translate"
+                [fieldName]="'User Name' | translate"
                 fieldType="text"
               ></app-text-field>
             </div>
@@ -62,16 +69,16 @@
               <!-- Password -->
               <app-text-field
                 [fieldControl]="passwordControl"
-                [placeholder]="'' | translate"
+                [placeholder]="'Enter Password Here' | translate"
                 [fieldName]="'Password' | translate"
                 fieldType="text"
               ></app-text-field>
             </div>
-            <div>
+            <div class="col-span-2 px-28">
               <!-- Confirm Password -->
               <app-text-field
                 [fieldControl]="confirmPasswordControl"
-                [placeholder]="'' | translate"
+                [placeholder]="'Confirm Your Password' | translate"
                 [fieldName]="'ConfirmPassword' | translate"
                 fieldType="text"
                 (keyup.enter)="onSignUp()"
@@ -92,10 +99,10 @@
         </div>
 
         <!-- Fixed Buttons and Links Area -->
-        <div class="flex flex-col space-y-3 sm:space-y-4 mt-5 sm:mt-6">
+        <div class="flex flex-col items-center space-y-3 sm:space-y-4 mt-5 sm:mt-6">
           <!-- Next Button -->
           <button type="button" (click)="onSignUp()"
-                  class="bg-blue-600 hover:bg-blue-700 py-3 sm:py-3.5 rounded-2xl w-full font-montserrat font-medium text-white text-base sm:text-lg active:scale-95 transition-all duration-200 cursor-pointer">
+                  class="bg-[#033A52] hover:bg-sky-900 py-3 sm:py-3.5 rounded-2xl w-[50%] font-montserrat font-medium text-white text-base sm:text-lg cursor-pointer">
             {{ 'SignUp' | translate }}
           </button>
 
@@ -103,7 +110,7 @@
           <p class="font-monsterrat font-medium text-gray-600 text-sm sm:text-base text-center">
             {{ 'AlreadyHaveAnAccount' | translate }}
             <span (click)="onSignIn()"
-                  class="text-[#2A58E6] hover:text-blue-700 hover:underline transition-all cursor-pointer">
+                  class="text-[#033A52] hover:text-sky-900 hover:underline transition-all cursor-pointer">
               {{ 'SignIn' | translate }}
             </span>
           </p>

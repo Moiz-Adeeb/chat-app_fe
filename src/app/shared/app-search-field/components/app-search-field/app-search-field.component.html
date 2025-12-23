@@ -14,12 +14,12 @@
     [max]="fieldType === 'date' ? today : fieldType === 'datetime-local' ? dateTime : null"
     [type]="isPasswordVisible ? 'text' : fieldType"
     [formControl]="fieldControl"
-    class="bg-white py-4 pr-4 rounded-lg focus:outline-none w-full h-[47px] text-base"
+    class="bg-blue-50 bg-white py-4 pr-4 rounded-2xl focus:outline-none w-full h-[47px] text-base"
     [ngClass]="{
     'pl-16': iconImage,
     'pl-6': !iconImage,
     'border border-red-500 focus:ring-red-300': fieldControl.invalid && fieldControl.dirty,
-    'focus: border border-gray-300  focus:ring-[#6A0DAD]': !fieldControl.invalid
+    'focus: border border-blue-300  focus:ring-[#6A0DAD]': !fieldControl.invalid
   }"
     [class] = "fieldName != null &&fieldName!='' ?'mb-[10px]' : ''"
     [placeholder]="fieldControl.value ? '' : placeholder"

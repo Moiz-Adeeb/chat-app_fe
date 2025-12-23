@@ -1,14 +1,16 @@
 <div class="p-2 h-[100%]">
-    <div class="flex justify-between bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg">
+    <div 
+        *ngIf="selectedConversation$ | async as selectedConversation"
+        class="flex justify-between bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg">
         <div class="">
             <p class="font-inter font-medium text-4xl truncate">
-                {{(selectedConversation$ | async)?.otherUser?.userName}}
+                {{selectedConversation.otherUser?.userName}}
             </p>
             <p class="font-montserrat font-semibold text-blue-900 text-2xl truncate">
-                {{(selectedConversation$ | async)?.otherUser?.userName}}
+                {{selectedConversation.otherUser?.userName}}
             </p>
             <p class="font-montserrat font-semibold text-gray-800 text-sm truncate">
-                {{(selectedConversation$ | async)?.otherUser?.status}}
+                {{selectedConversation.otherUser?.status}}
             </p>
         </div>
         <div class="flex flex-col justify-end items-end text-right">
@@ -19,7 +21,7 @@
                 </span>
             </div>
             <p class="font-montserrat font-medium text-gray-800 text-lg truncate">
-                {{(selectedConversation$ | async)?.otherUser?.lastSeen | appDate}}
+                {{selectedConversation.otherUser?.lastSeen | appDate}}
             </p>
         </div>
     </div>

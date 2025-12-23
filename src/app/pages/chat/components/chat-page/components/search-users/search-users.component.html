@@ -1,29 +1,52 @@
-<div class="flex justify-start gap-4 bg-slate-900 bg-opacity-50 px-3 py-3 w-100 h-[10%]">
-    <div class="w-full">
-        <app-search-field
-            [fieldControl]="searchControl"
-            [placeholder]="'Search Users'"
-            [icon]="false">
-        </app-search-field>
-    </div>
-    <div class="w-[4rem]">
-        <app-button
-            type="custom"
-            [bgColor]="'#033A52'"
-            [width]="''"
-            [height]="'100%'"
-            [isIconImage]="true"
-            [iconOnly]="true"
-            [iconAfter]="'/assets/img/gg_search.png'"
-            [class]="''"
-            (clicked)="getUsers()">
-            {{ 'Search' }}
-        </app-button>
-    </div>
-    <div class="bg-sky-100 border border-primary rounded-lg w-20">
-        <p class="flex justify-center items-center w-full h-full font-montserrat font-black text-2xl text-center">
+<div class="p-2 pt-4 w-100 h-[10%]">
+    <div class="flex justify-start gap-4 bg-blue-100 p-3 rounded-3xl w-100">
+        <div class="w-full">
+            <app-search-field
+                [fieldControl]="searchControl"
+                [placeholder]="'Search Users'"
+                [icon]="false">
+            </app-search-field>
+        </div>
+        <div class="w-[5rem]">
+            <app-button
+                type="custom"
+                [bgColor]="'#033A52'"
+                [width]="''"
+                [height]="'100%'"
+                [isIconImage]="true"
+                [iconOnly]="true"
+                [iconAfter]="'/assets/img/gg_search.png'"
+                [class]="''"
+                (clicked)="getUsers()">
+                {{ 'Search' }}
+            </app-button>
+        </div>
+        <div class="bg-blue-50 border border-blue-300 rounded-2xl w-40">
+            <p 
+            *ngIf="(unreadMessages$ | async) == 0"
+            class="flex justify-center items-center w-full h-full font-montserrat font-black text-xs text-center">
+                No Unread Messages
+            </p>
+            <p 
+            *ngIf="(unreadMessages$ | async) != 0" 
+            class="flex justify-center items-center w-full h-full font-montserrat font-black text-2xl text-center">
             {{unreadMessages$ | async }}
         </p>
+        </div>
+        <div class="w-[5rem]">
+            <app-button
+                type="custom"
+                [bgColor]="'#033A52'"
+                [width]="''"
+                [height]="'100%'"
+                [isIconImage]="true"
+                [iconOnly]="true"
+                [iconAfter]="'/assets/svg/sidebar/logout-icon.svg'"
+                [class]="''"
+                (clicked)="onLogout()">
+                {{ 'Logout' }}
+            </app-button>
+        </div>
     </div>
 </div>
 <!-- <app-button

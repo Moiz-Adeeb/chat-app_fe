@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { ILogger, LogLevel } from '@microsoft/signalr';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 import { AuthService } from './auth.service';
 import { EndpointFactoryService } from './endpoint-factory.service';
 
@@ -13,6 +13,8 @@ class CustomSignalRLogger implements ILogger {
   providedIn: 'root',
 })
 export class SignalRService extends EndpointFactoryService {
+
+  private connectionStarted$ = new BehaviorSubject<boolean>(false);
 
   // Subjects for Components to subscribe to
   private messageReceived = new Subject<any>();
@@ -50,17 +52,18 @@ export class SignalRService extends EndpointFactoryService {
   // }
 
   init() {
-  this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(this.url, {
-      ...this.option,
-      transport: signalR.HttpTransportType.WebSockets,
-      skipNegotiation: true 
-    })
-    .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
-    .configureLogging(new CustomSignalRLogger())
-    .build();
+    if(this.hubConnection) return;
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(this.url, {
+        ...this.option,
+        transport: signalR.HttpTransportType.WebSockets,
+        skipNegotiation: true 
+      })
+      .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
+      .configureLogging(new CustomSignalRLogger())
+      .build();
 
-  this.addListeners();
+    this.addListeners();
   }
 
   // --- External Observables ---
@@ -88,6 +91,33 @@ export class SignalRService extends EndpointFactoryService {
         this.isConnected = false;
       });
   }
+
+  // async connect(): Promise<void> {
+  //   if (this.hubConnection?.state === signalR.HubConnectionState.Connected) return;
+
+  //   try {
+  //     await this.hubConnection.start();
+  //     console.log('SignalR Connected Successfully');
+  //     this.connectionStarted$.next(true); // TURN ON THE GREEN LIGHT
+  //   } catch (err) {
+  //     console.error('SignalR Connection Error:', err);
+  //     this.connectionStarted$.next(false);
+  //     throw err;
+  //   }
+  // }
+
+  // 3. The "Gatekeeper" method: Ensures we never send data while disconnected
+  public async waitForConnection(): Promise<void> {
+    if (this.hubConnection?.state === signalR.HubConnectionState.Connected) return;
+
+    // Convert the Observable to a Promise and wait for the first 'true'
+    await firstValueFrom(
+      this.connectionStarted$.pipe(
+        filter(started => started === true),
+        take(1)
+      )
+    );
+  }  
 
   disconnect() {
     this.isListenersSet = false;
@@ -127,7 +157,11 @@ export class SignalRService extends EndpointFactoryService {
   }
 
   async sendMessage(conversationId: string, receiverChatId: string, content: string) {
-    return this.hubConnection.send('SendMessageToUser', conversationId, receiverChatId, content);
+    if (!this.hubConnection) {
+      this.init();
+    }
+    await this.waitForConnection();
+    return await this.hubConnection.send('SendMessageToUser', conversationId, receiverChatId, content);
   }
 
   async sendTypingNotification(conversationId: string) {
@@ -135,11 +169,19 @@ export class SignalRService extends EndpointFactoryService {
   }
 
   async markConversationAsRead(conversationId: string) {
-    return this.hubConnection.send('MarkAsRead', conversationId);
+    if (!this.hubConnection) {
+      this.init();
+    }
+    await this.waitForConnection();
+    if (this.isConnected) {
+      return await this.hubConnection.send('MarkAsRead', conversationId);
+    } else console.log('Mark Conversation as read was called before hub was connected');
   }
 
   async checkOnlineStatus(chatIds: string[]) {
-    return this.hubConnection.send('CheckOnline', chatIds);
+    if (this.isConnected) {
+      return await this.hubConnection.send('CheckOnline', chatIds);
+    } else { console.log('fail') }
   }  
 
   addListeners() {

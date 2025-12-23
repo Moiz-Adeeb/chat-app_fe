@@ -236,7 +236,7 @@ export class AppSidebarComponent implements OnInit {
           {
             label: 'Logout',
             icon: '/assets/svg/sidebar/logout-icon.svg',
-            route: '/dashboard/logout'
+            route: '/logout'
           }
         ]
       }
