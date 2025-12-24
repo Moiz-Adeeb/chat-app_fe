@@ -5,8 +5,10 @@
 export const environment = {
   production: true,
   hmr: false,
-  baseUrl: 'https://api.salalimited.work.gd',
-  emailUrl: 'http://localhost:4200',
+  // baseUrl: 'https://api.salalimited.work.gd',
+  baseUrl: 'https://dotnet-chat-app.runasp.net',
+  // emailUrl: 'http://localhost:4200',
+  emailUrl: '',
 };
 
 /*
