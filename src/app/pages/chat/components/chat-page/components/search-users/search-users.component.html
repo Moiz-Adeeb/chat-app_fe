@@ -1,5 +1,5 @@
 <div class="p-2 pt-4 w-100 h-[10%]">
-    <div class="flex justify-start gap-4 bg-blue-100 p-3 rounded-3xl w-100">
+    <div class="flex justify-start gap-4 bg-blue-100 shadow-md shadow-slate-700 p-3 rounded-3xl w-100">
         <div class="w-full">
             <app-search-field
                 [fieldControl]="searchControl"
@@ -21,10 +21,10 @@
                 {{ 'Search' }}
             </app-button>
         </div>
-        <div class="bg-blue-50 border border-blue-300 rounded-2xl w-40">
+        <div class="bg-indigo-900 bg-opacity-50 shadow-inner shadow-slate-700 rounded-lg w-40">
             <p 
             *ngIf="(unreadMessages$ | async) == 0"
-            class="flex justify-center items-center w-full h-full font-montserrat font-black text-xs text-center">
+            class="flex justify-center items-center w-full h-full font-montserrat font-bold text-white text-sm text-center">
                 No Unread Messages
             </p>
             <p 

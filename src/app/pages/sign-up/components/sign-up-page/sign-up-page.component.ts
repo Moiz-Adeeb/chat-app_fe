@@ -49,7 +49,6 @@ export class SignUpPageComponent {
   ]);
 
   statusControl = new FormControl('', [
-    CustomValidator.required(),
     Validators.maxLength(50),
   ]);
 
