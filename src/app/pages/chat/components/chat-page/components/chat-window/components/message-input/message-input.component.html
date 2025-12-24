@@ -1,5 +1,5 @@
 <div class="p-2 h-[100%]">
-    <div class="flex justify-around items-center gap-4 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg h-[6rem]">
+    <div class="flex justify-around items-center gap-2 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg h-[6rem]">
         <div class="w-full h-full">
             <app-text-area-field
                 [rows]="1"
@@ -14,12 +14,12 @@
             <app-button
                 [type]="'custom'"
                 [bgColor]="'#033A52'"
-                [radius]="'100px'"
+                [radius]="'20px'"
                 [width]="''"
                 [height]="'100%'"
                 [isIconImage]="true"
                 [iconOnly]="true"
-                [iconAfter]="'/assets/img/gg_search.png'"
+                [iconAfter]="'/assets/img/send.png'"
                 [class]="''"
                 (clicked)="SendMessage()">
             </app-button>

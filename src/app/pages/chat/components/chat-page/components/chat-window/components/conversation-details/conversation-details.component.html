@@ -13,16 +13,34 @@
                 {{selectedConversation.otherUser?.status}}
             </p>
         </div>
-        <div class="flex flex-col justify-end items-end text-right">
-            <div *ngIf="(messageService.typingUsers$ | async)?.length" class="bg-green-300 px-3 py-2 rounded-3xl text-slate-900 typing-indicator">
+        <div class="flex flex-col justify-end items-end gap-4 text-right">
+            <div 
+                *ngIf="(messageService.typingUsers$ | async)?.length" 
+                class="bg-green-300 px-3 py-2 rounded-3xl text-slate-900 typing-indicator">
                 <div class="dot-flashing"></div>
                 <span class="font-montserrat font-bold">
                      Typing...
                 </span>
             </div>
-            <p class="font-montserrat font-medium text-gray-800 text-lg truncate">
-                {{selectedConversation.otherUser?.lastSeen | appDate}}
-            </p>
+            <!-- <p class="font-montserrat font-semibold text-gray-800 text-lg truncate">
+                <span *ngIf="(selectedConversation.otherUser?.lastSeen | appDate) != 'Never'">
+                    Last Seen: {{selectedConversation.otherUser?.lastSeen | appDate}}
+                </span>
+            </p> -->
+            <p
+                *ngIf="isOnline$(selectedConversation.otherUser?.chatId) | async"
+                class="bg-sky-50 bg-opacity-75 px-3 py-2 rounded-3xl font-work font-medium text-slate-900 text-sm">
+                <span>
+                    Online
+                </span>
+            </p>            
+            <p
+                *ngIf="!(isOnline$(selectedConversation.otherUser?.chatId) | async)"
+                class="font-work font-medium text-gray-600 text-sm">
+                <span *ngIf="(selectedConversation.otherUser?.lastSeen | appDate) != 'Never'">
+                    Last Seen: {{selectedConversation.otherUser?.lastSeen | appDate}}
+                </span>
+            </p>            
         </div>
     </div>
 </div>

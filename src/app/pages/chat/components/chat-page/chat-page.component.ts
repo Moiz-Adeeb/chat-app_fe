@@ -13,16 +13,23 @@ import { SearchUsersComponent } from './components/search-users/search-users.com
 })
 export class ChatPageComponent implements OnInit, OnDestroy{
 sidebarCollapsed: any;
-  signalR = inject(SignalRService)
+  // signalR = inject(SignalRService)
+
+  constructor(
+    private signalRService: SignalRService
+  ) {
+      if (this.signalRService.hubConnection?.state !== signalR.HubConnectionState.Connected) {
+        this.signalRService.init()    
+        this.signalRService.connect(); 
+      }
+    }
 
   ngOnInit(): void {
-    if (this.signalR.hubConnection?.state !== signalR.HubConnectionState.Connected) {
-          this.signalR.connect(); 
-        }
+    
   }
 
   ngOnDestroy() : void {
-    this.signalR.disconnect();
+    this.signalRService.disconnect();
   }
 
 }

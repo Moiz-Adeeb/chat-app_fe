@@ -10,7 +10,7 @@
             *ngFor="let conversation of (conversations$ | async); trackBy: trackById" 
             class="min-h-28">
             <div
-            (click)="conversationClick(conversation)"
+                (click)="conversationClick(conversation)"
                 *ngIf="conversation.lastMessageSnippet" 
                 [class.bg-blue-300]="(selectedConversation$ | async) == conversation "
                 class="flex-col hover:bg-blue-300 p-2 rounded-2xl min-h-28 transition-all duration-200 inactive-nav-link">

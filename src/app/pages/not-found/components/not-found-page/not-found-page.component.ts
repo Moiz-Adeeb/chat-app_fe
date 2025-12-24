@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-getting-started-page',
@@ -14,12 +15,12 @@ export class NotFoundPageComponent {
 
   constructor(
     private router: Router,
-    // private authService: AuthService,
+    private authService: AuthService,
     ) {
-    // this.isLoggedIn = this.authService.isLoggedIn;
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
   navigate() {
-    this.router.navigate([this.isLoggedIn ? '/dashboard/home' : '/login']);
+    this.router.navigate([this.isLoggedIn ? '/chat' : '/login']);
   }
 }

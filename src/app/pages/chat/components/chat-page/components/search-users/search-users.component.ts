@@ -21,7 +21,6 @@ import { SearchUsersDialogComponent } from './components/search-users-dialog/sea
   styleUrl: './search-users.component.css'
 })
 export class SearchUsersComponent extends BasePaginationComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
 
   private unreadMessageService = inject(UnreadMessageService);
   
@@ -49,9 +48,10 @@ export class SearchUsersComponent extends BasePaginationComponent implements OnI
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();   
+     
   }
+
+  // This Api call was moved to the dialogue to keep the code in one place for searching Users
 
   // protected override getData(): void {
   //   this.alertService.startLoadingMessage();
@@ -91,11 +91,7 @@ export class SearchUsersComponent extends BasePaginationComponent implements OnI
   getUsers(): void {
     // this.getData();
     const modalRef = this.modal.open(SearchUsersDialogComponent);
-    modalRef.componentInstance.title = 'ApproveCompany';
-    modalRef.componentInstance.message = 'YouWantToApproveThisCompany';
-    modalRef.componentInstance.confirmText = 'Approve';
     modalRef.componentInstance.isInput = false;
-
     modalRef.componentInstance.input = this.searchControl.value;
   }
 

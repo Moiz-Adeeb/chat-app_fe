@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PipesModule } from "../../../../../../../../pipes/pipes.module";
 import { AuthService } from '../../../../../../../../services/auth.service';
 import { AppButtonComponent } from '../../../../../../../../shared/app-button/components/app-button/app-button.component';
@@ -20,7 +21,8 @@ import { ConversationService } from './../../../../../../../../services/conversa
 export class SearchUsersDialogComponent extends BasePaginationComponent implements OnInit, OnDestroy {
 
   @Input() input: string = '';
-  users: UsersDto[] = [];
+  users = new BehaviorSubject<UsersDto[]>([]);
+  users$: Observable<UsersDto[]> = this.users.asObservable();
 
   private  Loading = false;
   private isFullListLoaded = false;
@@ -35,8 +37,8 @@ export class SearchUsersDialogComponent extends BasePaginationComponent implemen
     public authService: AuthService,
     public conversationService: ConversationService
   ) {
-    super();
-  }
+      super();
+    }
 
   searchControl: FormControl = new FormControl<string>('', []);
 
@@ -49,28 +51,57 @@ export class SearchUsersDialogComponent extends BasePaginationComponent implemen
   }
 
   protected override getData(): void {
-  if (this.Loading || this.isFullListLoaded) return;
-  this.Loading = true;  
-    this.alertService.startLoadingMessage();
-    this.userClient.getUsers(
-      false,
-      this.input,
-      false,
-      this.page,
-      10,
-      'name'
-    ).subscribe((result) => {
-      const newData = result.data ?? [];
-      this.users = [...this.users, ...newData];
-      if (newData.length < 10) {
-        this.isFullListLoaded = true;
-      }
-      this.alertService.stopLoadingMessage();
-      this.totalPage = result.count ?? 0;
-      this.setPagination();
-      this.Loading = false;
-      console.log(this.users);
-    })
+    if (this.Loading || this.isFullListLoaded) return;
+    this.Loading = true;  
+      this.alertService.startLoadingMessage();
+      this.userClient.getUsers(
+        false,
+        this.input,
+        false,
+        this.page,
+        10,
+        'name'
+      ).subscribe((result) => {
+        const newData = result.data ?? [];
+        const updatedList = [...this.users.getValue(), ...newData];
+        this.users.next(updatedList);
+        if (newData.length < 10) {
+          this.isFullListLoaded = true;
+        }
+        this.alertService.stopLoadingMessage();
+        this.totalPage = result.count ?? 0;
+        this.setPagination();
+        this.Loading = false;
+        console.log(this.users);
+      })
+  }  
+
+  getSearchData(): void {
+    this.input = this.searchControl.value
+    this.users.next([]);
+    // if (this.Loading || this.isFullListLoaded) return;
+    this.Loading = true;  
+      this.alertService.startLoadingMessage();
+      this.userClient.getUsers(
+        false,
+        this.input,
+        false,
+        this.page,
+        10,
+        'name'
+      ).subscribe((result) => {
+        const newData = result.data ?? [];
+        const updatedList = [...this.users.getValue(), ...newData];
+        this.users.next(updatedList);
+        if (newData.length < 10) {
+          this.isFullListLoaded = true;
+        }
+        this.alertService.stopLoadingMessage();
+        this.totalPage = result.count ?? 0;
+        this.setPagination();
+        this.Loading = false;
+        console.log(this.users);
+      })
   }  
 
   initiateChat(targetUserId: string) {

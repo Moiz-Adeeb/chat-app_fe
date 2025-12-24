@@ -93,7 +93,7 @@ export class LoginPageComponent implements OnInit {
       this.loginService.login(userLogin).subscribe((result) => {
         this.alertService.stopLoadingMessage();
         const user = this.authService.processLogin(result);
-        this.signalR.init();
+        // this.signalR.init();
         // this.signalR.connect();
         setTimeout(() => {
           this.alertService.showMessage(
