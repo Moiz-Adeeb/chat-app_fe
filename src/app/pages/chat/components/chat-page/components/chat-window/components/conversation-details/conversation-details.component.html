@@ -1,7 +1,11 @@
 <div class="p-2 h-[100%]">
+
+    <!-- The Rounded Div With Slightly Darker Blue Background -->
     <div 
         *ngIf="selectedConversation$ | async as selectedConversation"
         class="flex justify-between bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg">
+
+        <!-- Left Div For Name, UserName and Status -->
         <div class="">
             <p class="font-inter font-medium text-4xl truncate">
                 {{selectedConversation.otherUser?.name}}
@@ -13,34 +17,40 @@
                 {{selectedConversation.otherUser?.status}}
             </p>
         </div>
+
+        <!-- Right Div For Last Seen, Online, Typing Indicator -->
         <div class="flex flex-col justify-end items-end gap-4 text-right">
+
+            <!-- Check if the User is Typing if so display Typing Indicator -->
             <div 
                 *ngIf="(messageService.typingUsers$ | async)?.length" 
-                class="bg-green-300 px-3 py-2 rounded-3xl text-slate-900 typing-indicator">
+                class="bg-green-300 px-3 py-1 rounded-3xl text-slate-900 typing-indicator">
                 <div class="dot-flashing"></div>
                 <span class="font-montserrat font-bold">
                      Typing...
                 </span>
             </div>
-            <!-- <p class="font-montserrat font-semibold text-gray-800 text-lg truncate">
-                <span *ngIf="(selectedConversation.otherUser?.lastSeen | appDate) != 'Never'">
-                    Last Seen: {{selectedConversation.otherUser?.lastSeen | appDate}}
-                </span>
-            </p> -->
+
+            <!-- Check if the User is Online if Online Display Online Indicator -->
             <p
                 *ngIf="isOnline$(selectedConversation.otherUser?.chatId) | async"
                 class="bg-sky-50 bg-opacity-75 px-3 py-2 rounded-3xl font-work font-medium text-slate-900 text-sm">
                 <span>
                     Online
                 </span>
-            </p>            
+            </p>  
+            
+            <!-- If User is Not Online Display Last Seen -->
             <p
                 *ngIf="!(isOnline$(selectedConversation.otherUser?.chatId) | async)"
                 class="font-work font-medium text-gray-600 text-sm">
                 <span *ngIf="(selectedConversation.otherUser?.lastSeen | appDate) != 'Never'">
                     Last Seen: {{selectedConversation.otherUser?.lastSeen | appDate}}
                 </span>
-            </p>            
+            </p> 
+
         </div>
+        
     </div>
+    
 </div>

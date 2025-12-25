@@ -1,5 +1,9 @@
 <div class="p-2 h-[100%]">
+
+    <!-- The Main Message Input Div With Darker Blue Background and Rounded -->
     <div class="flex justify-around items-center gap-2 bg-blue-300 shadow-md shadow-slate-700 p-4 rounded-lg h-[6rem]">
+        
+        <!-- The Input for the Message -->
         <div class="w-full h-full">
             <app-text-area-field
                 [rows]="1"
@@ -10,6 +14,8 @@
                 (keydown.enter)="$event.preventDefault(); SendMessage()">
             </app-text-area-field>
         </div>
+
+        <!-- Send Message Button -->
         <div class="mt-2 w-[6rem] h-full">
             <app-button
                 [type]="'custom'"
@@ -23,6 +29,8 @@
                 [class]="''"
                 (clicked)="SendMessage()">
             </app-button>
-        </div>    
+        </div>  
+          
     </div>
+
 </div>

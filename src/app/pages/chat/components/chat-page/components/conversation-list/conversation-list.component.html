@@ -1,20 +1,27 @@
 <div class="flex flex-col space-y-2 p-2 pt-4 pb-4 h-screen overflow-hidden">
-    <!-- <div class="flex items-center bg-white px-4 border-b rounded-lg h-20 font-work text-3xl">
-        Chat List
-    </div> -->
+
+    <!-- The Container the Will Contain the Conversation List and will be Scrollable -->
     <div
         (scroll)="onScroll()"
         #scrollContainer
         class="bg-blue-100 shadow-md shadow-slate-700 p-2 pt-4 pb-8 rounded-3xl h-full overflow-y-auto custom-scrollbar">
+
+        <!-- Iterating Over Each Conversation of Conversation List and Showing to User -->
         <ng-container  
             *ngFor="let conversation of (conversations$ | async); trackBy: trackById" 
             class="min-h-28">
+
+            <!-- Checking if the Last Message Snippet of teh Conversation is Not Null, and If the Conversation is Selected Highlight it -->
             <div
                 (click)="conversationClick(conversation)"
                 *ngIf="conversation.lastMessageSnippet" 
-                [class.bg-blue-300]="(selectedConversation$ | async) == conversation "
-                class="flex-col hover:bg-blue-300 p-2 rounded-2xl min-h-28 transition-all duration-200 inactive-nav-link">
+                [class.bg-blue-300]="(selectedConversation$ | async)?.conversationId == conversation.conversationId "
+                class="flex-col hover:bg-blue-300 my-1 p-2 rounded-2xl min-h-28 transition-all duration-200 inactive-nav-link">
+
+                <!-- Top Div -->
                 <div class="flex justify-between">
+
+                    <!-- Name and User Name in One Column -->
                     <div class="">
                         <span class="font-inter font-semilight text-2xl truncate">
                             {{conversation.otherUser?.name}}
@@ -25,7 +32,11 @@
                             </span>
                         </div>
                     </div>
+
+                    <!-- User Online Check if Not Display Last Seen and Unread Count -->
                     <div class="text-right truncate">
+
+                        <!-- Online Check -->
                         <p 
                             *ngIf="isOnline$(conversation.otherUser?.chatId) | async"
                             class="flex bg-lime-400 m-1 ml-auto border border-sky-900 rounded-full w-3 h-3"> 
@@ -37,32 +48,53 @@
                                 Last Seen: {{conversation.otherUser?.lastSeen | appDate}}
                             </span>
                         </p>
+
+                        <!-- Unread Count -->
                         <span 
                             *ngIf="conversation.unreadCount != 0" 
                             class="bg-white shadow-md shadow-slate-500 mr-2 px-1 rounded-full font-work font-medium text-gray-600 text-md text-right">
                             {{conversation.unreadCount}}
                         </span>
+
                     </div>
+
                 </div>
+
+                <!-- Bottom Div -->
                 <div class="text-bottom flex justify-evenly items-end gap-1 py-1 font-inter text-sm break-words whitespace-normal">
+
+                    <!-- Last Message Snippet on Left with Truncate -->
                     <p class="flex-1 font-work text-gray-800 text-xs line-clamp-2">
                         {{conversation.lastMessageSnippet}}
                     </p>
+
+                    <!-- Last Message Time in Right -->
                     <span class="flex flex-row-reverse font-work font-medium text-gray-600 text-xs whitespace-nowrap">
                         {{conversation.lastMessageTime | appDate}}
                     </span>
+
                 </div>
+
             </div>
+
+            <!-- Border at Bottom of Each Conversation -->
             <div class="px-4">
                 <div class="border border-black border-opacity-25">
                 </div>
             </div>
+
         </ng-container>   
+
+        <!-- Checking if Conversation List is Loading -->
         <div *ngIf="isLoadingMore$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
             Loading older conversations...
         </div> 
+
+        <!-- Checking if no More Conversations to Load Reached the End of the List -->
         <div *ngIf="isFullListLoaded$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
             No More Conversations to Load ...
         </div> 
+
     </div>
+
 </div>

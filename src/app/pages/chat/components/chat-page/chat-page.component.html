@@ -1,23 +1,39 @@
+<!-- The Main Page of the App Conatining All the Other Components -->
+
+<!-- Backgorund Color User Indigo with Opacity Set to 50% -->
 <div class="bg-indigo-900 bg-opacity-50 h-screen overflow-hidden transition-colors">
     <div class="relative flex-col w-full h-full">
-        <div class="lg:block">
-            <!-- <app-sidebar
-                [sidebarCollapsed]="sidebarCollapsed"
-                class="bottom-0 left-0 z-40 fixed">
-            </app-sidebar> -->
-        </div>
+
+        <!-- Set the Width to full and Remove any Form of Scrolling from the Whole Page -->
         <main class="px-4 w-[100%] h-full overflow-x-hidden overflow-y-hidden transition-all duration-300">
             <div class="">
+                
+                <!-- The Main Content Of the Page after Margin ^ Padding -->
                 <div class="flex justify-between divide-x-0 w-[100%] h-full">
+                    
+                    <!-- Left Side -->
                     <div class="w-[25%] h-screen">
+
+                        <!-- The Sidebar List Containing All the Recent Conversation of the User -->
                         <app-conversation-list></app-conversation-list>
+
                     </div>
+
+                    <!-- Right Side -->
                     <div class="w-[75%] h-screen">
+
+                        <!-- The Search Bar to Search Users and Unread Message Count and Logout Button -->
                         <app-search-users class="h-[20%]"></app-search-users>
+                        
+                        <!-- The Main Chatting Window with Current Conversation Details and Messages and Message Input Box -->
                         <app-chat-window class="h-[80%]"></app-chat-window>
+                    
                     </div>
+
                 </div>
+
             </div>
         </main>
+        
     </div>
 </div>

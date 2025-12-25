@@ -1,5 +1,9 @@
 <div class="p-2 pt-4 w-100 h-[10%]">
+
+    <!-- Main Search Box After Margin Padding and Rounded -->
     <div class="flex justify-start gap-4 bg-blue-100 shadow-md shadow-slate-700 p-3 rounded-3xl w-100">
+        
+        <!-- The Search Field To Input User to Search the by Name -->
         <div class="w-full">
             <app-search-field
                 [fieldControl]="searchControl"
@@ -7,6 +11,8 @@
                 [icon]="false">
             </app-search-field>
         </div>
+
+        <!-- Search Button to Open Modal -->
         <div class="w-[5rem]">
             <app-button
                 type="custom"
@@ -21,18 +27,27 @@
                 {{ 'Search' }}
             </app-button>
         </div>
+
+        <!-- Unread Messages to Show -->
         <div class="bg-indigo-900 bg-opacity-50 shadow-inner shadow-slate-700 rounded-lg w-40">
+
+            <!-- Check if Unread Messages are 0 if True Then Show Unique Message -->
             <p 
-            *ngIf="(unreadMessages$ | async) == 0"
-            class="flex justify-center items-center w-full h-full font-montserrat font-bold text-white text-sm text-center">
+                *ngIf="(unreadMessages$ | async) == 0"
+                class="flex justify-center items-center w-full h-full font-montserrat font-bold text-white text-sm text-center">
                 No Unread Messages
             </p>
+
+            <!-- If Unread Messages are not Zero show the Number -->
             <p 
-            *ngIf="(unreadMessages$ | async) != 0" 
-            class="flex justify-center items-center w-full h-full font-montserrat font-black text-2xl text-center">
-            {{unreadMessages$ | async }}
-        </p>
+                *ngIf="(unreadMessages$ | async) != 0" 
+                class="flex justify-center items-center w-full h-full font-montserrat font-black text-2xl text-center">
+                {{unreadMessages$ | async }}
+            </p>
+
         </div>
+
+        <!-- Logout Button so the User can Logout -->
         <div class="w-[5rem]">
             <app-button
                 type="custom"
@@ -47,11 +62,7 @@
                 {{ 'Logout' }}
             </app-button>
         </div>
+
     </div>
+
 </div>
-<!-- <app-button
-[class]="'h-[45px] min-w-[100px]'"
-[type]="'secondary'"
-(clicked)="clearFilters()">
-{{ 'ClearFilters' | translate }}
-</app-button> -->

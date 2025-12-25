@@ -16,26 +16,24 @@ import { MessageInputComponent } from './components/message-input/message-input.
   styleUrl: './chat-window.component.css'
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
-  
+
+  // Injecting Necessary Service to Use Later 
   private conversationService = inject(ConversationService)
   private messageService = inject(MessageService)
   private signalRService = inject(SignalRService)
   private alertService = inject(AlertService)
-
   private subscription = new Subscription();
+
+  // Current Conversation From the Conversation Service
   selectedConversation$ = this.conversationService.selectedConversation$;
-  currentConversation: ConversationDto | undefined = undefined;
-  
-  // currentConversation$ = this.conversationService.selectedConversation$.subscribe({
-  //     next: (result) => {
-  //       const data = result
-  //       this.currentConversation = data
-  //     },
-  //     error: () => this.alertService.stopLoadingMessage()
-  //   });  
 
+  // Current Conversaation stored in this Component
+  currentConversation: ConversationDto | undefined = undefined;  
 
+  // Upon Initial Load Listen to These
   ngOnInit(): void {
+
+    // Handle Change in the Current COnversation upon Conversation in Change After Listening to SignalR
     this.subscription.add(
       this.conversationService.selectedConversation$.subscribe({
         next: (conversation) => {
@@ -45,38 +43,38 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
       })
     )
 
+    // Handle Receiving Messages in Real-Time
     this.subscription.add(
       this.signalRService.onMessageReceived().subscribe(data => {
+
+        // If Message was Received in Current Conversation Mark the Message as Read
         if (data.conversationId === this.currentConversation?.conversationId) {
           this.markAsRead();
         }
       })
     )
-    // if (this.currentConversation?.conversationId) {
-    //   this.signalRService.markConversationAsRead(
-    //     this.currentConversation?.conversationId
-    //   );
-    //   this.signalRService.joinConversation(
-    //     this.currentConversation?.conversationId
-    //   );
-
-    // }
   }
 
+  // Function When Moving From One Conversation to Another
   private async handleConversationChange(conversation: ConversationDto) {
+
+    // If Current Conversation is Noe Empty Leave the Current Conversation
     if (this.currentConversation?.conversationId) {
       await this.signalRService
         .leaveConversation(this.currentConversation.conversationId);
     }
 
+    // Set the Curretn Conversation as New Conversation you want to join
     this.currentConversation = conversation
 
-    await this.signalRService
-      .joinConversation(conversation.conversationId!);
+    // Join the Conversation
+    await this.signalRService.joinConversation(conversation.conversationId!);
 
+    // mark the Conversation as Read 
     this.markAsRead();
   } 
 
+  // Send Message Via SignalR to Server to Mark A Conversation As Read
   markAsRead() {
     if (this.currentConversation?.conversationId) {
       this.signalRService
@@ -84,10 +82,10 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Leave the Convesation Upon Trying to Close the App
   ngOnDestroy(): void {
     if (this.currentConversation?.conversationId) {
-      this.signalRService
-        .leaveConversation(this.currentConversation.conversationId);
+      this.signalRService.leaveConversation(this.currentConversation.conversationId);
     }
     this.subscription.unsubscribe()
   }

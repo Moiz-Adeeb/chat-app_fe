@@ -15,41 +15,59 @@ import { MessageService } from './../../../../../../../../services/message.servi
 })
 export class ChatMessagesComponent extends BasePaginationComponent  implements OnInit, OnDestroy {
   
-  
-  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
-
+  // Injectin Services that will be used Later
   private messageService = inject(MessageService);
   private authService = inject(AuthService);
-
-  protected readonly MessageStatus = MessageStatus
+  
+  // Getting the Chat ID of the Current User
   protected readonly ChatId = this.authService.currentUser.chatId
   
+  // Getting the Enum for MessageStatus
+  // Sent = 0
+  // Delivered = 1
+  // Read = 2  
+  protected readonly MessageStatus = MessageStatus
+  
+  // Initialiaing the Scrolling Container the Container that will have diplay the Conversation List
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
+  // Getting the Messages List Via the Message Service
   messages$ = this.messageService.messages$;
+
+  // Loadinbg or Full List Loaded Check
   isLoadingMore$ = this.messageService.isLoadingMore$
   isFullListLoaded$ = this.messageService.isFullListLoaded$
-
-  private lastScrollTime = 0;
   
+  // Initial Load
   ngOnInit(): void {
-    // Subscribe to the Observable ($), not the raw property
+    
+    // Subscribe to When the currenc Conversation ID Changes and then Reset the Page & Scroll to the Bottom of the Page
     this.messageService.currentConversationId$
-      .pipe(filter(id => id !== null)) // Only act if we have a real ID
+      .pipe(filter(id => id !== null)) 
       .subscribe(() => {
-        this.page = 1; // Reset local pagination
-        this.scrollToBottom(); // Reset scroll position
+        this.page = 1; 
+        this.scrollToBottom();
       });
   }
 
+  // Load More Messages on Scroll Via the Messages Service
   onScroll() {
+
+    // Get the Scrolling Container and Check Position of Scrollbar for Reverse Scroll
     const element = this.scrollContainer.nativeElement;
     const atBottom = element.scrollTop < 300;
     
+    // Get Loading Status
     let isLoadingMore = false;
     this.isLoadingMore$.subscribe(state => isLoadingMore = state).unsubscribe();
     
+    // Loading Check
     if (atBottom && !isLoadingMore) {
+
+      // Increment in Page
       this.page++
+
+      // API CALL 
       this.messageService.loadMoreMessages(
         this.page,
         this.pageSize,
@@ -57,6 +75,7 @@ export class ChatMessagesComponent extends BasePaginationComponent  implements O
     }
   }
 
+  // Scroll to the bottom of the Page
   private scrollToBottom() {
     setTimeout(() => {
       if (this.scrollContainer) {
@@ -66,6 +85,7 @@ export class ChatMessagesComponent extends BasePaginationComponent  implements O
     }, 100);
   }
 
+  // Clear All Messages When Trying to Close the App
   ngOnDestroy(): void {
     this.page = 1
     this.messageService.clearMessages()

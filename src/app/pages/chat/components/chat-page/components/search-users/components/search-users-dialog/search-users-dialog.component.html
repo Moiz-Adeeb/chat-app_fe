@@ -1,5 +1,9 @@
+<!-- Background Behind the Modal -->
 <div class="z-[9999] fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-2 sm:p-4">
+
+    <!-- Main Modal Div Containing Modal Content -->
     <div class="flex flex-col bg-[color:var(--color-white)] bg-blue-300 shadow-2xl shadow-slate-900 rounded-2xl sm:rounded-xl md:rounded-2xl w-full min-w-[50vw] max-w-2xl min-h-[90vh] max-h-[98vh] sm:max-h-[95vh] md:max-h-[90vh]">
+
         <!-- Fixed Header -->
         <div class="flex justify-between items-center p-3 sm:p-4 md:p-6 border-[color:var(--color-blue-900)] border-b">
             <h3 class="pr-2 sm:pr-4 font-montserrat font-semibold text-black text-base sm:text-lg md:text-xl lg:text-2xl truncate">
@@ -11,16 +15,24 @@
                 <i class="text-base sm:text-lg md:text-xl fas fa-times"></i>
             </button>
         </div>
+
+        <!-- Scrollable Div Containing the Users List -->
         <div
             (scroll)="onScroll()"
             #scrollContainer 
             class="flex-1 bg-blue-100 px-4 py-2 h-full overflow-y-auto custom-scrollbar">
+
+            <!-- Iterating Over Each User in the List -->
             <ng-container *ngFor="let user of users$ | async" class="" >
+
+                <!-- Individual User in List Checking if the User is not the Logged in User -->
                 <div 
                     *ngIf="user.chatId != this.authService.currentUser.chatId"
                     (click)=initiateChat(user.chatId!)
                     class="flex-col hover:bg-blue-300 p-4 rounded-lg transition-all duration-200 inactive-nav-link">
                     <div class="flex justify-between">
+
+                        <!-- Name and UserName -->
                         <div>
                             <span class="font-inter font-semilight text-2xl truncate">
                                 {{user.name}}
@@ -31,6 +43,8 @@
                                 </span>
                             </div>
                         </div>
+
+                        <!-- Last Seen Time of the User -->
                         <div class="text-right truncate">
                             <p class="font-work font-medium text-gray-600 text-sm">
                                 <span *ngIf="(user.lastSeen | appDate) != 'Never'">
@@ -38,9 +52,12 @@
                                 </span>
                             </p>
                         </div>
+
                     </div>
                 </div>
+                
             </ng-container>
+
             <!-- <div *ngIf="isLoadingMore$ | async" class="p-2 font-work text-gray-800 text-xs text-center">
                 Loading older conversations...
             </div> 
@@ -48,7 +65,11 @@
                 No More Conversations to Load ...
             </div>  -->
         </div>
+
+        <!-- The Search Box and Search Button -->
         <div class="flex justify-around gap-4 mb-4 px-3 pt-3 border-[color:var(--color-blue-900)] border-t w-100 h-100">
+
+            <!-- The Search Div With Search Input -->
             <div class="w-[90%]">
                 <app-search-field
                     [fieldControl]="searchControl"
@@ -56,6 +77,8 @@
                     [icon]="false">
                 </app-search-field>
             </div>
+
+            <!-- Button to Search With  -->
             <div class="w-[10%]">
                 <app-button
                     [type]="'custom'"
@@ -70,7 +93,10 @@
                 {{ 'Search' }}
                 </app-button>
             </div>
+
         </div>
+        
     </div>
+
 </div>
     

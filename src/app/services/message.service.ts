@@ -5,39 +5,57 @@ import { SignalRService } from './signal-r.service';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {
+
+  // Injecting Messages and SignalRService for Later Use for API and Websocket Call
   private messageClient = inject(MessagesClient);
   private signalR = inject(SignalRService);
+
+  // Getting the Enum for MessageStatus
+  // Sent = 0
+  // Delivered = 1
+  // Read = 2
   protected readonly MessageStatus = MessageStatus
 
+  // Storing the current Conversation ID
   private currentConversationIdSource = new BehaviorSubject<string | null>(null);
   public currentConversationId$ = this.currentConversationIdSource.asObservable();
-
   public currentConversationId: string | null = null;
   
   // This holds the messages for the currently active chat window
   private messagesSource = new BehaviorSubject<MessagesDto[]>([]);
   public messages$ = this.messagesSource.asObservable();
+
+  // Checking if the Messages List is curently Loading or has been Completely Loaded
   private isLoadingSource = new BehaviorSubject<boolean>(false);
   public isLoadingMore$ = this.isLoadingSource.asObservable();
   private fullListLoadedSource = new BehaviorSubject<boolean>(false);
   public isFullListLoaded$ = this.fullListLoadedSource.asObservable();
+
+  // Checking if the User is Typing
   private typingUsers = new BehaviorSubject<string[]>([]); 
   public typingUsers$ = this.typingUsers.asObservable();
   private typingTimers = new Map<string, any>();
-  //HashSet
+
+  // Hash-Set of Messages ID's
   private messageIdSet = new Set<string>();
 
   constructor() {
+    // Listen to all the SignalRService Methods
     this.listenToSignals();
   }
 
-  // Phase 2: GET /chat/history/{chatId}
+  // Function to Initially Load the Recent Messages of the Conversation
   loadChatHistory(chatId: string, page: number, pageSize: number) {
+    // Set the Current Conversation in the Service
     this.currentConversationId = chatId;
     this.currentConversationIdSource.next(chatId);
+
+    // Clear the Hash-Set and List of Previous Messages if Left any so no Mixing of Messages of Different Conversations
     this.messageIdSet.clear(); 
     this.fullListLoadedSource.next(false);
     this.messagesSource.next([]);
+
+    // API CALL
     this.messageClient.getMessages(
       chatId,
       false,
@@ -49,24 +67,25 @@ export class MessageService {
     ).subscribe({
         next: (response) => {
           const data = response.data ?? [];
-        
+
+          // Adding the ID's of the New Messages to the Hash-Set
           data.forEach(m => { if(m.id) this.messageIdSet.add(m.id); });
-          
           this.messagesSource.next(data);
         }
       });
   }
 
+  // Function to Send Message to Other User in the Conversation
   async sendMessage(conversationId: string, receiverChatId: string, content: string) {
     try {
-      // We call the hub method. The Hub will respond via 'SentMessage' 
-      // which we handle in listenToSignals() to avoid duplicate logic.
+      // Calling SignalRService to Send the Message
       await this.signalR.sendMessage(conversationId, receiverChatId, content);
     } catch (err) {
       console.error('Failed to send message:', err);
     }
   }  
 
+  // Function to Handle the Typing indicators
   private handleTypingIndicator(chatId: string) {
     const currentTyping = this.typingUsers.value;
     
@@ -78,35 +97,37 @@ export class MessageService {
     if (this.typingTimers.has(chatId)) {
         clearTimeout(this.typingTimers.get(chatId));
     }
-
+    // Hide After 3.5 Seconds of no Typing Signals
     const timer = setTimeout(() => {
         const updatedTyping = this.typingUsers.value.filter(id => id !== chatId);
         this.typingUsers.next(updatedTyping);
         this.typingTimers.delete(chatId);
-    }, 3500); // Hide after 3.5 seconds of no typing signals
+    }, 3500); 
 
     this.typingTimers.set(chatId, timer);
   }
-
-
+  
+  // Listening to Messages Sent By the Server
   private listenToSignals() {
-    // 1. Handle Received Messages
+
+    // Handle Received Messages and Add it to the Message List
     this.signalR.onMessageReceived().subscribe((data) => {
       this.appendMessage(data.message);
     });
 
-    // 2. Handle Sent Confirmation (to update status from 'pending' to 'sent')
+    // Handle Sent Confirmation and Add it to the Message List
     this.signalR.onSentConfirmation().subscribe((data) => {
       this.appendMessage(data.message);
     });
 
+    // Handle Mark Messages as Delivered Confirmation and Update the Messages in Real-Time
     this.signalR.onMarkAsDelivered().subscribe((deliveredBatch) => {
         const currentMessages = this.messagesSource.getValue();
         
         const updatedMessages = currentMessages.map(msg => {
             const updateData = deliveredBatch.find(d => d.id === msg.id);
             
-            // Only update if current status is lower than Delivered (1 -> 2)
+            // Only Update if the Status is Equal to Sent 
             if (updateData && msg.status === MessageStatus.Sent) {
                 return Object.assign(msg, { 
                     status: MessageStatus.Delivered, 
@@ -119,14 +140,14 @@ export class MessageService {
         this.messagesSource.next([...updatedMessages]);
     });
 
-    // 3. Handle Status Updates (Mark as Read/Delivered)
+    // Handle Mark Messages as Read Confirmation and Update the Messages in Real-Time
     this.signalR.onMarkAsRead()
       .subscribe((data: { conversationId: string, messages: any[] }) => {
         const currentMessages = this.messagesSource.getValue();
         const updatedMessages = currentMessages.map(msg => {
           const updateData = data.messages.find(m => String(m.id) === String(msg.id));
           if (updateData) {
-            // Object.assign updates 'msg' in place while keeping it a MessagesDto instance
+            // Update the Status to Read Regardless of Previous State
             return Object.assign(msg, { 
               status: MessageStatus.Read, 
               readTime: updateData.readTime 
@@ -137,6 +158,7 @@ export class MessageService {
         this.messagesSource.next([...updatedMessages]);
     });
 
+    // Handle the Typing Indicator in Real-Time
     this.signalR.onTyping().subscribe(({ conversationId, senderChatId }) => {
         // Only show if the typing is happening in the active chat window
         if (String(conversationId) === String(this.currentConversationId)) {
@@ -145,6 +167,7 @@ export class MessageService {
     });
   }
 
+  // Add New Messages to the Messages List on Load or After Update
   private appendMessage(newMessage: MessagesDto) {
     const currentMessages = this.messagesSource.getValue();
     
@@ -154,15 +177,15 @@ export class MessageService {
     this.messagesSource.next([newMessage, ...currentMessages]);
   }
 
+  // Function for Loading More Messages
   loadMoreMessages( page: number, pageSize: number = 50) {
-    //const currentList = this.conversationsSource.value;
     if (!this.messagesSource) return;
 
-    // Guard: Don't load if already loading or if we've reached the end
+    // Check if the List is Already Loading or has been Fully Loaded
     if (this.isLoadingSource.value || this.fullListLoadedSource.value) return;
-
     this.isLoadingSource.next(true);
 
+    // API CALL
     this.messageClient.getMessages(
         this.currentConversationId,
         false, 
@@ -181,6 +204,7 @@ export class MessageService {
             this.fullListLoadedSource.next(true);
           }
 
+          // Checking Messages ID Set for any Duplicates in Messages List
           const uniqueNewData = newData.filter(msg => {
             if (msg.id && !this.messageIdSet.has(msg.id)) {
               this.messageIdSet.add(msg.id);
@@ -189,14 +213,7 @@ export class MessageService {
             return false;
           });
 
-          // Append new data to existing list
-          // newData.forEach(element => {
-          //   const exist = currentList.some(c => c.conversationId === element.conversationId);
-          //   if (exist) {
-          //     var index = newData.findIndex(c => c.conversationId === element.conversationId)
-          //     if (index !== -1) newData.splice(index,1);
-          //   }
-          // });
+          // Update the Messages List
           this.messagesSource.next([...currentList, ...uniqueNewData]);
           this.isLoadingSource.next(false);
           },
@@ -204,9 +221,11 @@ export class MessageService {
       });
   } 
 
-
-  // Clear messages when closing a chat
+  // Clear All Messages from the List Used when Switching from One Conversation to Another
   clearMessages() {
     this.messagesSource.next([]);
+    this.messageIdSet.clear()
+    this.fullListLoadedSource.next(false);
+    this.isLoadingSource.next(false);
   }
 }

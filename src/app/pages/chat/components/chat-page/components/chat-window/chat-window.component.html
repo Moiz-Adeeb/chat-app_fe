@@ -1,27 +1,41 @@
+<!-- The Main Chat Window -->
 <div class="flex flex-col justify-between pt-8 pb-2 w-[100%] h-[90%]">
+
+    <!-- The Div inside the Chat Window with Blue Background and Rounded -->
     <div class="flex flex-col justify-between bg-blue-100 shadow-md shadow-slate-700 mx-2 mt-1 mb-2 p-2 rounded-3xl h-[98%]">
+
+        <!-- Check If the Current Conversation is Empty if it Is Display Unique Message -->
         <div 
             *ngIf="!(selectedConversation$ | async)"
-            class="flex flex-col justify-around items-center h-full">
+            class="flex flex-col justify-around items-center h-full font-inter font-medium text-gray-600 text-xl text-center">
             <h3>
                 Please Select a Contact to Initiate a Chat
             </h3>
         </div>
+        
+        <!-- Display if the Current Conversation is Not Empty -->
         <div 
             *ngIf="(selectedConversation$ | async)" 
             class="flex flex-col w-[100%] h-[100%]">
+
+            <!-- The Top Div With The Current Details of the Conversation and Typing Inidcator -->
             <app-conversation-details 
                 class="flex-none"
                 [conversation]="currentConversation"    
             ></app-conversation-details>
-            
+
+            <!-- The Center Div Containing All the Message -->
             <app-chat-messsages class="flex-1 min-h-0"></app-chat-messsages>
             
+            <!-- The Bottom Div for Sending Messages -->
             <app-message-input 
                 class="flex-none"
                 [conversationId]="currentConversation?.conversationId"
                 [receiverChatId]="currentConversation?.otherUser?.chatId"
             ></app-message-input>
+
         </div>
+
     </div>
+
 </div>

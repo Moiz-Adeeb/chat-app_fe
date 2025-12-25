@@ -18,32 +18,28 @@ import { SignalRService } from './../../../../../../../../services/signal-r.serv
 })
 export class MessageInputComponent implements OnInit {
 
+  // Inputs from Parent Chat Winodw Component
   @Input() conversationId: string | undefined;
   @Input() receiverChatId: string | undefined;
 
+  // Injecting Necessary Services to Use Later 
   private messageService = inject(MessageService);
   private conversationService = inject(ConversationService);
   private alertService = inject(AlertService);
   private signalR = inject(SignalRService);
-
   private subscription = new Subscription();
   private lastTypingSent = 0;
   
+  // The Current Conversation
   currentConversation: ConversationDto | undefined = undefined;  
-  // currentConversation$ = this.conversationService.selectedConversation$.subscribe({
-  //     next: (result) => {
-  //       const data = result
-  //       this.currentConversation = data
-  //     },
-  //     error: () => this.alertService.stopLoadingMessage()
-  //   });
 
+  // Message Input Controls
   messageBox = new FormControl('');
-  messageBoxGroup: FormGroup = new FormGroup({
-    message: this.messageBox
-  });
+  messageBoxGroup: FormGroup = new FormGroup({ message: this.messageBox });
 
+  // Listen To Signals
   ngOnInit(): void {
+    // Listen to Conversation Change in Real-TIme
     this.subscription.add(
       this.conversationService.selectedConversation$.subscribe({
         next: (result) => {
@@ -55,17 +51,19 @@ export class MessageInputComponent implements OnInit {
     )
   }
 
+  // Functon to Send Typing Indicator When the User is Typing
   OnUserTyping() {
     if (!this.currentConversation?.conversationId) return;
-
     const now = Date.now();
+
+    // Send typing Indicator Only Every 3 Seconds
     if (now - this.lastTypingSent > 3000) {
       this.signalR.sendTypingNotification(this.currentConversation.conversationId);
-      console.log('Typing')
       this.lastTypingSent = now;
     }
   }
 
+  // Function to send Message to the User Via SignalR
   SendMessage() {
     Object.values(this.messageBoxGroup.controls).forEach((control) => {
       control.markAsTouched();
@@ -73,20 +71,27 @@ export class MessageInputComponent implements OnInit {
     });
 
     if(this.messageBoxGroup?.valid) {
+
+      // Check if Message is Empty
       if (this.messageBox.value == '') return;
       const content = this.messageBox.value ?? ''
+
       if (this.currentConversation?.conversationId && this.currentConversation.otherUser?.chatId)
       {
+        // Send message Via the Message Service
         this.messageService.sendMessage(
           this.currentConversation?.conversationId, 
           this.currentConversation?.otherUser?.chatId,
           content
         );
+
+        // Reset the Message Box to Empty
         this.messageBox.reset();
       }
     }
   }
 
+  // On Closing The App
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

@@ -15,9 +15,9 @@ class CustomSignalRLogger implements ILogger {
 })
 export class SignalRService extends EndpointFactoryService {
 
-  private connectionStarted$ = new BehaviorSubject<boolean>(false);
   private unreadMessageService = inject(UnreadMessageService)
-
+  authService: AuthService = inject(AuthService);
+  
   // Subjects for Components to subscribe to
   private messageReceived = new Subject<any>();
   private messageSentConfirm = new Subject<any>();
@@ -27,22 +27,22 @@ export class SignalRService extends EndpointFactoryService {
   private messagesMarkedAsRead = new Subject<any>();
   private messagesMarkedAsDelivered = new Subject<{ id: string, deliveredTime: Date }[]>();
   private updateUserListSource = new Subject<{ conversation: any, lastMessageSnippet: string, unreadCount: number }>();
-
+  
   timerId: any = null;
+  
+  // Check if the Hub is Already Connected or is Connecting
   isConnected = false;
   isConnecting = false;
-  authService: AuthService = inject(AuthService);
   private isListenersSet = false;
   hubConnection!: signalR.HubConnection;
-  private newNotification = new Subject<{ title: string; message: string }>();
+  private connectionStarted$ = new BehaviorSubject<boolean>(false);
+
+  // Hub URL on the Back-End
   private readonly url = this.configurations.baseUrl + '/chat';
   private option: signalR.IHttpConnectionOptions = {
+    // Getting the Acces Token for Authentication and Authorization
     accessTokenFactory: () => this.accessToken,
   };
-
-  getNewNotificationEvent(): Observable<{ title: string; message: string }> {
-    return this.newNotification.asObservable();
-  }
 
   // init() {
   //   this.hubConnection = new signalR.HubConnectionBuilder()
@@ -53,6 +53,7 @@ export class SignalRService extends EndpointFactoryService {
   //   this.addListeners();
   // }
 
+  // Initial Handshake
   init() {
     if(this.hubConnection) return;
     this.hubConnection = new signalR.HubConnectionBuilder()
@@ -68,7 +69,7 @@ export class SignalRService extends EndpointFactoryService {
     this.addListeners();
   }
 
-  // --- External Observables ---
+  // External Observables
   onMessageReceived() { return this.messageReceived.asObservable(); }
   onSentConfirmation() { return this.messageSentConfirm.asObservable(); }
   onUserStatusChange() { return this.userStatusChanged.asObservable(); }
@@ -78,6 +79,7 @@ export class SignalRService extends EndpointFactoryService {
   onMarkAsDelivered() { return this.messagesMarkedAsDelivered.asObservable(); } 
   onUpdateUserList() { return this.updateUserListSource.asObservable(); }
 
+  // Connecitng to the SignalR-Hub
   connect() {
     if (this.isConnected || !this.hubConnection) {
       return;
@@ -108,11 +110,10 @@ export class SignalRService extends EndpointFactoryService {
   //   }
   // }
 
-  // 3. The "Gatekeeper" method: Ensures we never send data while disconnected
+  //Ensures we never send data while disconnected
   public async waitForConnection(): Promise<void> {
     if (this.hubConnection?.state === signalR.HubConnectionState.Connected) return;
 
-    // Convert the Observable to a Promise and wait for the first 'true'
     await firstValueFrom(
       this.connectionStarted$.pipe(
         filter(started => started === true),
@@ -121,6 +122,7 @@ export class SignalRService extends EndpointFactoryService {
     );
   }  
 
+  // Disconnecting from the SignalR-Hub
   disconnect() {
     this.isListenersSet = false;
     if (this.hubConnection) {
@@ -138,6 +140,7 @@ export class SignalRService extends EndpointFactoryService {
     }
   }
 
+  // Check If User is Online
   public onCheckOnline() {
     return new Observable<any[]>(subscriber => {
       this.hubConnection?.on('CheckOnline', (statuses: any[]) => {
@@ -146,18 +149,21 @@ export class SignalRService extends EndpointFactoryService {
     });
   }  
 
+  // Method to Join a Conversation
   async joinConversation(conversationId: string) {
     if (this.isConnected) {
       await this.hubConnection.send('JoinConversation', conversationId);
     }
   }
 
+  // Method to Exit a Conversation
   async leaveConversation(conversationId: string) {
     if (this.isConnected) {
       await this.hubConnection.send('LeaveConversation', conversationId);
     }
   }
 
+  // Send Message to the server to Send it to the Receiver in Real-Time
   async sendMessage(conversationId: string, receiverChatId: string, content: string) {
     if (!this.hubConnection) {
       this.init();
@@ -166,10 +172,12 @@ export class SignalRService extends EndpointFactoryService {
     return await this.hubConnection.send('SendMessageToUser', conversationId, receiverChatId, content);
   }
 
+  // Send Typing Notification to Server when Typing in a conversation
   async sendTypingNotification(conversationId: string) {
     return this.hubConnection.send('Typing', conversationId);
   }
 
+  // Send Message to Server to Mark All the Messages in a conversation as Read
   async markConversationAsRead(conversationId: string) {
     if (!this.hubConnection) {
       this.init();
@@ -180,12 +188,14 @@ export class SignalRService extends EndpointFactoryService {
     } else console.log('Mark Conversation as read was called before hub was connected');
   }
 
+  // Check The Online Status of all the Users and get a List of all the Online Users
   async checkOnlineStatus(chatIds: string[]) {
     if (this.isConnected) {
       return await this.hubConnection.send('CheckOnline', chatIds);
     } else { console.log('fail') }
   }  
 
+  // Add All The Listeners for the hub to Listen to
   addListeners() {
     if (this.isListenersSet || !this.hubConnection) {
       return;
@@ -202,42 +212,45 @@ export class SignalRService extends EndpointFactoryService {
       statuses.forEach(s => this.userStatusChanged.next(s));
     });
 
-    // Message received Confirmation
+    // Message Received Confirmation
     this.hubConnection.on('MarkAsReceivedBatch', (messages: any[]) => {
         this.messagesMarkedAsDelivered.next(messages);
     });
 
-    // Receiving a new message
+    // Receiving a New Message
     this.hubConnection.on('ReceiveMessage', (conversationId, message, senderChatId, messageId) => {
       this.messageReceived.next({ conversationId, message, senderChatId, messageId });
     });
 
-    // Confirmation that your message hit the server
+    // Confirmation that Your Message Hit the Server
     this.hubConnection.on('SentMessage', (conversationId, message, messageId) => {
       this.messageSentConfirm.next({ conversationId, message, messageId });
     });
 
-    // Global unread count update
+    // Global Unread Count update
     this.hubConnection.on('UnreadMessagesCount', (count: number) => {
+      // Update the Unread Message Count in Real-time in Unread Message Service
       this.unreadMessageService.updateCount(count);
     });
 
-    // Typing indicator
+    // Typing Indicator
     this.hubConnection.on('IsTyping', (conversationId, senderChatId) => {
       this.typingStatus.next({ conversationId, senderChatId });
     });
 
-    // Marks as read
+    // Marks as ead
     this.hubConnection.on('MarkAsRead', (conversationId, messages) => {
         console.log("Read Signal Received!", messages);
         this.messagesMarkedAsRead.next({ conversationId, messages });
     });
 
+    // Update the Conversation List and bring it to the Top
     this.hubConnection.on('UpdateUserList', (conversation, lastMessageSnippet, unreadCount) => {
     // This updates the sidebar logic
         this.updateUserListSource.next({conversation, lastMessageSnippet, unreadCount});
     });
 
+    // Closing the SignalR Connection
     this.hubConnection.onclose(() => {
       this.isConnected = false;
       console.log('SignalR Connection Closed');

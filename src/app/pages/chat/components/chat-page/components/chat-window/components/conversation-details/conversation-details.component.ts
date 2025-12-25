@@ -15,13 +15,16 @@ import { OnlineService } from '../../../../../../../../services/online.service';
 })
 export class ConversationDetailsComponent {
 
+  // Get Current Conversation Input From Chat Window Component
   @Input() conversation: ConversationDto | undefined;
 
+  // Injecting Necessary Service Will Need LAter
   protected onlineService = inject(OnlineService);
   private conversationService = inject(ConversationService)
   protected messageService = inject(MessageService)
   selectedConversation$ = this.conversationService.selectedConversation$
 
+  // Function to Check if the User is Online
   isOnline$(chatId: string | undefined) {
     return this.onlineService.onlineUsers$.pipe(
       map(set => {
