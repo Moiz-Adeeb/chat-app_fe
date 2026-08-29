@@ -6,7 +6,9 @@ export const environment = {
   production: true,
   hmr: false,
   // baseUrl: 'https://api.salalimited.work.gd',
-  baseUrl: 'https://dotnet-chat-app.runasp.net',
+  // baseUrl: 'https://dotnet-chat-app.runasp.net',
+
+  baseUrl: 'http://localhost:5000',
   // emailUrl: 'http://localhost:4200',
   emailUrl: '',
 };

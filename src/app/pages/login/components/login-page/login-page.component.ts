@@ -1,20 +1,12 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { CustomValidator } from '../../../../customValidator/custom-validator';
 import { UserLogin } from '../../../../models/user-login.model';
-import {
-  AlertService,
-  MessageSeverity,
-} from '../../../../services/alert.service';
+import { AlertService, MessageSeverity } from '../../../../services/alert.service';
 import { AuthService } from '../../../../services/auth.service';
 import { LoginService } from '../../../../services/login.service';
 import { SignalRService } from '../../../../services/signal-r.service';
@@ -29,14 +21,7 @@ import { ThemeToggleComponent } from '../../../../shared/theme-toggle/components
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    TranslatePipe,
-    AppButtonComponent,
-    AppTextFieldComponent,
-    AngularSvgIconModule
-],
+  imports: [FormsModule, CommonModule, TranslatePipe, AppButtonComponent, AppTextFieldComponent, AngularSvgIconModule, ThemeToggleComponent],
 })
 export class LoginPageComponent implements OnInit {
   currentLanguage: string = 'en';
@@ -107,13 +92,9 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  onSignUp() {
-    this.router.navigate(['/sign-up']);
-  }
-
   emailControl = new FormControl('', [
     CustomValidator.required(),
-    Validators.maxLength(50),
+    Validators.email,
   ]);
   passwordControl = new FormControl('', [
     CustomValidator.required(),

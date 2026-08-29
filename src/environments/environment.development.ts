@@ -7,8 +7,8 @@ export const environment = {
   hmr: false,
   emailUrl: '',
   // baseUrl: 'https://dog-just-nicely.ngrok-free.app',
-  // baseUrl: 'https://localhost:5001',
-  baseUrl: 'https://dotnet-chat-app.runasp.net',
+  baseUrl: 'http://localhost:5000',
+  // baseUrl: 'https://dotnet-chat-app.runasp.net',
   // baseUrl: 'https://api.salalimited.work.gd',
 };
 

@@ -33,7 +33,7 @@ export class EndpointFactoryService {
     private injector: Injector,
     protected encoderService: EncoderService,
     private localStorage: LocalStoreManager,
-  ) {}
+  ) { }
 
   private _accessToken?: string;
 
@@ -70,11 +70,10 @@ export class EndpointFactoryService {
     })
       .append('username', userLogin.userName ?? '')
       .append('password', userLogin.password ?? '')
-      .append('provider', userLogin.provider + '')
-      .append('token', userLogin.token ?? '')
-      .append('role', userLogin.role ?? '')
+      // .append('provider', userLogin.provider + '')
+      // .append('token', userLogin.token ?? '')
+      // .append('role', userLogin.role ?? '')
       .append('grant_type', 'password')
-      .append('granttype', 'password')
       .append('scope', 'openid email profile offline_access roles');
     const requestBody = params.toString();
     return this.http.post<LoginResponse>(this.loginUrl, requestBody, {

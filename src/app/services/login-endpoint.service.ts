@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {EndpointFactoryService} from './endpoint-factory.service';
-import {ChangePassword} from '../models/change-password';
+import { EndpointFactoryService } from './endpoint-factory.service';
+import { ChangePassword } from '../models/change-password';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class LoginEndpointService extends EndpointFactoryService {
     const body = {
       currentPassword: changePassword.currentPassword,
       confirmPassword: changePassword.confirmPassword,
-      newPassword: changePassword.newPassword,
+      Password: changePassword.Password,
     };
     return this.http.post(this.changePasswordUrl, body, {
       headers: this.getRequestHeaders().headers,

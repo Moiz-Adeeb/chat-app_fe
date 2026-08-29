@@ -1,1 +1,5 @@
 // No custom styles needed - using Tailwind CSS only
+// app-button.component.scss
+.custom-hover:hover {
+  background-color: var(--hover-bg) !important;
+}

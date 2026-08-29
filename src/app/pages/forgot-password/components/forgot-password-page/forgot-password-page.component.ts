@@ -1,19 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from "angular-svg-icon";
 import { environment } from '../../../../../environments/environment';
-import {
-  GenerateResetPasswordTokenRequestModel,
-  UserClient,
-} from '../../../../api/api-old';
+import { GenerateResetPasswordTokenRequestModel, UserClient } from '../../../../api/api';
 import { CustomValidator } from '../../../../customValidator/custom-validator';
 import { AlertService } from '../../../../services/alert.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -70,7 +61,7 @@ export class ForgotPasswordPageComponent implements OnInit {
     if (this.form.valid) {
       this.alertService.startLoadingMessage();
       this.userClient
-        .user_GenerateResetPassword(
+        .generateResetPassword(
           new GenerateResetPasswordTokenRequestModel({
             email: this.emailControl.value ?? '',
             host: environment.emailUrl ?? '',
@@ -85,7 +76,7 @@ export class ForgotPasswordPageComponent implements OnInit {
     }
   }
 
-  onBackLogin(): void {
+  onBackToLogin(): void {
     this.router.navigate([`/login`]);
   }
 

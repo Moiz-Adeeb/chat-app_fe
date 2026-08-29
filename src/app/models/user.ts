@@ -1,5 +1,4 @@
 export class User {
-  // roles?: any;
   userName?: string;
   chatId?: string;
   role?: string;
@@ -19,5 +18,5 @@ export class User {
   address?: string;
   userId?: string;
   isAllowEmail: boolean | undefined;
-  isAllowNotification: boolean| undefined;
+  isAllowNotification: boolean | undefined;
 }

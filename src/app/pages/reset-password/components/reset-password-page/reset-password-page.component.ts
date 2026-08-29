@@ -1,22 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomValidator } from '../../../../customValidator/custom-validator';
 import { AppButtonComponent } from '../../../../shared/app-button/components/app-button/app-button.component';
 import { AppTextFieldComponent } from '../../../../shared/app-text-field/components/app-text-field/app-text-field.component';
 import { ThemeToggleComponent } from '../../../../shared/theme-toggle/components/theme-toggle/theme-toggle.component';
 import { VerifyOtpDTO } from '../../../verify-otp/components/verify-otp-page/verify-otp-page.component';
-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { ResetPasswordRequestModel, ResetPasswordResponseModel, UserClient } from '../../../../api/api-old';
+import { ResetPasswordRequestModel, ResetPasswordResponseModel, UserClient } from '../../../../api/api';
 import { AlertService } from '../../../../services/alert.service';
 import { LanguageToggleComponent } from '../../../../shared/language-toggle/components/language-toggle/language-toggle.component';
 import { AppResetPasswordSuccessDialogComponent } from '../app-reset-password-success-dialog/app-reset-password-success-dialog.component';
@@ -71,7 +64,7 @@ export class ResetPasswordPageComponent implements OnInit {
     if (this.form.valid) {
       this.alertService.startLoadingMessage();
       this.userClient
-        .user_ResetPassword(
+        .resetPassword(
           new ResetPasswordRequestModel({
             email: this.emailOrToken.email,
             confirmPassword: this.confirmPasswordControl.value ?? '',

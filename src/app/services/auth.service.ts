@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { Permissions, RoleNames } from '../constants/role-names';
+import { RoleNames } from '../constants/role-names';
 import { LoginResponse } from '../models/login-response';
 import { User } from '../models/user';
 import { AlertService } from './alert.service';
@@ -88,6 +88,10 @@ export class AuthService {
 
   get rememberMe(): boolean {
     return this.localStorage.getDataObject<boolean>(Dbkey.REMEMBER_ME) === true;
+  }
+
+  get currentRole(): string | undefined {
+    return this.currentUser?.role;
   }
 
   public reevaluateLoginStatus(currentUser?: User): void {
@@ -183,7 +187,7 @@ export class AuthService {
       // if (user.role != undefined) {
       //   this.roles.push(user.role);
       // }
-      this.userName == user.name
+      this.userName = user.name
       return user;
     }
     return null;
@@ -272,7 +276,22 @@ export class AuthService {
     //   return '/dashboard/employee-transactions';
     // }
     // Fallback to home if no specific route is found
-    return '/chat';
+    return '/dashboard/home';
+  }
+
+  isRole(role: string | string[]): boolean {
+    const userRole = this.currentRole;
+    if (!userRole) {
+      return false;
+    }
+    if (Array.isArray(role)) {
+      return role.includes(userRole);
+    }
+    return userRole === role;
+  }
+
+  isAdmin(): boolean {
+    return this.isRole([RoleNames.SuperAdmin, RoleNames.Administrator]);
   }
 
   /**
@@ -306,42 +325,42 @@ export class AuthService {
   //   }
 
 
-    // Company-specific routes
-    // if (this.hasPermission(Permissions.ViewCompanyAdminDashboard)) {
-    //   routes.push('/dashboard/home');
-    // }
-    // if (this.hasPermission(Permissions.ViewCompanyStaff)) {
-    //   routes.push('/dashboard/staff');
-    // }
-    // if (this.hasPermission(Permissions.ViewBranches)) {
-    //   routes.push('/dashboard/branches');
-    // }
-    // if (this.hasPermission(Permissions.ViewPayroll)) {
-    //   routes.push('/dashboard/salary');
-    // }
-    // if (this.hasPermission(Permissions.ViewLoanRequests) ||
-    //   this.hasPermission(Permissions.ViewOwnActiveLoans) ||
-    //   this.hasPermission(Permissions.ViewOwnPendingLoans)) {
-    //   routes.push('/dashboard/loan');
-    // }
-    // if (this.hasPermission(Permissions.ViewLoanOffers) ||
-    //   this.hasPermission(Permissions.ViewAvailableOffers)) {
-    //   routes.push('/dashboard/offers');
-    // }
-    // if (this.hasPermission(Permissions.ViewCompanyRoles)) {
-    //   routes.push('/dashboard/role');
-    // }
-    // if (this.hasPermission(Permissions.ViewCompanyReports) ||
-    //   this.hasPermission(Permissions.ViewAuditLogs)) {
-    //   routes.push('/dashboard/reports');
-    // }
-    // if (this.hasPermission(Permissions.ViewCompanySettings) ||
-    //   this.hasPermission(Permissions.ViewGlobalSettings)) {
-    //   routes.push('/dashboard/settings');
-    // }
+  // Company-specific routes
+  // if (this.hasPermission(Permissions.ViewCompanyAdminDashboard)) {
+  //   routes.push('/dashboard/home');
+  // }
+  // if (this.hasPermission(Permissions.ViewCompanyStaff)) {
+  //   routes.push('/dashboard/staff');
+  // }
+  // if (this.hasPermission(Permissions.ViewBranches)) {
+  //   routes.push('/dashboard/branches');
+  // }
+  // if (this.hasPermission(Permissions.ViewPayroll)) {
+  //   routes.push('/dashboard/salary');
+  // }
+  // if (this.hasPermission(Permissions.ViewLoanRequests) ||
+  //   this.hasPermission(Permissions.ViewOwnActiveLoans) ||
+  //   this.hasPermission(Permissions.ViewOwnPendingLoans)) {
+  //   routes.push('/dashboard/loan');
+  // }
+  // if (this.hasPermission(Permissions.ViewLoanOffers) ||
+  //   this.hasPermission(Permissions.ViewAvailableOffers)) {
+  //   routes.push('/dashboard/offers');
+  // }
+  // if (this.hasPermission(Permissions.ViewCompanyRoles)) {
+  //   routes.push('/dashboard/role');
+  // }
+  // if (this.hasPermission(Permissions.ViewCompanyReports) ||
+  //   this.hasPermission(Permissions.ViewAuditLogs)) {
+  //   routes.push('/dashboard/reports');
+  // }
+  // if (this.hasPermission(Permissions.ViewCompanySettings) ||
+  //   this.hasPermission(Permissions.ViewGlobalSettings)) {
+  //   routes.push('/dashboard/settings');
+  // }
 
 
-    // Remove duplicates while preserving order
+  // Remove duplicates while preserving order
   //   return [...new Set(routes)];
   // }
 
@@ -369,12 +388,12 @@ export class AuthService {
   //     return;
   //   }
   //   this.roles = [];
-    // if (Array.isArray(this.currentUser.roles)) {
-    //   this.roles.push(...this.currentUser.roles);
-    // } else {
-    //   this.roles.push(this.currentUser.roles);
-    // }
-    // this.roles.push(this.currentUser.role ?? '');
+  // if (Array.isArray(this.currentUser.roles)) {
+  //   this.roles.push(...this.currentUser.roles);
+  // } else {
+  //   this.roles.push(this.currentUser.roles);
+  // }
+  // this.roles.push(this.currentUser.role ?? '');
   // }
 
   private saveUserDetails(

@@ -16,7 +16,7 @@ import { from, Observable, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ResponseErrorModel } from '../models/response-error-model';
 import { EndpointFactoryService } from '../services/endpoint-factory.service';
-import {LoginService} from '../services/login.service';
+import { LoginService } from '../services/login.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
@@ -31,12 +31,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     private endpointFactoryService: EndpointFactoryService,
     private authService: AuthService,
     private translate: TranslateService,
-  ) {}
+  ) { }
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler,): Observable<HttpEvent<any>> {
     if (
       req.headers.get('Authorization') === null &&
       req.headers.get('Content-Type') === null
@@ -113,7 +110,8 @@ export class AuthHttpInterceptor implements HttpInterceptor {
               this.isRefreshing = false;
               this.authService.logout();
               this.errorHandler.handleError(err);
-              return from([]);
+              // return from([]);
+              return throwError(() => err);
             }),
           );
       }
@@ -139,7 +137,8 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           this.errorHandler.handleError(error);
-          return throwError(error);
+          // return throwError(error);
+          return throwError(() => error);
         }),
       );
   }
