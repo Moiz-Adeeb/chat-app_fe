@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {AppNavbarComponent} from '../shared/app-navbar/components/app-navbar/app-navbar.component';
+import { RouterOutlet } from '@angular/router';
+import { AppNavbarComponent } from '../shared/app-navbar/components/app-navbar/app-navbar.component';
 
 @Component({
   selector: 'app-pages',
@@ -10,6 +10,4 @@ import {AppNavbarComponent} from '../shared/app-navbar/components/app-navbar/app
   ],
   styleUrl: './pages.component.css'
 })
-export class PagesComponent {
-
-}
+export class PagesComponent { }

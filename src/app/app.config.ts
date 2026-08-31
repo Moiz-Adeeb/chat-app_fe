@@ -42,7 +42,7 @@ export const appConfig: ApplicationConfig = {
 
     // ✅ Add TranslateModule properly
     importProvidersFrom(
-      HttpClientModule,
+      // HttpClientModule,
       ToastrModule.forRoot(),
       TranslateModule.forRoot({
         defaultLanguage: 'en',

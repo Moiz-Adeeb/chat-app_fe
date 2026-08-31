@@ -18,6 +18,16 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./dashboard/dashboard-routing.module').then(
+            (p) => p.DashboardRoutingModule,
+          ),
+        pathMatch: 'prefix',
+        canActivateChild: [AuthGuard],
+        data: {}
+      },
+      {
         path: 'forgot-password',
         loadChildren: () =>
           import('./forgot-password/forgot-password-routing.module').then(

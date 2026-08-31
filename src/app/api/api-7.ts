@@ -1566,7 +1566,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role | undefined;
     employeeType?: EmployeeType | undefined;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;
@@ -1586,7 +1585,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
             this.name = _data["name"];
             this.email = _data["email"];
             this.companyEmail = _data["companyEmail"];
-            this.role = _data["role"];
             this.employeeType = _data["employeeType"];
             this.shiftStartTime = _data["shiftStartTime"];
             this.shiftEndTime = _data["shiftEndTime"];
@@ -1606,7 +1604,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
         data["name"] = this.name;
         data["email"] = this.email;
         data["companyEmail"] = this.companyEmail;
-        data["role"] = this.role;
         data["employeeType"] = this.employeeType;
         data["shiftStartTime"] = this.shiftStartTime;
         data["shiftEndTime"] = this.shiftEndTime;
@@ -1619,7 +1616,6 @@ export interface IUpdateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role | undefined;
     employeeType?: EmployeeType | undefined;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;

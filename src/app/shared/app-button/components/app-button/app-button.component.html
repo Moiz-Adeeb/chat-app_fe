@@ -7,11 +7,12 @@
   [style.height]="height"
   [style.padding]="padding"
   [style.radius]="radius"
-  class="inline-flex justify-center items-center disabled:opacity-60 px-4 py-2 rounded-lg w-full h-full font-inter font-medium text-sm text-center active:scale-90 transition-all duration-700 cursor-pointer disabled:cursor-not-allowed transform"
+  class="inline-flex justify-center items-center disabled:opacity-60 px-4 py-2 rounded-lg w-full h-full font-inter font-medium text-sm text-center active:scale-90 transition-all duration-100 cursor-pointer disabled:cursor-not-allowed transform"
   [ngClass]="{
     'bg-blue-600 text-white hover:bg-[#580A8A]': type === 'primary' && !disabled,
     'bg-[#eaefff] border border-[#2A58E6] text-[#2A58E6] ': type === 'secondary' && !disabled,
     'bg-[#FF3B30] text-[#FFFF] hover:bg-[#580A8A] focus:ring-[#FF3B30]/50': type === 'danger' && !disabled,
+    customClass : type === 'custom' && !disabled
   }"
   [style.fontSize]="fontSize"
   [ngStyle]="customStyles"

@@ -15,7 +15,6 @@ import { Utilities } from './utilities';
 })
 export class AuthService {
   userId?: string;
-  chatId?: string;
   userName?: string;
   isVerified?: boolean;
   private _loginStatus = new Subject<boolean>();
@@ -178,6 +177,8 @@ export class AuthService {
       // this.permissions = extractedPermissions;
       this.reevaluateLoginStatus(info as User);
       const user = info as User;
+      this.currentUser.name = user.name
+      this.currentUser.role = user.role
       // this.roles = [];
       // if (Array.isArray(user.roles)) {
       //   this.roles.push(...user.roles);

@@ -1,0 +1,144 @@
+<div class="z-[999] fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-2 sm:p-4">
+    <div class="flex flex-col bg-[color:var(--color-white)] shadow-xl rounded-lg sm:rounded-xl md:rounded-2xl w-full max-w-2xl max-h-[98vh]">
+        <!-- Fixed Header -->
+        <div class="flex justify-between items-center px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 border-[color:var(--color-gray-200)] border-b">
+          <h3 class="pr-2 sm:pr-4 font-inter font-bold text-[color:var(--color-gray-900)] text-base sm:text-lg md:text-xl lg:text-2xl truncate">
+            {{ 'UserDetails' | translate }}
+          </h3>
+	  			<app-button
+            type="custom"
+            width="100%"
+            fontSize="16px"
+            fontFamily="montserrat"
+            [bgColor]="'var(--color-white)'"
+            [hoverBgColor]="'var(--color-red-100)'"
+            [borderWidth]="'2px'"
+            [borderColor]="'var(--color-white)'"
+            [hoverBorderColor]="'var(--color-red-100)'"
+            [textColor]="'#000'"
+            [hoverTextColor]="'var(--color-red-800)'"
+            radius="10px"
+            padding="4px 12px"
+            (clicked)="close()"
+          >
+	  				X
+  				</app-button>
+        </div>
+
+        <div class="flex flex-col gap-4 p-3 sm:px-4 md:px-6 lg:px-8 sm:py-2 md:py-3 lg:py-4 overflow-y-auto">
+            <div class="space-y-6 grid-cols-1">
+                <div class="flex flex-col shadow-gray-300 shadow-sm p-5 border rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <p class="text-[#475467] text-sm font-medium font-inter">{{ userData.name || '' }}</p>
+                    </div>
+                    <div class="flex gap-4 w-[100%]">
+                        <div class="flex-col gap-6 w-[50%]">
+                            <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'EmployeeType' | translate }}</p>
+                            <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.employeeType === 0 ? 'Onsite' : userData.employeeType === 1 ? 'Remote' : 'Hybrid' }}</p>
+                        </div>
+                        <div class="flex-col gap-6 w-[50%]">
+                            <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'CreatedDate' | translate }}</p>
+                            <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.createdDate | date:'mediumDate' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6 shadow-gray-300 shadow-sm p-5 border rounded-xl">
+                    <div class="flex flex-col">
+                        <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'Email' | translate }}</p>
+                        <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.email }}</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'CompanyEmail' | translate }}</p>
+                        <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.companyEmail }}</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'ShiftStartTime' | translate }}</p>
+                        <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.shiftStartTime || '—' }}</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-montserrat font-normal text-[#98A2B3] text-base">{{ 'ShiftEndTime' | translate }}</p>
+                        <p class="font-inter font-semibold text-[#101828] text-2xl">{{ userData.shiftEndTime || '—' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center gap-x-4 items-center sm:p-4 px-3 md:px-6 py-1 sm:py-2 md:py-3 border-[color:var(--color-gray-200)] border-t">
+          <div class='w-[25%]'>
+	    			<app-button
+              type="custom"
+              width="100%"
+              fontSize="16px"
+              fontFamily="montserrat"
+              [bgColor]="'var(--color-primary-light)'"
+              [hoverBgColor]="'var(--color-red-100)'"
+              [borderWidth]="'2px'"
+              [borderColor]="'var(--color-primary)'"
+              [hoverBorderColor]="'var(--color-red-100)'"
+              [textColor]="'#000'"
+              [hoverTextColor]="'var(--color-red-800)'"
+              radius="10px"
+              padding="12px 16px"
+              (clicked)="close()"
+            >
+              {{ 'Close' | translate }}
+  				  </app-button>
+          </div>
+          <div class='w-[25%]'>
+	    			<app-button
+              type="custom"
+              width="100%"
+              fontSize="16px"
+              fontFamily="montserrat"
+              [bgColor]="'var(--color-primary-light)'"
+              [hoverBgColor]="'var(--color-blue-100)'"
+              [borderWidth]="'2px'"
+              [borderColor]="'var(--color-primary)'"
+              [hoverBorderColor]="'var(--color-blue-100)'"
+              [textColor]="'#000'"
+              [hoverTextColor]="'var(--color-blue-800)'"
+              radius="10px"
+              padding="12px 16px"
+              (clicked)="onEdit()"
+            >
+              {{ 'Edit' | translate }}
+  				  </app-button>
+          </div>
+          <div  *appHasRole="[RoleNames.SuperAdmin, RoleNames.Administrator]"
+            class='w-[25%]'
+          >
+	    			<app-button
+              type="custom"
+              width="100%"
+              fontSize="16px"
+              fontFamily="montserrat"
+              [bgColor]="'var(--color-primary-light)'"
+              [hoverBgColor]="'var(--color-red-100)'"
+              [borderWidth]="'2px'"
+              [borderColor]="'var(--color-primary)'"
+              [hoverBorderColor]="'var(--color-red-100)'"
+              [textColor]="'#000'"
+              [hoverTextColor]="'var(--color-red-800)'"
+              radius="10px"
+              padding="12px 16px"
+              (clicked)="onDelete()"
+            >
+              {{ 'Delete' | translate }}
+  				  </app-button>
+          </div>
+            <!-- <app-button -->
+            <!--   (clicked)="onEdit()" -->
+            <!--   type="secondary" -->
+            <!-- > -->
+            <!--     {{ 'Edit' | translate }} -->
+            <!-- </app-button> -->
+            <!-- <app-button -->
+            <!--   (clicked)="close()" -->
+            <!--   type="secondary" -->
+            <!-- > -->
+            <!--     {{ 'Close' | translate }} -->
+            <!-- </app-button> -->
+        </div>
+    </div>
+</div>

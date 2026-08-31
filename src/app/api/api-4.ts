@@ -87,115 +87,6 @@ export class AuthorizationClient {
 @Injectable({
     providedIn: 'root'
 })
-export class AuditLogClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "http://localhost:5000";
-    }
-
-    /**
-     * Get Audit Logs
-     * @param userId (optional) 
-     * @param feature (optional) 
-     * @param action (optional) 
-     * @param lang (optional) 
-     * @param entityId (optional) 
-     * @param parentId (optional) 
-     * @param isHideCount (optional) 
-     * @param search (optional) 
-     * @param isDescending (optional) 
-     * @param page (optional) 
-     * @param pageSize (optional) 
-     * @param orderBy (optional) 
-     */
-    getAuditLogs(userId: string | null | undefined, feature: AuditLogFeatureType | null | undefined, action: AuditLogType | null | undefined, lang: Lang | null | undefined, entityId: string | null | undefined, parentId: string | null | undefined, isHideCount: boolean | undefined, search: string | null | undefined, isDescending: boolean | undefined, page: number | undefined, pageSize: number | undefined, orderBy: string | null | undefined): Observable<GetAuditLogsResponseModel> {
-        let url_ = this.baseUrl + "/api/v1/AuditLog?";
-        if (userId !== undefined && userId !== null)
-            url_ += "UserId=" + encodeURIComponent("" + userId) + "&";
-        if (feature !== undefined && feature !== null)
-            url_ += "Feature=" + encodeURIComponent("" + feature) + "&";
-        if (action !== undefined && action !== null)
-            url_ += "Action=" + encodeURIComponent("" + action) + "&";
-        if (lang !== undefined && lang !== null)
-            url_ += "Lang=" + encodeURIComponent("" + lang) + "&";
-        if (entityId !== undefined && entityId !== null)
-            url_ += "EntityId=" + encodeURIComponent("" + entityId) + "&";
-        if (parentId !== undefined && parentId !== null)
-            url_ += "ParentId=" + encodeURIComponent("" + parentId) + "&";
-        if (isHideCount === null)
-            throw new globalThis.Error("The parameter 'isHideCount' cannot be null.");
-        else if (isHideCount !== undefined)
-            url_ += "IsHideCount=" + encodeURIComponent("" + isHideCount) + "&";
-        if (search !== undefined && search !== null)
-            url_ += "Search=" + encodeURIComponent("" + search) + "&";
-        if (isDescending === null)
-            throw new globalThis.Error("The parameter 'isDescending' cannot be null.");
-        else if (isDescending !== undefined)
-            url_ += "IsDescending=" + encodeURIComponent("" + isDescending) + "&";
-        if (page === null)
-            throw new globalThis.Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "Page=" + encodeURIComponent("" + page) + "&";
-        if (pageSize === null)
-            throw new globalThis.Error("The parameter 'pageSize' cannot be null.");
-        else if (pageSize !== undefined)
-            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
-        if (orderBy !== undefined && orderBy !== null)
-            url_ += "OrderBy=" + encodeURIComponent("" + orderBy) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAuditLogs(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAuditLogs(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetAuditLogsResponseModel>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetAuditLogsResponseModel>;
-        }));
-    }
-
-    protected processGetAuditLogs(response: HttpResponseBase): Observable<GetAuditLogsResponseModel> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetAuditLogsResponseModel.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<GetAuditLogsResponseModel>(null as any);
-    }
-}
-
-@Injectable({
-    providedIn: 'root'
-})
 export class UserClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -836,136 +727,6 @@ export class UserClient {
     }
 }
 
-export class GetAuditLogsResponseModel implements IGetAuditLogsResponseModel {
-    data?: AuditLogDto[] | undefined;
-    count?: number;
-
-    constructor(data?: IGetAuditLogsResponseModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data!.push(AuditLogDto.fromJS(item));
-            }
-            this.count = _data["count"];
-        }
-    }
-
-    static fromJS(data: any): GetAuditLogsResponseModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetAuditLogsResponseModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["count"] = this.count;
-        return data;
-    }
-}
-
-export interface IGetAuditLogsResponseModel {
-    data?: AuditLogDto[] | undefined;
-    count?: number;
-}
-
-export class AuditLogDto implements IAuditLogDto {
-    user?: string | undefined;
-    userId?: string | undefined;
-    feature?: AuditLogFeatureType;
-    action?: AuditLogType;
-    description?: string | undefined;
-    entityId?: string | undefined;
-    createdDate?: Date;
-
-    constructor(data?: IAuditLogDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.user = _data["user"];
-            this.userId = _data["userId"];
-            this.feature = _data["feature"];
-            this.action = _data["action"];
-            this.description = _data["description"];
-            this.entityId = _data["entityId"];
-            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): AuditLogDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuditLogDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["user"] = this.user;
-        data["userId"] = this.userId;
-        data["feature"] = this.feature;
-        data["action"] = this.action;
-        data["description"] = this.description;
-        data["entityId"] = this.entityId;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : undefined as any;
-        return data;
-    }
-}
-
-export interface IAuditLogDto {
-    user?: string | undefined;
-    userId?: string | undefined;
-    feature?: AuditLogFeatureType;
-    action?: AuditLogType;
-    description?: string | undefined;
-    entityId?: string | undefined;
-    createdDate?: Date;
-}
-
-export enum AuditLogFeatureType {
-    User = 0,
-    Attendance = 1,
-    Leave = 2,
-    Holiday = 3,
-    QrCode = 4,
-}
-
-export enum AuditLogType {
-    Create = 0,
-    Update = 1,
-    Delete = 2,
-    Approve = 3,
-    Reject = 4,
-    Cancel = 5,
-}
-
-export enum Lang {
-    Eng = 0,
-    Fr = 1,
-}
-
 export class GetUsersResponseModel implements IGetUsersResponseModel {
     data?: UserDto[] | undefined;
     count?: number;
@@ -1019,7 +780,6 @@ export class UserDto implements IUserDto {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role;
     employeeType?: EmployeeType;
     createdDate?: Date;
 
@@ -1038,7 +798,6 @@ export class UserDto implements IUserDto {
             this.name = _data["name"];
             this.email = _data["email"];
             this.companyEmail = _data["companyEmail"];
-            this.role = _data["role"];
             this.employeeType = _data["employeeType"];
             this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : undefined as any;
         }
@@ -1057,7 +816,6 @@ export class UserDto implements IUserDto {
         data["name"] = this.name;
         data["email"] = this.email;
         data["companyEmail"] = this.companyEmail;
-        data["role"] = this.role;
         data["employeeType"] = this.employeeType;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : undefined as any;
         return data;
@@ -1069,17 +827,8 @@ export interface IUserDto {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role;
     employeeType?: EmployeeType;
     createdDate?: Date;
-}
-
-export enum Role {
-    SuperAdmin = 0,
-    Administrator = 1,
-    Manager = 2,
-    Employee = 3,
-    Tester = 4,
 }
 
 export enum EmployeeType {
@@ -1469,7 +1218,6 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role;
     employeeType?: EmployeeType;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;
@@ -1488,7 +1236,6 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
             this.name = _data["name"];
             this.email = _data["email"];
             this.companyEmail = _data["companyEmail"];
-            this.role = _data["role"];
             this.employeeType = _data["employeeType"];
             this.shiftStartTime = _data["shiftStartTime"];
             this.shiftEndTime = _data["shiftEndTime"];
@@ -1507,7 +1254,6 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
         data["name"] = this.name;
         data["email"] = this.email;
         data["companyEmail"] = this.companyEmail;
-        data["role"] = this.role;
         data["employeeType"] = this.employeeType;
         data["shiftStartTime"] = this.shiftStartTime;
         data["shiftEndTime"] = this.shiftEndTime;
@@ -1519,7 +1265,6 @@ export interface ICreateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role;
     employeeType?: EmployeeType;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;
@@ -1566,7 +1311,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role | undefined;
     employeeType?: EmployeeType | undefined;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;
@@ -1586,7 +1330,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
             this.name = _data["name"];
             this.email = _data["email"];
             this.companyEmail = _data["companyEmail"];
-            this.role = _data["role"];
             this.employeeType = _data["employeeType"];
             this.shiftStartTime = _data["shiftStartTime"];
             this.shiftEndTime = _data["shiftEndTime"];
@@ -1606,7 +1349,6 @@ export class UpdateUserRequestModel implements IUpdateUserRequestModel {
         data["name"] = this.name;
         data["email"] = this.email;
         data["companyEmail"] = this.companyEmail;
-        data["role"] = this.role;
         data["employeeType"] = this.employeeType;
         data["shiftStartTime"] = this.shiftStartTime;
         data["shiftEndTime"] = this.shiftEndTime;
@@ -1619,7 +1361,6 @@ export interface IUpdateUserRequestModel {
     name?: string | undefined;
     email?: string | undefined;
     companyEmail?: string | undefined;
-    role?: Role | undefined;
     employeeType?: EmployeeType | undefined;
     shiftStartTime?: string | undefined;
     shiftEndTime?: string | undefined;

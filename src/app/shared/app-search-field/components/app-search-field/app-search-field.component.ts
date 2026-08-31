@@ -10,19 +10,14 @@ import { FormErrorComponent } from '../../../app-text-field/components/form-erro
   templateUrl: './app-search-field.component.html',
   styleUrl: './app-search-field.component.scss',
   standalone: true,
-  imports: [
-    FormErrorComponent,
-    ReactiveFormsModule,
-    NgClass,
-    NgIf
-  ]
+  imports: [FormErrorComponent, ReactiveFormsModule, NgClass, NgIf]
 })
 export class AppSearchFieldComponent {
   isRequired = false;
   subscription: Subscription = Subscription.EMPTY;
   @Output() onChange = new EventEmitter<string>();
   @Input() isCompact = false;
-  @Input() type: 'primary' | 'secondary'  = 'primary';
+  @Input() type: 'primary' | 'secondary' = 'primary';
   @Input() fieldName = '';
   @Input() labelFontSize: string = 'text-[14px]';
   @Input() labelFontFamily: string = 'font-gilroy-semibold';
@@ -45,7 +40,7 @@ export class AppSearchFieldComponent {
   today: string = new Date().toISOString().split('T')[0];
   dateTime: string = new Date().toISOString().slice(0, 16);
 
-  constructor() {}
+  constructor() { }
 
   private _fieldControl: FormControl = new FormControl(null, []);
 

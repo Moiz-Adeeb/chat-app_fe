@@ -1,0 +1,103 @@
+<div class="p-4 sm:p-6">
+  <div class="flex w-full bg-primary-light justify-between items-center mb-4 p-4 rounded-2xl">
+    <h1 class="font-semibold w-1/8 text-slate-900 text-xl hidden lg:block">Users</h1>
+    <div class='w-[50%]'>
+      <app-search-field
+        fieldType='text'
+        [placeholder]="'SearchUsers' | translate"
+        [fieldControl]='searchControl'
+        (onChange)="onSearch($event)"
+      ></app-search-field>
+    </div>
+    <div class='w-1/8'>
+      <app-button *appHasRole="[RoleNames.SuperAdmin, RoleNames.Administrator, RoleNames.Manager]"
+      type="custom"
+      width="100%"
+      fontSize="14px"
+      fontFamily="montserrat"
+      [bgColor]="'var(--color-primary)'"
+      [hoverBgColor]="'var(--color-white)'"
+      [borderWidth]="'2px'"
+      [borderColor]="'#f97316'"
+      [hoverBorderColor]="'#000'"
+      [textColor]="'#fff'"
+      [hoverTextColor]="'#000'"
+      radius="10px"
+      padding="12px 16px"
+      (clicked)="onCreate()"
+      >
+	  		Create New User
+  		</app-button>
+    </div>
+  </div>
+
+  <app-table
+    [columns]="columns"
+    [pageSize]="pageSize"
+    [page]="page"
+    [totalPage]="totalPage"
+    [isEmpty]="users.length === 0"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+  >
+    <tr *ngFor="let user of users" class="hover:bg-slate-50" (click)="onView(user)">
+      <td class="px-4 py-3 text-slate-700 text-sm">{{ user.name }}</td>
+      <td class="px-4 py-3 text-slate-700 text-sm hidden lg:table-cell">{{ user.email }}</td>
+      <td class="px-4 py-3 text-slate-700 text-sm hidden lg:table-cell">{{ user.companyEmail }}</td>
+      <td class="px-4 py-3 text-slate-700 text-sm">
+        <span
+          *ngIf="user.role === Role.SuperAdmin"
+          class="bg-green-100 px-2 md:px-3 py-1 rounded-lg text-green-600 text-[10px] sm:text-xs font-medium"
+        >
+            Super Admin
+        </span>
+        <span
+          *ngIf="user.role === Role.Administrator"
+          class="bg-blue-100 px-2 md:px-3 py-1 rounded-lg text-blue-600 text-[10px] sm:text-xs font-medium"
+        >
+          Administrator
+        </span>
+        <span
+          *ngIf="user.role === Role.Manager"
+          class="bg-yellow-100 px-2 md:px-3 py-1 rounded-lg text-yellow-600 text-[10px] sm:text-xs font-medium"
+        >
+          Manager
+        </span>
+        <span
+          *ngIf="user.role === Role.Employee"
+          class="bg-purple-100 px-2 md:px-3 py-1 rounded-lg text-purple-600 text-[10px] sm:text-xs font-medium"
+        >
+          Employee
+        </span>
+        <span
+          *ngIf="user.role === Role.Tester"
+          class="bg-gray-100 px-2 md:px-3 py-1 rounded-lg text-gr text-[10px] sm:text-xs font-medium"
+        >
+          Tester
+        </span>
+        <!-- {{ user.employeeType | employeeTypeLabel }} -->
+      </td>
+      <td class="px-4 py-3 text-slate-700 text-sm">
+        <span
+          *ngIf="user.employeeType === EmployeeType.Onsite"
+          class="bg-slate-100 px-2 md:px-3 py-1 rounded-lg text-slate-600 text-[10px] sm:text-xs font-medium"
+        >
+            Onsite
+        </span>
+        <span
+          *ngIf="user.employeeType === EmployeeType.Remote"
+          class="bg-zinc-100 px-2 md:px-3 py-1 rounded-lg text-zinc-600 text-[10px] sm:text-xs font-medium"
+        >
+          Remote
+        </span>
+        <span
+          *ngIf="user.employeeType === EmployeeType.Hybrid"
+          class="bg-[#F3E8FF] px-2 md:px-3 py-1 rounded-lg text-[#9333EA] text-[10px] sm:text-xs font-medium"
+        >
+          Hybrid
+        </span>
+      </td>
+      <td class="px-4 py-3 text-slate-700 text-sm">{{ user.createdDate | date:'mediumDate' }}</td>
+    </tr>
+  </app-table>
+</div>

@@ -1,0 +1,157 @@
+<div class="z-[9999] fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-2 sm:p-4">
+    <div class="flex flex-col bg-[color:var(--color-white)] shadow-xl rounded-lg sm:rounded-xl md:rounded-2xl w-full max-w-2xl max-h-[98vh] sm:max-h-[95vh] md:max-h-[90vh]">
+        <!-- Fixed Header -->
+        <div class="flex justify-between items-center p-3 sm:p-4 md:p-6 border-[color:var(--color-gray-200)] border-b">
+          <h3 class="pr-2 sm:pr-4 font-inter font-bold text-[color:var(--color-gray-900)] text-base sm:text-lg md:text-xl lg:text-2xl truncate">
+            {{ (isEditMode ? 'EditUser' : 'AddANewUser') | translate }}
+          </h3>
+	  			<app-button
+            type="custom"
+            width="100%"
+            fontSize="16px"
+            fontFamily="montserrat"
+            [bgColor]="'var(--color-white)'"
+            [hoverBgColor]="'var(--color-red-100)'"
+            [borderWidth]="'2px'"
+            [borderColor]="'var(--color-white)'"
+            [hoverBorderColor]="'var(--color-red-100)'"
+            [textColor]="'#000'"
+            [hoverTextColor]="'var(--color-red-800)'"
+            radius="10px"
+            padding="4px 12px"
+            (clicked)="close()"
+          >
+	  				X
+  				</app-button>
+        </div>
+
+        <!-- Scrollable Body -->
+        <div class="flex-1 p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto">
+            <form [formGroup]="formGroup" action="" class="space-y-2 py-2">
+                <div class="gap-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                    <div>
+                        <!-- Name -->
+                        <app-text-field
+                            [fieldControl]="nameControl"
+                            [placeholder]="'EnterNameHere' | translate"
+                            [fieldName]="'Name' | translate"
+                        ></app-text-field>
+                    </div>
+                    <div>
+                        <!-- Email -->
+                        <app-text-field
+                            [fieldControl]="emailControl"
+                            [placeholder]="'EnterEmailHere' | translate"
+                            [fieldName]="'Email' | translate"
+                            fieldType="email"
+                        ></app-text-field>
+                    </div>
+                    <div>
+                        <!-- Company Email -->
+                        <app-text-field
+                            [fieldControl]="companyEmailControl"
+                            [placeholder]="'EnterCompanyEmailHere' | translate"
+                            [fieldName]="'CompanyEmail' | translate"
+                            fieldType="email"
+                        ></app-text-field>
+                    </div>
+                    <div>
+                        <!-- Employee Type -->
+                        <app-dropdown
+                          [dropDownControl]="employeeTypeControl"
+                          [options]="EmployeeTypes"
+                          [label]="'EmployeeType' | translate"
+                          [displayValue]="'name'"
+                          [bindValue]="'id'"
+                          [placeholder]="'SelectEmployeeType' | translate"
+                      ></app-dropdown>
+                    </div>
+                    <div>
+                        <!-- Role -->
+                        <app-dropdown
+                          [dropDownControl]="roleControl"
+                          [options]="Roles"
+                          [label]="'Role' | translate"
+                          [displayValue]="'name'"
+                          [bindValue]="'id'"
+                          [placeholder]="'SelectRole' | translate"
+                      ></app-dropdown>
+                    </div>
+                    <div>
+                        <!-- Shift Start Time -->
+                        <app-text-field
+                            [fieldControl]="shiftStartTimeControl"
+                            [fieldName]="'ShiftStartTime' | translate"
+                            fieldType="time"
+                        ></app-text-field>
+                    </div>
+                    <div>
+                        <!-- Shift End Time -->
+                        <app-text-field
+                            [fieldControl]="shiftEndTimeControl"
+                            [fieldName]="'ShiftEndTime' | translate"
+                            fieldType="time"
+                        ></app-text-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Fixed Footer -->
+        <div class="flex justify-center items-center gap-4 p-3 border-[color:var(--color-gray-200)] border-t">
+           <div class='w-[33%]'>
+	    			<app-button
+              type="custom"
+              width="100%"
+              fontSize="16px"
+              fontFamily="montserrat"
+              [bgColor]="'var(--color-primary-light)'"
+              [hoverBgColor]="'var(--color-red-100)'"
+              [borderWidth]="'2px'"
+              [borderColor]="'var(--color-primary)'"
+              [hoverBorderColor]="'var(--color-red-100)'"
+              [textColor]="'#000'"
+              [hoverTextColor]="'var(--color-red-800)'"
+              radius="10px"
+              padding="12px 16px"
+              (clicked)="close()"
+            >
+              {{ 'Close' | translate }}
+  				  </app-button>
+          </div>
+          <div class='w-[33%]'>
+	    			<app-button
+              type="custom"
+              width="100%"
+              fontSize="16px"
+              fontFamily="montserrat"
+              [bgColor]="'var(--color-primary-light)'"
+              [hoverBgColor]="'var(--color-green-100)'"
+              [borderWidth]="'2px'"
+              [borderColor]="'var(--color-primary)'"
+              [hoverBorderColor]="'var(--color-green-100)'"
+              [textColor]="'#000'"
+              [hoverTextColor]="'var(--color-green-800)'"
+              radius="10px"
+              padding="12px 16px"
+              (clicked)="onSubmit()"
+            >
+              {{ (isEditMode ? 'Update' : 'Create') | translate }}
+  				  </app-button>
+          </div>
+
+            <!-- <app-button -->
+            <!--     (clicked)="close()" -->
+            <!--     type="secondary" -->
+            <!--     [width]="'8rem'"> -->
+            <!--     {{ 'Cancel' | translate }} -->
+            <!-- </app-button> -->
+            <!-- <app-button -->
+            <!--     (clicked)="onSubmit()" -->
+            <!--     type="primary" -->
+            <!--     [width]="'8rem'"> -->
+            <!--     {{ (isEditMode ? 'Update' : 'Create') | translate }} -->
+            <!-- </app-button> -->
+        </div>
+    </div>
+</div>

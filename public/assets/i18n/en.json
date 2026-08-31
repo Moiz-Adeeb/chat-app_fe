@@ -1,4 +1,12 @@
 {
+  "ShiftStartTime": "Shift Start Time",
+  "ShiftEndTime": "Shift End Time",
+  "EnterNameHere": "Enter Name Here",
+  "EnterCompanyEmailHere": "Enter Company Email Here",
+  "AddANewUser": "Add A New User",
+  "SearchUsers": "Search Users",
+  "EmployeeType": "Employee Type",
+  "CompanyEmail": "Company Email",
   "SignInToManageYourTeams": "Sign In to manage your team's",
   "FinancesWithEase": "finances with ease",
   "EnterYourEmailHere": "Enter your Email here",
@@ -258,9 +266,7 @@
   "LimitedAccessForCustomerSupport": "Limited access for customer support",
   "ConfirmNewPasswordHere": "Confirm new password here",
   "StaffManagement": "Staff Management",
-
   "___________________newKeysFromAbove_________________": "___________________oldKeysFromBelow_________________",
-
   "HELLO": "Hello",
   "WELCOME": "Welcome to our app!",
   "WorkforceManagementSystem": "Workforce Management System",
@@ -653,34 +659,28 @@
   "LateMODRequests": "Late MOD Requests",
   "AveragePaymentDelay": "Average Payment Delay",
   "AverageApprovalTime": "Average Approval Time",
-
   "DailyMODRequestsTrend": "Daily MOD Requests Trend",
   "RequestsbyDepartment": "Requests by Department",
   "RequestsbySite": "Requests by Site",
   "TopProviders": "Top Providers",
   "MonthlyBillingTrend": "Monthly Billing Trend",
-
   "OutstandingBalancesByProvider": "Outstanding Balances By Provider",
   "TotalInvoices": "Total Invoices",
   "PaidInvoices": "Paid Invoices",
   "OutstandingAmount": "Outstanding Amount",
   "PaymentRate": "Payment Rate",
-
   "DataNotFound": "No data found",
   "ModRequestByStatus": "Modification Requests by Status",
   "Top5ActivityTypes": "Top 5 Activity Types",
   "Top5FrequentSites": "Top 5 Frequent Sites",
-
   "AverageAssignedTime": "Average Assigned Time",
   "DockersCapacity": "Dockers Capacity",
   "DockersUtilized": "Dockers Utilized",
-
   "Requests": "Requests",
   "SiteUsage": "Site Usage",
   "Frequency": "Frequency",
   "NoData": "No Data",
   "NoDataAvailable": "No data available",
-
   "Approved": "Approved",
   "Finalized": "Finalized",
   "Unknown": "Unknown",

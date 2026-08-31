@@ -7,16 +7,12 @@ import { SidebarService } from '../../../services/sidebar.service';
 import { AppButtonComponent } from "../../app-button/components/app-button/app-button.component";
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user';
-import {
-  AppNotificationPopComponent
-} from '../../app-notification-pop/components/app-notification-pop/app-notification-pop.component';
-import {HasPermissionDirective} from '../../../directives/has-permission.directive';
-import {Permissions} from '../../../constants/role-names';
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, AppButtonComponent, AppNotificationPopComponent, HasPermissionDirective],
+  imports: [CommonModule, TranslatePipe, AppButtonComponent],
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss']
 })
@@ -31,7 +27,7 @@ export class AppHeaderComponent implements OnInit {
   // User data - will be populated from AuthService
   userFullName: string = 'User';
   userRole: string = 'Guest';
-  userAvatar: string = '/assets/img/person-image.png';
+  userAvatar: string = '/assets/img/avatar.png';
 
   notificationCount: number = 3;
   messageCount: number = 5;
@@ -77,13 +73,13 @@ export class AppHeaderComponent implements OnInit {
 
     if (currentUser) {
       // Construct full name
-      this.userFullName = currentUser.fullName || currentUser.email || 'User';
+      this.userFullName = currentUser.name || currentUser.email || '';
 
       // Get user role
       this.userRole = currentUser.role || 'Guest';
 
       // Get user avatar (use profilePicture if available, otherwise default)
-      this.userAvatar = currentUser.image || '/assets/img/person-image.png';
+      this.userAvatar = currentUser.image || '/assets/img/avatar.png';
 
       console.log('Header - User Info Loaded:', {
         fullName: this.userFullName,
@@ -168,7 +164,8 @@ export class AppHeaderComponent implements OnInit {
 
   onLogout() {
     this.showUserMenu = false;
-    this.router.navigate(['/dashboard/logout']);
+    this.authService.logout()
+    this.router.navigate(['/']);
   }
 
   toggleSidebar() {

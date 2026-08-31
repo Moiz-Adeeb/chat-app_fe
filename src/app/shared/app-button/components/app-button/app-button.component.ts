@@ -31,6 +31,7 @@ export class AppButtonComponent {
   @Output() clicked = new EventEmitter();
   @Input() iconSize: string = 'h-5 w-5';
   @Input() iconGap: string = '0.5rem';
+  @Input() customClass: string = '';
 
   private isHovering = false;
 

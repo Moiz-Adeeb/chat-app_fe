@@ -1,28 +1,28 @@
 <aside
-  class="top-0 right-0 z-40 fixed bg-white dark:bg-white shadow-lg rounded-none h-full overflow-y-auto transition-all duration-300 ease-in-out sidebar-container"
+  class="sidebar-container top-0 left-0 z-40 fixed bg-white dark:bg-white shadow-lg h-full overflow-y-auto transition-all duration-300 ease-in-out"
   [ngClass]="{
-    'w-20': !sidebarCollapsed,
-    'w-16': sidebarCollapsed,
-    'lg:m-0 rounded-none lg:h-[100%]': true,
+    'w-64': !sidebarCollapsed,
+    'w-20': sidebarCollapsed,
+    'lg:m-5 lg:rounded-lg lg:h-[95%]': true,
     'm-0 rounded-none h-full': true
   }">
   <nav class="flex flex-col p-4 h-full">
     <!-- Logo Section -->
-    <div class="flex justify-center items-center pt-3 pb-4 w-full transition-all duration-300 sidebar-head"
+    <div class="flex justify-center items-center w-full pt-3 pb-4 sidebar-head transition-all duration-300"
          [ngClass]="{
            'mb-6': !sidebarCollapsed,
            'mb-4': sidebarCollapsed
          }">
       <!-- Logo (centered) -->
-      <!-- <img
-        [src]="logoSrc"
-        alt="Sala Logo"
+      <img
+        src="/assets/img/billing_benefit_logo.png"
+        alt="Billing Benefit"
         class="block h-auto max-h-[45px] object-contain transition-all duration-300"
         [ngClass]="{
           'w-full max-w-[180px]': !sidebarCollapsed,
           'w-[60px]': sidebarCollapsed
         }"
-        style="min-height: 32px;"> -->
+        style="min-height: 32px;">
     </div>
 
     <!-- Navigation Items - Scrollable Area -->
@@ -31,7 +31,6 @@
         *ngFor="let section of filteredNavSections"
         class="space-y-1">
         <div
-          *ngIf="active"
           class="space-y-1">
           <a
             *ngFor="let item of section.items"
@@ -40,7 +39,7 @@
             routerLinkActive="active-nav-link"
             [routerLinkActiveOptions]="{ exact: true }"
             [title]="sidebarCollapsed ? (item.label | translate) : ''"
-            class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 inactive-nav-link"
+            class="flex items-center gap-3 px-3 py-3 rounded-lg inactive-nav-link transition-all duration-200"
             [ngClass]="{
               'justify-center': sidebarCollapsed && window.innerWidth >= 1024,
               'justify-start': !sidebarCollapsed || window.innerWidth < 1024
@@ -53,7 +52,7 @@
               }">
             </svg-icon>
             <span
-              class="font-work font-medium text-base sm:text-lg whitespace-nowrap transition-all duration-300"
+              class="font-work text-base sm:text-lg font-medium whitespace-nowrap transition-all duration-300"
               [ngClass]="{
                 'lg:hidden': sidebarCollapsed && window.innerWidth >= 1024,
                 'block': !sidebarCollapsed || window.innerWidth < 1024
@@ -66,14 +65,13 @@
     </div>
 
     <!-- Logout Button - Fixed at Bottom -->
-    <div *ngFor="let section of logout" class="mt-auto pt-4 border-gray-200 border-t">
+    <div *ngFor="let section of logout" class="mt-auto pt-4 border-t border-gray-200">
       <a
         *ngFor="let item of section.items"
         [routerLink]="item.route"
         routerLinkActive="active-nav-link"
-        (click)="onLogout()"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-3 py-3 rounded-lg w-full transition-all duration-200 inactive-nav-link"
+        class="flex items-center gap-3 px-3 py-3 rounded-lg w-full inactive-nav-link transition-all duration-200"
         [ngClass]="{
           'justify-center': sidebarCollapsed && window.innerWidth >= 1024,
           'justify-start': !sidebarCollapsed || window.innerWidth < 1024
@@ -85,14 +83,14 @@
             'w-7 h-7': !sidebarCollapsed || window.innerWidth < 1024
           }">
         </svg-icon>
-        <!-- <span
-          class="font-work font-medium text-base sm:text-lg whitespace-nowrap transition-all duration-300"
+        <span
+          class="font-work text-base sm:text-lg font-medium whitespace-nowrap transition-all duration-300"
           [ngClass]="{
             'lg:hidden': sidebarCollapsed && window.innerWidth >= 1024,
             'block': !sidebarCollapsed || window.innerWidth < 1024
           }">
           {{ item.label | translate }}
-        </span> -->
+        </span>
       </a>
     </div>
   </nav>
